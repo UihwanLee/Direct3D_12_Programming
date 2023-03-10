@@ -1,3 +1,2 @@
 ﻿  Mesh.cpp
-Mesh.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual void __cdecl CMesh::Render(struct HDC__ *)" (?Render@CMesh@@UEAAXPEAUHDC__@@@Z)
-C:\Users\user\Documents\GitHub\Direct3D_12_Programming\Windows_Project\LabProjects\x64\Debug\LabProject02-1.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.
+  LabProject02-1.vcxproj -> C:\Users\user\Documents\GitHub\Direct3D_12_Programming\Windows_Project\LabProjects\x64\Debug\LabProject02-1.exe
