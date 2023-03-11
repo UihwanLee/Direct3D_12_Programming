@@ -1,0 +1,48 @@
+01. Mesh
+
+<.h>
+class CPoint3D 	: 3점의 x, y, z의 값을 가지고 있는 클래스
+class CVertex	: 정점에 대한 정보를 가지고 있는 클래스
+class CPolygon	: 정점의 개수와 정점의 정보를 가지고 있는 클래스
+class CMesh 	: 인스턴싱된 객체의 개수, 폴리곤 개수와 폴리곤의 정보를 가지고 있는 클래스
+class CCubeMesh 	: CMesh를 상속받고 직육면체의 넓이, 높이, 깊이 정보를 가지고 있는 클래스
+
+<.cpp>
+
+class CPolygon
+ CPolygon::CPolygon(int nVerticves) 			: 정점의 개수와 정점들의 정보를 가지고 있는 배열 생성
+ CPolygon::~CPolygon() 				: 정점 배열이 존재할 시 배열 삭제
+ void CPolygon::SetVertex(int  nIndex, CVertex vertex)	: 정점을 정점 배열에 설정
+
+class CMesh
+ CMesh::CMesh(int nPolygons)				: 폴리곤의 개수와 폴리곤의 정보를 가지고 있는 배열 생성
+ CMesh::~CMesh()					: 폴리곤 배열이 존재할 시 배열 삭제
+ CMesh::SetPolygon(int nIndex, CPolygon *pPolygon)	: 폴리곤을 폴리곤 배열에 설정. 메쉬의 다각형을 설정한다.
+ CMesh::Render(HDC hDCFrameBuffer) 			: 메쉬를 구성하는 모든 다각형들을 렌더링한다.
+  i) 폴리곤의 수만큼 반복한다.
+   ii) 다각형의 첫 번째 정점을 원근 투영 변환한다.
+   ii) 변환된 점이 투영 사각형에 포함되는 가를 계산한다.
+   ii) 다각형을 구성하는 모든 정점들을 원근 투영 변환하고 선분으로 렌더링한다.
+    iii) 변환된 점이 투영 사각형에 포함되는 가를 계산한다
+    iii) 변환된 점이 투영 사각형에 포함되면 이전 점과 현재 점을 선분으로 그린다.
+   ii) 다각형의 마지막 정점과 다각형의 시작점을 선분으로 그린다. 
+
+※ 원근 투영 변환 
+  : 3D -> 2D 좌표로 변환될때 z값을 z로 나누어 1로 만들어준다. 
+   이때 기존 z 값에 따라 (x, y)좌표가 달라지며 원근법을 적용시킨다.
+   z0 <= z1 이면 (x0, y0) 좌표가 (x1, y1) 좌표보다 더 가까이 투영됨
+
+※ 투영 사각형 포함 여부
+  : 카메라의 시야각(FOV)에 따라 정점이 보이고 안보이고 여부를 판단하는 것
+   시야각이 90°인 카메라가 볼 수 있는 영역이 투영 사각형으로 투영될 때 기준으로 
+   투영 사각형은 정규환된 정사각형이 된다. 따라서 +1.0 -1.0의 4개의 꼭짓점을 기준으로
+   x좌표, y좌표를 비교하여 포함 여부를 판단한다.
+
+ CCubeMesh::CCubeMesh(float fWidth, float fHeight, fDepth)	: 앞면, 윗면, 뒷면, 밑면, 왼면, 오른면 6가지 폴리곤을 만든다.
+ CCubeMesh::~CCubeMesh()    			      	: CCubeMesh 삭제 
+
+void Draw2DLine(HDC hDCFrameBuffer, CPoint3D& f3PreviousProject, CPoint3D& f3CurrentProject)
+ : 투영좌표계의 2점을 화면 좌표계를 변환하고 두 점(픽셀)을 선분으로 그린다.
+ - Win32 API ::MoveToEx(HDC, x, y), ::LineTo(HDC, x, y) 함수를 이용하여 선분 잇기
+
+ 

@@ -1,0 +1,37 @@
+05. GraphicsPipeline
+
+<.h>
+
+#include "GameObject.h"
+#include "Camera.h"
+
+static						: 정적 변수, 모든 객체가 한 메모리를 공유
+
+class CGraphicsPipeline
+private:
+ static CGameObject*	m_pGameObject		: GameObject 객체 
+ static CCamera*		m_pCamera		: Camera 객체
+
+public:
+ static void SetGameObject(CGameObject* pGameObject)	: GaneObject 객체 설정
+ static void SetCamera(CCamera* pCamera)		: Camera 객체 설정
+
+ static CPoin3D Project(CPoint3D& f3Model)		: 투영 변환 함수
+ static CPoin3D ScreenTransform(CPoint3D& f3Projection)	: 화면 변환 함수
+
+<.cpp>
+
+※ 전역변수
+CGameObject*	CGraphicsPipeline::m_pGameObject		: GameObject 객체
+CCamera*		CGraphicsPipeline::m_pCamera		: Camera 객체
+
+CPoint3D CGraphicsPipeline::Project(CPoint3D& f3Model) 		: 모델 좌표계 -> 투영 좌표계까지 변환하는 함수
+ i) CPoint3D f3World = WorldTransform(f3Model)
+ i) CPoint3D f3Camera = CameraTransform(f3World)
+ i) CPoint3D f3Projection = ProjectionTransform(f3Camera)
+ i) f3Projection 반환
+
+CPoint3D CGraphicsPipeline::ScreenTransform(CPoint3D& f3Proejction) : 투영 좌표계 -> 화면 좌표계 변환하는 함수
+ i) CPoint3D f3Screen = ScreenTransform(f3Projection)
+ i) f3Screen 반환
+

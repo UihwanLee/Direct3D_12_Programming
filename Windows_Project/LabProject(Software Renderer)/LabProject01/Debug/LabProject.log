@@ -10,4 +10,4 @@
   Timer.cpp
   코드를 생성하고 있습니다...
 Camera.obj : warning LNK4075: '/EDITANDCONTINUE'이(가) '/INCREMENTAL:NO' 사양으로 인해 무시됩니다.
-  LabProject.vcxproj -> C:\Users\user\Desktop\3학년 1학기\3D 프로그래밍\LabProject(Software Renderer)\Debug\LabProject01.exe
+  LabProject.vcxproj -> C:\Users\user\Documents\GitHub\Direct3D_12_Programming\Windows_Project\LabProject(Software Renderer)\Debug\LabProject01.exe

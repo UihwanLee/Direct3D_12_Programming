@@ -1,0 +1,41 @@
+04. Player
+
+<.h>
+
+#include "GameObject.h"
+#include "Camera.h"
+
+class CPlayer : public CGameObject			: Player도 객체이므로 CGameObject 클래스 상속
+public:
+ CPlayer() 						: 생성자
+ virtual ~CPlayer()					: 소멸자
+
+private:
+ CCamera*	m_pCamera			: Player 객체가 포함된 카메라
+
+public:
+ void SetPosition(float x, float y, float z)			: 위치 설정
+ void SetRotation(float x, float y, float z)			: 회전 양 설정
+
+ void Move(float x, float y, float z)			: 위치 이동
+ void Rotate(float x, float y, float z)			: 회전
+
+ void SetCamera(CCamera* pCamera)			: 카메라 설정
+ CCamera* GetCamera()				: 카메라 가져오기
+
+<.cpp>
+
+void CPlayer::SetPosition(float x, float y, float z)		: Player와 Camera 위치 설정
+ i) m_pCamera는 존재할 때만 위치 설정
+
+void CPlayer::SetRotation(float x, float y, float z)		: Player와 Camera 회전 양 설정
+ i) m_pCamera는 존재할 때만 회전 양 설정
+
+void CPlayer::Move(float x, float y, float z)		: Player와 Camera 평행 이동
+ i) m_pCamera는 존재할 때만 평행이동
+
+void CPlayer::Rotate(float fPitch, float fYaw, float fRoll)	: Player와 Camera 회전
+ i) m_pCamera는 존재할 때만 회전
+
+
+

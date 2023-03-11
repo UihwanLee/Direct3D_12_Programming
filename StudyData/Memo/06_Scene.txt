@@ -1,0 +1,53 @@
+06. Scene
+
+<.h>
+
+#include "GameObject.h"
+#include "Camera.h"
+
+class CScene
+public:
+ CScene()							: 생성자
+ virtual ~CScene()						: 소멸자
+
+private:
+ int		m_nObjects				: 오브젝트(객체) 개수
+ CGameObjects**	m_ppObjects				: 오브젝트(객체) 배열
+
+public:
+ virtual void BuildObjects()					: 오브젝트(객체) 생성
+ virtual void ReleaseObjects()					: 오브젝트(객체) 삭제
+
+ virtual void Animate(float fElapsedTime)			: 오브젝트(객체) 애니메이트
+ virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera)	: 오브젝트(객체) 렌더링
+
+<.cpp>
+
+#include "GraphicsPipeline.h"
+
+void CScene::BuildObjects()				: 오브젝트 생성
+ i) 직육면체 메쉬 생성 CCubeMesh *pCubeMesh = new CCubeMesh()
+ i) 객체 생성 및 세팅
+  ii) m_ppObjects = new CGameObjects*[m_nObjects]
+  ii) m_ppObjects[i] = new CGameObjects();
+  ii) m_ppObjects[i]->SetMesh(pCubeMesh)
+  ii) m_ppObjects[i]->SetPostiton()
+  ii) m_ppObjects[i]->SetRotation()
+  ii) m_ppObjects[i]->SetRotationSpeed()
+  ii) m_ppObjects[i]->SetColor(RGB())
+
+void CScene::ReleaseObjects()					: 오브젝트 삭제
+ i) m_ppObjects 배열을 돌며 if(m_ppObjects[i]) delete m_ppObjects[i];
+ i) if(m_ppObjects) delete[] m_ppObjects
+
+void CScene::Animate(float ElapsedTime)			: 오브젝트 애니메이트
+ i) m_ppObjects 배열을 돌며 m_ppObjects[i]->Animate(fElapsedTime)
+
+void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)	: 오브젝트 렌더링
+ i) 현재 카메라를 렌더링 파이프라인에 설정 CGraphicsPipeline::SetCamera(pCamera)
+ i) m_ppObjects 배열을 돈다
+  ii) 현재 게임 객체를 렌더링 파이프라인에 설정 CGraphicsPipeline::SetGameObject(m_ppObjects[i]);
+  ii) 현재 게임 객체를 렌더링힌다. m_ppObjects[i]->Render(hDCFrameBuffer);
+
+
+

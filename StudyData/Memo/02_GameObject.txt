@@ -1,0 +1,60 @@
+02. GameObejct
+
+<.h>
+class CGameObject			:  GameObject에 대한 정보, 메서드를 가지고 있는 클래스
+public:
+ CGameObject() 			: 생성자
+ ~CGameObject()			: 소멸자
+
+private:
+ float	m_fxPositon		: 게임 객체의 월드좌표계 x의 위치
+ float	m_fyPositon		: 게임 객체의 월드좌표계 y의 위치
+ float	m_fzPositon		: 게임 객체의 월드좌표계 z의 위치
+
+ float	m_fxRotation		: 게임 객체의 월드좌표계 x의 회전 양
+ float	m_fyRotation		: 게임 객체의 월드좌표계 y의 회전 양
+ float	m_fzRotation		: 게임 객체의 월드좌표계 z의 회전 양
+
+ float	m_fxRotationSpeed		: 게임 객체의 월드좌표계 x의 회전 스피드
+ float	m_fyRotationSpeed		: 게임 객체의 월드좌표계 y의 회전 스피드
+ float	m_fzRotationSpeed		: 게임 객체의 월드좌표계 z의 회전 스피드
+
+ CMesh*	m_pMesh			: 게임 객체의 모양(메쉬, 모델)
+ DWORD	m_dwColor		: 게임 객체의 색상(선분의 색상)
+
+public:
+ void SetMesh(CMesh* pMesh)		: 메쉬 설정
+ void SetColor(DWORD dwColor)		: 색상 설정
+
+ void SetPosition(float x, float y, float z)		: 객체 위치 설정
+ void SetRotation(float x, float y, float z)		: 객체 회전 양 설정
+ void SetRotationSpeed(float x, float y, float z)	: 객체 회전 스피드 설정
+
+ void Move(float x, float y, float z) 		: 객체 평행 이동
+ void Rotate(float x, float, y, float z)		: 객체 회전
+
+public:
+ CPoint3D WorldTransform(CPoint3D& f3Model)	: 메쉬의 정점 하나를 게임 객체의 위치와 방향을 이용하여 월드좌표변환
+ 
+ virtual void Animate(float fElpasedTime)	: 게임 객체 애니메이션
+ virtual void Render(HDC hDCFrameBuffer)	: 게임 객체 렌더링
+
+<.cpp>
+
+CGameObject::~CGameObject()			: 게임 객체가 더 이상 메쉬를 참조하지 않으므로 참조값 1 감소
+
+CPoint3D CGameObject::WorldTransform(CPoint3D& f3Model)	: 모델 좌표계 -> 월드 좌표계 변환
+ i) CPoint3D f3World 생성 후 f3Model 대입
+ i) Pitch, Yaw, Roll 값을 계산 후 회전 양이 있을 시 회전 변환
+ i) 평행 이동 변환 f3World.position += m_fPosition
+ i) f3World 반환
+
+void CGameObject::Animate(float fElapsedTime)			:  객체 애니메이트
+ i) Rotate() 함수를 이용하여 m_fRotationSpeed * fElapsedTime 만큼 회전 
+
+void CGameObject::Render(HDC hDCFrameBuffer) 			: 객체 렌더링
+ i) Win32 API HPEN = CreatePen을 이용하여 색상 펜 생성
+ i) Win32 API SelectObject(HDC, HPEN)을 이용하여 펜 설정
+ i) m_pMesh가 존재하면 메쉬 렌더링
+ i) 기존 HPEN 설정 및 사용한 HPEN 제거
+ 

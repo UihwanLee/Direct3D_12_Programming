@@ -1,0 +1,89 @@
+03. Camera
+
+<.h>
+class CViewport
+public:
+ CViewport(int nLeft, int nTop, nWidth, int nHeight) 	: 뷰포트 생성자
+ virtual ~CViewport()				: 뷰포트 소멸자
+
+ int	m_nLeft 					: 뷰포트 왼쪽길이
+ int 	m_nTop					: 뷰포트 높이
+ int 	m_nWidth				: 뷰포트 가로 길이
+ int 	m_nHeight				: 뷰포트 세로 길이
+
+class CCamera
+public:
+ CCamera() 					: 생성자
+ virtual ~CCamera() 					: 소멸자
+
+private:
+ float 		m_fxPosition 			: 월드 좌표계 x 위치
+ float 		m_fyPosition			: 월드 좌표계 y 위치
+ float 		m_fzPosition			: 월드 좌표계 z 위치
+
+ float 		m_fxRotation 			: 카메라 좌표계 x 회전 양
+ float 		m_fyRotation 			: 카메라 좌표계 y 회전 양
+ float 		m_fzRotation 			: 카메라 좌표계 z 회전 양
+
+ float		m_fFOVAngle			: 카메라 시야각
+ float  		m_fProjectRectDistance 		: 투영 사각형까지의 거리
+
+ CViewport*	m_pViewport			: 뷰포트
+
+ float 		m_fAspectRatio			: 뷰포트와 가로 세로 길이의 비율(종황비: Aspect ratio)
+
+public:
+ CPoint3D	CameraTransform(CPoint3D& f3World)		: 카메라 변환
+ CPoint3D	ProjectionTransform(CPoint3D& f3Camera)	: 투영 변환
+ CPoint3D	ScreenTransform(CPoint3D& f3Projection)	: 화면 변환
+
+ void SetViewport(float x, float y, float z)			: 위치 설정
+ void SetRotation(float fPitch, float fYaw, float fRoll) 		: 회전 양 설정
+
+ void SetViewport(int xStart, int yStart, int nWidth, int nHeight)   	: 뷰포트 설정
+ void SetFOVAngle(float fFOVAngle)				: 시야각 설정
+
+ void Move(float x, float y, float z)				: 카메라 이동
+ void Rotate(float fPitch, float fYaw, float fRoll)			: 카메라 회전
+
+<.cpp>
+
+void CCamera::SetViewport(int nLeft, int nTop, int nWidthm int nHeight)	: 뷰포트 설정
+ i) CViewport를 생성하여 m_pViewport 대입
+ i) 종황비를 구해 m_fAspectRatio에 대입
+
+void CCamera::SetFOVAngle(float fFOVAngle)				: 시야각 설정
+ i) m_fFOVAngle 설정한다.
+ i) m_fProjectRectDistance(투영 사각형까지 거리)를 삼각비를 이용하여 구한다. 1/tan(FOVAngle*0.5f)
+
+void CCamera::Move(float x, float y, float z)				: 카메라 이동
+void CCamera::Rotate(float fPitch, float fYaw, float fRoll)			: 카메라 회전 
+
+CPoint3D CCamera::CameraTransform(CPoint3D& f3World)			: 카메라 좌표계 변환
+ i) CPoint3D f3Camera 생성 후 f3World 대입
+ i) 카메라를 월드 좌표계의 원점으로 이동 
+  ii) f3Camera.Pos -= m_fPosition
+  ii) fRot = DegreeToRadian(-m_fRotation);
+ i) 카메라를 월드 좌표계의 축과 일치하도록 회전
+  ii) fPitch, fYaw, fRoll 회전 양이 존재 시 회전
+ i) f3Camera 반환
+
+CPoint3D CCamera::ProjectionTransform(CPoint3D& f3Camera)		: 투영 좌표계 변환
+ i) CPoint3D f3Project 생성 후 f3Camera 대입
+ i) 카메라 좌표계의 z 값이 0이 아닐 시(카메라 시야각이 90도 아닌 경우)
+  ii) 투영 사각형까지의 거리를 곱한다 
+   iii) f3Project.x, f3Project.y = float((f3Camera * m_fProjectRectDistance) / (m_fAspectRatio * f3Camera.z));
+  ii) 투영 좌표계는 2차원이므로 z-좌표에 카메라 좌표계 z-좌표를 저장한다. f3Project.z = f3Camera.z;
+ i) f3Project 반환
+
+CPoint3D CCamera::ScreenTransform(CPoint3D& f3Projection)		: 화면 좌표계 변환
+ i) CPoint3D f3Screen 생성 후 f3Projection 대입
+ i) Screen 세로/가로 길이를 구한 뒤 f3Screen.x f3Screen.y에 대입
+  ii) f3Screen.x = (f3Projection.x + fHalfWidth) + m_pViewport->m_nLeft + fHalfWidth;
+  ii) f3Screen.y = (-f3Projection.y + fHalfHeight) + m_pViewport->m_nLeft + fHalfHeight;
+ i) f3Screen 반환
+
+
+
+
+

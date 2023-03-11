@@ -11,6 +11,8 @@ void CGameFramework::OnCreate(HINSTANCE hInstance, HWND hMainWnd)
 
 	// 플레이어와 게임 세계(씬)을 생성
 	BuildObjects();
+
+	//::srand(timeGet)
 }
 
 void CGameFramework::OnDestroy()
@@ -89,6 +91,8 @@ void CGameFramework::BuildObjects()
 	m_pPlayer = new CPlayer();
 	m_pPlayer->SetCamera(pCamera);
 	m_pPlayer->SetPosition(0.0f, 3.0f, -40.0f);
+
+	std::cout << "호출";
 
 	// 빈 객체를 생성하고 게임 객체들을 생성한다.
 	m_pScene = new CScene();

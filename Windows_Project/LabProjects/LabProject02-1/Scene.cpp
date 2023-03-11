@@ -11,12 +11,6 @@ void CScene::BuildObjects()
 	m_nObjects = 2;
 	m_ppObjects = new CGameObject * [m_nObjects];
 
-	// 오브젝트 개수만큼 돌면서 객체 생성
-	for (int i = 0; i < m_nObjects; ++i)
-	{
-		
-	}
-
 	m_ppObjects[0] = new CGameObject();
 	m_ppObjects[0]->SetMesh(pCubeMesh);
 	m_ppObjects[0]->SetPosition(-8.5f, 0.0f, -14.0f);

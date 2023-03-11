@@ -1,0 +1,68 @@
+07. GameFramework
+
+<.h>
+
+#include "Player.h"
+#include "Scene.h"
+
+class CGameFramework
+public:
+ CGameFramework()						: 생성자
+ ~CGameFramework()					: 소멸자
+
+private:
+ HINSTANCE		m_hInstance			: 주 윈도우 주소값
+ HWND 			m_hWnd				: 주 윈도우 핸들
+
+ RECT 			m_rcClient			: 주 윈도우 클라이언트 영역
+
+ HDC 			m_hDCFrameBuffer			: 주 윈도우 DC 핸들
+ HBITMAP		m_hBitmapFrameBuffer		: 주 윈도우 비트맵
+ HBITMAP 		m_hBitmapSelect			: 비트맵 디바이스 컨텍스트
+
+ CPlayer*			m_pPlayer			: Player 객체
+
+ CScene*			m_pScene				: 게임 객체들을 포함하는 씬(게임세계)
+
+public:
+ void OnCreate(HINSTANCE hInstance, HWND hMainWnd)		: 프레임워크 생성
+ void OnDestroy()						: 프레임워크 소멸
+
+ void BuildFrameBuffer()					: 비트맵 표면 생성
+ void ClearFrameBuffer(DWORD dwColor)			: 비트맵 표면 지우기
+ void PresentFrameBuffer()					: 비트맵 클라이언트 영역으로 복사
+
+ void BuildObjects()						: 게임 객체 생성
+ void ReleaseObjects()					: 게임 객체 소멸
+
+ void ProcessInput()						: 프레임 워크 사용자 입력 함수
+ void AnimateObjects()					: 프레임 워크 애니메이션 함수
+ void FrameAdvance()					: 프레임 워크 렌더링 함수
+ 
+<.cpp>
+
+#include "GraphicsPipeline.h"
+
+void CScene::BuildObjects()				: 오브젝트 생성
+ i) 직육면체 메쉬 생성 CCubeMesh *pCubeMesh = new CCubeMesh()
+ i) 객체 생성 및 세팅
+  ii) m_ppObjects = new CGameObjects*[m_nObjects]
+  ii) m_ppObjects[i] = new CGameObjects();
+  ii) m_ppObjects[i]->SetMesh(pCubeMesh)
+  ii) m_ppObjects[i]->SetPostiton()
+  ii) m_ppObjects[i]->SetRotation()
+  ii) m_ppObjects[i]->SetRotationSpeed()
+  ii) m_ppObjects[i]->SetColor(RGB())
+
+void CScene::ReleaseObjects()					: 오브젝트 삭제
+ i) m_ppObjects 배열을 돌며 if(m_ppObjects[i]) delete m_ppObjects[i];
+ i) if(m_ppObjects) delete[] m_ppObjects
+
+void CScene::Animate(float ElapsedTime)			: 오브젝트 애니메이트
+ i) m_ppObjects 배열을 돌며 m_ppObjects[i]->Animate(fElapsedTime)
+
+void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)	: 오브젝트 렌더링
+ i) 현재 카메라를 렌더링 파이프라인에 설정 CGraphicsPipeline::SetCamera(pCamera)
+ i) m_ppObjects 배열을 돈다
+  ii) 현재 게임 객체를 렌더링 파이프라인에 설정 CGraphicsPipeline::SetGameObject(m_ppObjects[i]);
+  ii) 현재 게임 객체를 렌더링힌다. m_ppObjects[i]->Render(hDCFrameBuffer);
