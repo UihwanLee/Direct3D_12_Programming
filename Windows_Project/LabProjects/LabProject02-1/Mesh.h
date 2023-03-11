@@ -71,10 +71,10 @@ public:
 };
 
 // 직육면체 클래스를 선언한다.
-class CCubMesh : public CMesh
+class CCubeMesh : public CMesh
 {
 public:
-	CCubMesh(float fWidth = 4.0f, float fHeight = 4.0f, float fDepth = 4.0f);
-	virtual ~CCubMesh();
+	CCubeMesh(float fWidth = 4.0f, float fHeight = 4.0f, float fDepth = 4.0f);
+	virtual ~CCubeMesh();
 };
 

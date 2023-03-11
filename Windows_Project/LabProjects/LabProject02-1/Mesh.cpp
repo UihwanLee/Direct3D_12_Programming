@@ -94,17 +94,73 @@ void CMesh::Render(HDC hDCFrameBuffer)
 	}
 }
 
-//// 전역함수
-//void Draw2DLine(HDC hDCFrameBuffer, CPoint3D& f3PreviousProject, CPoint3D& f3CurrentProject)
-//{
-//	// 투영좌표계 -> 화면좌표계 변환 과정
-//	// 투영좌표계의 2점을 화면 좌표계로 변환하고 변환된 두 점(픽셀)을 선분으로 그린다
-//	CPoint3D f3Previous = CGraphicsPipeline::ScreenTransform(f3PreviousProject);
-//	CPoint3D f3Current = CGraphicsPipeline::ScreenTransform(f3CurrentProject);
-//
-//	// MoveToEx 함수는 현재 위치를 지정된 지점으로 업데이트하고 필요에 따라 이전 위치를 반환합니다
-//	::MoveToEx(hDCFrameBuffer, (long)f3Previous.x, (long)f3Previous.y, NULL);
-//
-//	// LineTo 함수는 현재 위치에서 지정된 지점까지 선을 그립니다.
-//	::LineTo(hDCFrameBuffer, (long)f3Previous.x, (long)f3Previous.y);
-//}
+
+CCubeMesh::CCubeMesh(float fWidth, float fHeight, float fDepth)
+	: CMesh(6)
+{
+	float fHalfWidth = fWidth * 0.5f;
+	float fHalfHeight = fHeight * 0.5f;
+	float fHalfDepth = fDepth * 0.5f;
+
+	CPolygon* pFrontFace = new CPolygon(4);
+	pFrontFace->SetVertex(0, CVertex(-fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pFrontFace->SetVertex(1, CVertex(+fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pFrontFace->SetVertex(2, CVertex(+fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pFrontFace->SetVertex(3, CVertex(-fHalfWidth, -fHalfHeight, -fHalfDepth));
+	SetPolygons(0, pFrontFace);
+
+	CPolygon* pTopFace = new CPolygon(4);
+	pTopFace->SetVertex(0, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pTopFace->SetVertex(1, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pTopFace->SetVertex(2, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pTopFace->SetVertex(3, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	SetPolygons(1, pTopFace);
+
+	CPolygon* pBackFace = new CPolygon(4);
+	pBackFace->SetVertex(0, CVertex(-fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pBackFace->SetVertex(1, CVertex(+fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pBackFace->SetVertex(2, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pBackFace->SetVertex(3, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	SetPolygons(2, pBackFace);
+
+	CPolygon* pBottomFace = new CPolygon(4);
+	pBottomFace->SetVertex(0, CVertex(-fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pBottomFace->SetVertex(1, CVertex(+fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pBottomFace->SetVertex(2, CVertex(+fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pBottomFace->SetVertex(3, CVertex(-fHalfWidth, -fHalfHeight, +fHalfDepth));
+	SetPolygons(3, pBottomFace);
+
+	CPolygon* pLeftFace = new CPolygon(4);
+	pLeftFace->SetVertex(0, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pLeftFace->SetVertex(1, CVertex(-fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pLeftFace->SetVertex(2, CVertex(-fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pLeftFace->SetVertex(3, CVertex(-fHalfWidth, -fHalfHeight, +fHalfDepth));
+	SetPolygons(4, pLeftFace);
+
+	CPolygon* pRightFace = new CPolygon(4);
+	pRightFace->SetVertex(0, CVertex(+fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pRightFace->SetVertex(1, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pRightFace->SetVertex(2, CVertex(+fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pRightFace->SetVertex(3, CVertex(+fHalfWidth, -fHalfHeight, -fHalfDepth));
+	SetPolygons(5, pRightFace);
+}
+
+CCubeMesh::~CCubeMesh()
+{
+}
+
+// 전역함수
+void Draw2DLine(HDC hDCFrameBuffer, CPoint3D& f3PreviousProject, CPoint3D& f3CurrentProject)
+{
+	//// 투영좌표계 -> 화면좌표계 변환 과정
+	//// 투영좌표계의 2점을 화면 좌표계로 변환하고 변환된 두 점(픽셀)을 선분으로 그린다
+	//CPoint3D f3Previous = CGraphicsPipeline::ScreenTransform(f3PreviousProject);
+	//CPoint3D f3Current = CGraphicsPipeline::ScreenTransform(f3CurrentProject);
+
+	//// MoveToEx 함수는 현재 위치를 지정된 지점으로 업데이트하고 필요에 따라 이전 위치를 반환합니다
+	//::MoveToEx(hDCFrameBuffer, (long)f3Previous.x, (long)f3Previous.y, NULL);
+
+	//// LineTo 함수는 현재 위치에서 지정된 지점까지 선을 그립니다.
+	//::LineTo(hDCFrameBuffer, (long)f3Previous.x, (long)f3Previous.y);
+}
+
