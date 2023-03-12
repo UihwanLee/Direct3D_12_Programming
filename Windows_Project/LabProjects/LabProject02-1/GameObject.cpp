@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "GameObject.h"
+#include "GraphicsPipeline.h"
 
 CGameObject::~CGameObject()
 {
@@ -10,34 +11,38 @@ CGameObject::~CGameObject()
 
 CPoint3D CGameObject::WorldTransform(CPoint3D& f3Model)
 {
-    float fPitch = DegreeToRadian(m_fxPosition);
+    float fPitch = DegreeToRadian(m_fxRotation);
     float fYaw = DegreeToRadian(m_fyRotation);
     float fRoll = DegreeToRadian(m_fzRotation);
+
+    //f3Model.x += m_fxScale;
+    //f3Model.y += m_fyScale;
+    //f3Model.z += m_fzScale;
 
     CPoint3D f3World = f3Model;
     CPoint3D f3Rotated = f3Model;
 
     // 만약 회전 양이 있을 시 회전 변환
+    if (fRoll != 0.0f)
+    {
+        f3Rotated.x = float(f3World.x * cos(fRoll) - f3World.y * sin(fRoll));
+        f3Rotated.y = float(f3World.x * sin(fRoll) + f3World.y * cos(fRoll));
+        f3World.x = f3Rotated.x;
+        f3World.y = f3Rotated.y;
+    }
     if (fPitch != 0.0f)
     {
         f3Rotated.y = float(f3World.y * cos(fPitch) - f3World.z * sin(fPitch));
-        f3Rotated.z = float(f3World.y * sin(fPitch) - f3World.z * cos(fPitch));
+        f3Rotated.z = float(f3World.y * sin(fPitch) + f3World.z * cos(fPitch));
         f3World.y = f3Rotated.y;
         f3World.z = f3Rotated.z;
     }
     if (fYaw != 0.0f)
     {
         f3Rotated.x = float(f3World.x * cos(fYaw) - f3World.z * sin(fYaw));
-        f3Rotated.z = float(f3World.x * sin(fYaw) - f3World.z * cos(fYaw));
+        f3Rotated.z = float(-f3World.x * sin(fYaw) + f3World.z * cos(fYaw));
         f3World.x = f3Rotated.x;
         f3World.z = f3Rotated.z;
-    }
-    if (fRoll != 0.0f)
-    {
-        f3Rotated.x = float(f3World.x * cos(fRoll) - f3World.y * sin(fRoll));
-        f3Rotated.y = float(f3World.x * sin(fRoll) - f3World.y * cos(fRoll));
-        f3World.x = f3Rotated.x;
-        f3World.y = f3Rotated.y;
     }
 
     // 평행 이동 변환
@@ -55,6 +60,8 @@ void CGameObject::Animate(float fElapsedTime)
 
 void CGameObject::Render(HDC hDCFrameBuffer)
 {
+    CGraphicsPipeline::SetGameObject(this);
+
     HPEN hPen = ::CreatePen(PS_SOLID, 0, m_dwColor);
     HPEN hOldPen = (HPEN)::SelectObject(hDCFrameBuffer, hPen);
 

@@ -7,20 +7,21 @@ class CPoint3D
 public:
 	CPoint3D() {}
 	CPoint3D(float x, float y, float z) { this->x = x; this->y = y; this->z = z; }
+	~CPoint3D() { }
 
-	float		x = 0.0f;
-	float		y = 0.0f;
-	float		z = 0.0f;
+	float						x = 0.0f;
+	float						y = 0.0f;
+	float						z = 0.0f;
 };
 
 class CVertex
 {
 public:
-	CVertex() {}
+	CVertex() { m_f3Position = CPoint3D(0.0f, 0.0f, 0.0f); }
 	CVertex(float x, float y, float z) { m_f3Position = CPoint3D(x, y, z); }
 	virtual ~CVertex() {}
 
-	CPoint3D		m_f3Position;
+	CPoint3D					m_f3Position;
 };
 
 class CPolygon
@@ -31,8 +32,8 @@ public:
 	virtual ~CPolygon();
 
 	// 다각형(면)을 구성하는 정점들의 리스트이다.
-	int			m_nVertices = 0;
-	CVertex		*m_pVertices = NULL;
+	int							m_nVertices = 0;
+	CVertex						*m_pVertices = NULL;
 
 	void SetVertex(int nIndex, CVertex vertex);
 
@@ -48,7 +49,7 @@ public:
 private:
 	// 인스턴싱(Instancing)을 위하여 매쉬는 객체들에 공유될 수 있다.
 	// 다음 참조값(Reference Count)은 메쉬가 공유되는 게임 객체의 개수를 나타낸다.
-	int			m_nReferences = 1;
+	int							m_nReferences = 1;
 
 public:
 	// 메쉬가 게임 객체에 공유될 때마다 참조값을 1씩 증가시킨다.
@@ -60,8 +61,8 @@ public:
 
 private:
 	// 메쉬를 구성하는 다각형(면)들의 리스트이다.
-	int				m_nPolygons = 0;
-	CPolygon		**m_ppPolygons = NULL;
+	int							m_nPolygons = 0;
+	CPolygon					**m_ppPolygons = NULL;
 
 public:
 	void SetPolygons(int nIndex, CPolygon* pPolygon);

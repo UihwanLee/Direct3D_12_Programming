@@ -19,6 +19,10 @@ private:
 	float		m_fyRotation = 0.0f;
 	float		m_fzRotation = 0.0f;
 
+	float		m_fxScale = 1.0f;
+	float		m_fyScale = 1.0f;
+	float		m_fzScale = 1.0f;
+
 	// 게임 객체의 x-축, y-축, z-축 회전 양이다.
 	float		m_fxRotationSpeed = 0.0f;
 	float		m_fyRotationSpeed = 0.0f;

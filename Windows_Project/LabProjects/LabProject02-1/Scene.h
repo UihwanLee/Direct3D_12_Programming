@@ -24,5 +24,8 @@ public:
 
 	// 게임 객체들을 렌더링한다.
 	virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera);
+
+	virtual void OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
+	virtual void OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 };
 

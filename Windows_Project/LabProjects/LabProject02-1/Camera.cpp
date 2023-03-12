@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
+#include "Mesh.h"
 
 
 void CCamera::SetViewport(int nLeft, int nTop, int nWidth, int nHeight)
@@ -44,26 +45,26 @@ CPoint3D CCamera::CameraTransform(CPoint3D& f3World)
 
 	// 카메라를 월드 좌표계의 축과 일치하도록 회전한다.
 	CPoint3D f3Rotated = f3Camera;
+	if (fRoll != 0.0f)
+	{
+		f3Rotated.x = float(f3Camera.x * cos(fRoll) - f3Camera.y * sin(fRoll));
+		f3Rotated.y = float(f3Camera.x * sin(fRoll) + f3Camera.y * cos(fRoll));
+		f3Camera.x = f3Rotated.x;
+		f3Camera.y = f3Rotated.y;
+	}
 	if (fPitch != 0.0f)
 	{
 		f3Rotated.y = float(f3Camera.y * cos(fPitch) - f3Camera.z * sin(fPitch));
-		f3Rotated.z = float(f3Camera.y * sin(fPitch) - f3Camera.z * cos(fPitch));
+		f3Rotated.z = float(f3Camera.y * sin(fPitch) + f3Camera.z * cos(fPitch));
 		f3Camera.y = f3Rotated.y;
 		f3Camera.z = f3Rotated.z;
 	}
 	if (fYaw != 0.0f)
 	{
-		f3Rotated.x = float(f3Camera.x * cos(fYaw) - f3Camera.z * sin(fYaw));
-		f3Rotated.z = float(f3Camera.x * sin(fYaw) - f3Camera.z * cos(fYaw));
+		f3Rotated.x = float(f3Camera.x * cos(fYaw) + f3Camera.z * sin(fYaw));
+		f3Rotated.z = float(-f3Camera.x * sin(fYaw) + f3Camera.z * cos(fYaw));
 		f3Camera.x = f3Rotated.x;
 		f3Camera.z = f3Rotated.z;
-	}
-	if (fRoll != 0.0f)
-	{
-		f3Rotated.x = float(f3Camera.x * cos(fRoll) - f3Camera.y * sin(fRoll));
-		f3Rotated.y = float(f3Camera.x * sin(fRoll) - f3Camera.y * cos(fRoll));
-		f3Camera.x = f3Rotated.x;
-		f3Camera.y = f3Rotated.y;
 	}
 
 	return (f3Camera);
@@ -78,7 +79,7 @@ CPoint3D CCamera::ProjectionTransform(CPoint3D& f3Camera)
 	{
 		// 카메라 시야각이 90도가 아닌 경우 투영 사각형까지의 거리를 곱한다.
 		f3Project.x = float((f3Camera.x * m_fProjectRectDistance) / (m_fAspectRatio * f3Camera.z));
-		f3Project.y = float((f3Camera.y * m_fProjectRectDistance) / (m_fAspectRatio * f3Camera.z));
+		f3Project.y = float((f3Camera.y * m_fProjectRectDistance) / f3Camera.z);
 
 		// 투영 좌표계는 2차원이므로 z-좌표에 카메라 좌표계 z-좌표를 저장한다.
 		f3Project.z = f3Camera.z;

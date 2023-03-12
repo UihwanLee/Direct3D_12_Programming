@@ -4,6 +4,16 @@
 CGameObject* CGraphicsPipeline::m_pGameObject = NULL;
 CCamera* CGraphicsPipeline::m_pCamera = NULL;
 
+CPoint3D CGraphicsPipeline::Transform(CPoint3D& f3Model)
+{
+    CPoint3D f3World = m_pGameObject->WorldTransform(f3Model);
+    CPoint3D f3Camera = m_pCamera->CameraTransform(f3World);
+    CPoint3D f3Projection = m_pCamera->ProjectionTransform(f3Camera);
+    CPoint3D f3Screen = m_pCamera->ScreenTransform(f3Projection);
+
+    return (f3Screen);
+}
+
 CPoint3D CGraphicsPipeline::Project(CPoint3D& f3Model)
 {
     /* Project() 함수는 모델 좌표계의 점을 월드 변환, 카메라 변환, 원근 투영 변환을 순차적으로 수행한다. 
@@ -27,3 +37,4 @@ CPoint3D CGraphicsPipeline::ScreenTransform(CPoint3D& f3Projection)
 
     return (f3Screen);
 }
+

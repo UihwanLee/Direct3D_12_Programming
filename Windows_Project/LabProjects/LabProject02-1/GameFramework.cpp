@@ -92,8 +92,6 @@ void CGameFramework::BuildObjects()
 	m_pPlayer->SetCamera(pCamera);
 	m_pPlayer->SetPosition(0.0f, 3.0f, -40.0f);
 
-	std::cout << "호출";
-
 	// 빈 객체를 생성하고 게임 객체들을 생성한다.
 	m_pScene = new CScene();
 	m_pScene->BuildObjects();
@@ -122,7 +120,7 @@ void CGameFramework::ProcessInput()
 		if (pKeyBuffer[VK_PRIOR] & 0xF0) cyKeyDelta =+ 0.125f;
 		if (pKeyBuffer[VK_NEXT] & 0xF0) cyKeyDelta =- 0.125f;
 
-		m_pPlayer->Move(cxKeyDelta, cyKeyDelta, czKeyDelta);
+		if ((cxKeyDelta != 0.0f) || (cyKeyDelta != 0.0f) || (czKeyDelta != 0.0f)) m_pPlayer->Move(cxKeyDelta, cyKeyDelta, czKeyDelta);
 	}
 }
 

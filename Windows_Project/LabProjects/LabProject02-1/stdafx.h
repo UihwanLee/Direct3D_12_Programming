@@ -19,4 +19,4 @@
 #define FRAMEBUFFER_WIDTH		640
 #define FRAMEBUFFER_HEIGHT		480
 
-#define DegreeToRadian(x)		float((x)*3.141592654f/180.f)
+#define DegreeToRadian(x)		float((x)*3.141592654f/180.0f)

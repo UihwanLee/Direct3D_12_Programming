@@ -15,5 +15,6 @@ public:
 
 	static CPoint3D Project(CPoint3D& f3Model);
 	static CPoint3D ScreenTransform(CPoint3D& f3Projection);
+	static CPoint3D Transform(CPoint3D& f3Model);
 };
 
