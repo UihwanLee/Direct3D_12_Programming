@@ -2,8 +2,6 @@
 #include "Mesh.h"
 #include "GraphicsPipeline.h"
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 CPolygon::CPolygon(int nVertices)
 {
 	m_nVertices = nVertices;
@@ -23,8 +21,6 @@ void CPolygon::SetVertex(int nIndex, CVertex vertex)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 CMesh::CMesh(int nPolygons)
 {
 	m_nPolygons = nPolygons;
@@ -77,8 +73,6 @@ void CMesh::Render(HDC hDCFrameBuffer)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 CCubeMesh::CCubeMesh(float fWidth, float fHeight, float fDepth) : CMesh(6)
 {
 	float fHalfWidth = fWidth * 0.5f;

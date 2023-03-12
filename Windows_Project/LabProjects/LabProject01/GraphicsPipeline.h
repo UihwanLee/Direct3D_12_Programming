@@ -5,7 +5,9 @@
 
 class CGraphicsPipeline
 {
-private:
+	//SINGLETON(CGraphicsPipeline);
+
+public:
 	static CGameObject* m_pGameObject;
 	static CCamera* m_pCamera;
 

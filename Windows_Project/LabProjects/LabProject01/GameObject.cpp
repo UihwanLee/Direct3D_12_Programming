@@ -13,9 +13,9 @@ CPoint3D CGameObject::WorldTransform(CPoint3D& f3Model)
 	float fYaw = DegreeToRadian(m_fyRotation);
 	float fRoll = DegreeToRadian(m_fzRotation);
 
-	f3Model.x *= m_fxScale;
-	f3Model.y *= m_fyScale;
-	f3Model.z *= m_fzScale;
+	//f3Model.x *= m_fxScale;
+	//f3Model.y *= m_fyScale;
+	//f3Model.z *= m_fzScale;
 
 	CPoint3D f3World = f3Model;
 	CPoint3D f3Rotated = f3Model;

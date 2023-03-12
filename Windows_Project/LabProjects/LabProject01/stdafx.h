@@ -20,14 +20,7 @@
 #include <Mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
-#define FRAMEBUFFER_WIDTH		640
-#define FRAMEBUFFER_HEIGHT		480
-
-#define RANDOM_COLOR			(0xFF000000 | ((rand() * 0xFFFFFF) / RAND_MAX))
-
-#define DegreeToRadian(x)		float((x)*3.141592654f/180.0f)
-
-#define EPSILON					1.0e-2f
+#include "define.h"
 
 inline bool IsZero(float fValue) { return((fabsf(fValue) <= EPSILON)); }
 inline bool IsEqual(float fA, float fB) { return(::IsZero(fA - fB)); }
