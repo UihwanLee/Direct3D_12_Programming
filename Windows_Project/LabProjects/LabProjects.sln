@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LabProject00", "LabProject00\LabProject00.vcxproj", "{8269337B-2710-481B-8A41-B8E0B73438C1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3D381E53-D927-402E-858F-AA94D6FD9E7D} = {3D381E53-D927-402E-858F-AA94D6FD9E7D}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LabProject02-1", "LabProject02-1\LabProject02-1.vcxproj", "{3D381E53-D927-402E-858F-AA94D6FD9E7D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LabProject01", "LabProject01\LabProject01.vcxproj", "{E4EE789B-02D2-4B2E-9260-A3C4F4ED4454}"
@@ -20,14 +15,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Debug|x64.ActiveCfg = Debug|x64
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Debug|x64.Build.0 = Debug|x64
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Debug|x86.ActiveCfg = Debug|Win32
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Debug|x86.Build.0 = Debug|Win32
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Release|x64.ActiveCfg = Release|x64
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Release|x64.Build.0 = Release|x64
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Release|x86.ActiveCfg = Release|Win32
-		{8269337B-2710-481B-8A41-B8E0B73438C1}.Release|x86.Build.0 = Release|Win32
 		{3D381E53-D927-402E-858F-AA94D6FD9E7D}.Debug|x64.ActiveCfg = Debug|x64
 		{3D381E53-D927-402E-858F-AA94D6FD9E7D}.Debug|x64.Build.0 = Debug|x64
 		{3D381E53-D927-402E-858F-AA94D6FD9E7D}.Debug|x86.ActiveCfg = Debug|Win32
