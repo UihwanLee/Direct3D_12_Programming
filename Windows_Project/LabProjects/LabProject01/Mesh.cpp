@@ -43,8 +43,8 @@ void CMesh::SetPolygon(int nIndex, CPolygon* pPolygon)
 
 void Draw2DLine(HDC hDCFrameBuffer, CPoint3D& f3PreviousProject, CPoint3D& f3CurrentProject)
 {
-	CPoint3D f3Previous = CGraphicsPipeline::ScreenTransform(f3PreviousProject);
-	CPoint3D f3Current = CGraphicsPipeline::ScreenTransform(f3CurrentProject);
+	CPoint3D f3Previous = CGraphicsPipeline::GetInst()->ScreenTransform(f3PreviousProject);
+	CPoint3D f3Current = CGraphicsPipeline::GetInst()->ScreenTransform(f3CurrentProject);
 	::MoveToEx(hDCFrameBuffer, (long)f3Previous.x, (long)f3Previous.y, NULL);
 	::LineTo(hDCFrameBuffer, (long)f3Current.x, (long)f3Current.y);
 }
@@ -59,11 +59,11 @@ void CMesh::Render(HDC hDCFrameBuffer)
 		int nVertices = m_ppPolygons[j]->m_nVertices;
 		CVertex* pVertices = m_ppPolygons[j]->m_pVertices;
 
-		f3PreviousProject = f3InitialProject = CGraphicsPipeline::Project(pVertices[0].m_f3Position);
+		f3PreviousProject = f3InitialProject = CGraphicsPipeline::GetInst()->Project(pVertices[0].m_f3Position);
 		bPreviousInside = bInitialInside = (-1.0f <= f3InitialProject.x) && (f3InitialProject.x <= 1.0f) && (-1.0f <= f3InitialProject.y) && (f3InitialProject.y <= 1.0f);
 		for (int i = 1; i < nVertices; i++)
 		{
-			CPoint3D f3CurrentProject = CGraphicsPipeline::Project(pVertices[i].m_f3Position);
+			CPoint3D f3CurrentProject = CGraphicsPipeline::GetInst()->Project(pVertices[i].m_f3Position);
 			bCurrentInside = (-1.0f <= f3CurrentProject.x) && (f3CurrentProject.x <= 1.0f) && (-1.0f <= f3CurrentProject.y) && (f3CurrentProject.y <= 1.0f);
 			if (((f3PreviousProject.z >= 0.0f) || (f3CurrentProject.z >= 0.0f)) && ((bCurrentInside || bPreviousInside))) ::Draw2DLine(hDCFrameBuffer, f3PreviousProject, f3CurrentProject);
 			f3PreviousProject = f3CurrentProject;

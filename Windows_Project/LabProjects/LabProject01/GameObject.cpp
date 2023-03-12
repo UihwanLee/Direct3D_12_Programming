@@ -56,7 +56,7 @@ void CGameObject::Animate(float fElapsedTime)
 
 void CGameObject::Render(HDC hDCFrameBuffer)
 {
-	CGraphicsPipeline::SetGameObject(this);
+	CGraphicsPipeline::GetInst()->SetGameObject(this);
 
 	HPEN hPen = ::CreatePen(PS_SOLID, 0, m_dwColor);
 	HPEN hOldPen = (HPEN)::SelectObject(hDCFrameBuffer, hPen);

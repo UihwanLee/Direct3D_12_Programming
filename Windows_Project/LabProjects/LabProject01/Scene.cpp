@@ -74,7 +74,7 @@ void CScene::Animate(float fElapsedTime)
 
 void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 {
-	if (pCamera) CGraphicsPipeline::SetCamera(pCamera);
+	if (pCamera) CGraphicsPipeline::GetInst()->SetCamera(pCamera);
 
 	for (int i = 0; i < m_nObjects; i++)
 	{

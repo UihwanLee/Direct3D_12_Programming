@@ -1,8 +1,20 @@
 #include "stdafx.h"
 #include "GraphicsPipeline.h"
 
-CGameObject* CGraphicsPipeline::m_pGameObject = NULL;
-CCamera* CGraphicsPipeline::m_pCamera = NULL;
+CGraphicsPipeline* CGraphicsPipeline::thisP = NULL;
+
+//CGameObject* CGraphicsPipeline::m_pGameObject = NULL;
+//CCamera* CGraphicsPipeline::m_pCamera = NULL;
+
+CGraphicsPipeline::CGraphicsPipeline()
+{
+
+}
+
+CGraphicsPipeline::~CGraphicsPipeline()
+{
+
+}
 
 CPoint3D CGraphicsPipeline::Transform(CPoint3D& f3Model)
 {

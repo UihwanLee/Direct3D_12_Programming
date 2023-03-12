@@ -6,17 +6,17 @@
 */
 
 // Singleton Á¤ÀÇ
-#define SINGLETON(_type) public:\
-						static _type* GetInst()\
-						{\
-							static _type mgr;\
-							return &mgr;\
-						}\
-						private:\
-							_type();\
-							~_type();
+#define SINGLETON(type) private:\
+static type* thisP;\
+type();\
+~type();\
+public:\
+	static type* GetInst()\
+	{\
+		if (thisP == nullptr) { thisP = new type(); }\
+		return thisP;\
+	}
 
-// 
 
 #define FRAMEBUFFER_WIDTH		640
 #define FRAMEBUFFER_HEIGHT		480

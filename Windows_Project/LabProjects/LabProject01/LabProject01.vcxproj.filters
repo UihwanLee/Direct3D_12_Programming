@@ -76,6 +76,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Engine\01. Header</Filter>
     </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Engine\05. Object\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsPipeline.cpp">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Engine\01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Engine\05. Object\Cube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
