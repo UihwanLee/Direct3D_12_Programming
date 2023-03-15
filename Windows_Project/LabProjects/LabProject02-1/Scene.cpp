@@ -72,7 +72,7 @@ void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 	for (int i = 0; i < m_nObjects; ++i)
 	{
 		// 현재 게임 객체를 렌더링 파이프라인에 설정한다.
-		CGraphicsPipeline::SetGameObject(m_ppObjects[i]);
+		//CGraphicsPipeline::SetGameObject(m_ppObjects[i]);
 
 		// 현재 게임 객체를 렌더링한다.
 		m_ppObjects[i]->Render(hDCFrameBuffer);

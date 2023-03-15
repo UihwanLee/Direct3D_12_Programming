@@ -97,14 +97,14 @@ void CMesh::Render(HDC hDCFrameBuffer)
 			if (((f3PreviousProject.z >= 0.0f) || (f3CurrentProject.z >= 0.0f)) && ((bCurrentInside || bPreviousInside)))
 			{
 				::Draw2DLine(hDCFrameBuffer, f3PreviousProject, f3CurrentProject);
-				f3PreviousProject = f3CurrentProject;
-				bPreviousInside = bCurrentInside;
 			}
-
-			// 다각형의 마지막 정점과 다각형의 시작점을 선분으로 그린다.
-			if (((f3PreviousProject.z >= 0.0f) || (f3InitialProject.z >=0.0f)) && ((bInitialInside || bPreviousInside)))
-				::Draw2DLine(hDCFrameBuffer, f3PreviousProject, f3InitialProject);
+			f3PreviousProject = f3CurrentProject;
+			bPreviousInside = bCurrentInside;
 		}
+
+		// 다각형의 마지막 정점과 다각형의 시작점을 선분으로 그린다.
+		if (((f3PreviousProject.z >= 0.0f) || (f3InitialProject.z >= 0.0f)) && ((bInitialInside || bPreviousInside)))
+			::Draw2DLine(hDCFrameBuffer, f3PreviousProject, f3InitialProject);
 	}
 }
 
