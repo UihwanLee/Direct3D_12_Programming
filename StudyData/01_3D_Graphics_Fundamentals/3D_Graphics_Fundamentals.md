@@ -304,11 +304,3 @@ LineTo() 함수를 사용할 수 있다.
 </details>
 <br>
 
-<details>
-  <summary><span style="border-bottom:0.05em solid"><strong>⑫ 게임 월드 단위(Game World Units)</strong></span></summary>
-<br>
-     개발자는 게임 월드의 크기와 단위를 결정하기 위해 그래픽 아티스트와 협력해야 한다. 즉, 월드 좌표계의 1단위와 모델 좌표계의 1단위를 가급적 일치하는 것이 필요하다. 모든 
-객체가 일관된 크기로 만들어진다면 문제가 없다.
-<br>
-</details>
-<br>
