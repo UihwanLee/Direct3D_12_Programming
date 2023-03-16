@@ -48,9 +48,6 @@
 <details>
   <summary><span style="border-bottom:0.05em solid"><strong>④ Direct3D 게임 프로그래밍</strong></span></summary>
 <br>
-     Direct3D 게임 프로그래밍은 2학기 과정으로 구성된다. 1학기 과정에서는 다음과 같은 
-기초적인 내용을 다룬다. 2학기 과정에서는 Direct3D의 고급 내용과 애니메이션 등을 다
-룬다.
   <hr>
   <ul>
     <li> 3D 그래픽 파이프라인(Graphics Pipeline)</li>
