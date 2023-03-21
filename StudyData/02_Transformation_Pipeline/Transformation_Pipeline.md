@@ -44,24 +44,24 @@ Field Of View)과 화면의 종횡비(가로와 세로 길이의 비율)에 따�
 <code>
 class CVertex
 {
- float x; 
- float y; 
- float z;
+  float x; 
+  float y; 
+  float z;
 };
 class CPolygon
 {
- UINT nVertices;
- CVertex *pVertices;
+  UINT nVertices;
+  CVertex *pVertices;
 };
 class CMesh
 {
- UINT nFaces;
- CPolygon *pFaces;
+  UINT nFaces;
+  CPolygon *pFaces;
 };
 class CObject
 {
- CMesh *pMesh;
- ...
+  CMesh *pMesh;
+  ...
 }
 </code>
 </pre>
@@ -75,11 +75,11 @@ class CObject
 <code>
 CVertex Transform(CVertex vtxModel, CObject *pObject) 
 {
- CVertex vtxWorld = WorldTransform(vtxModel, pObject);
- CVertex vtxCamera = CameraTransform(vtxWorld);
- CVertex vtxProject = ProjectionTransform(vtxCamera);
- CVertex vtxScreen = ScreenTransform(vtxProject);
- return(vtxScreen);
+  CVertex vtxWorld = WorldTransform(vtxModel, pObject);
+  CVertex vtxCamera = CameraTransform(vtxWorld);
+  CVertex vtxProject = ProjectionTransform(vtxCamera);
+  CVertex vtxScreen = ScreenTransform(vtxProject);
+  return(vtxScreen);
 }
 </code>
 </pre>
@@ -97,29 +97,28 @@ CObject *gpObjects; //게임 객체들의 배열
 CCamera *gpCamera; //카메라 객체
 void RenderObjects() 
 { 
- for (int i = 0; i < gnObjects; i++) Draw(&gpObjects[i]);
+  for (int i = 0; i < gnObjects; i++) Draw(&gpObjects[i]);
 } 
 void Draw(CObject *pObject) 
 { 
- CVertex vtxPrevious;
- for (int i = 0; i < pObject->pMesh->nFaces; i++) 
- { 
- CPolygon *pPolygon = &pObject->pMesh->pFaces[i]; 
- for (int j = 0; j < pPolygon->nVertices; j++) 
- { 
- CVertex v = Transform(pPolygon->pVertices[j], pObject);
- if (j != 0) Draw2DLine(vtxPrevious.x, vtxPrevious.y, v.x, 
-v.y);
- vtxPrevious = v;
- }
- }
+  CVertex vtxPrevious;
+  for (int i = 0; i < pObject->pMesh->nFaces; i++) 
+  { 
+    CPolygon *pPolygon = &pObject->pMesh->pFaces[i]; 
+    for (int j = 0; j < pPolygon->nVertices; j++) 
+    { 
+      CVertex v = Transform(pPolygon->pVertices[j], pObject);
+      if (j != 0) Draw2DLine(vtxPrevious.x, vtxPrevious.y, v.x, v.y);
+      vtxPrevious = v;
+    }
+  }
 } 
 void Draw2DLine(float x0, float y0, float x, float y)
 {
- HDC hDC = GetDC(...);
- ::MoveToEx(hDC, (long)x0, (long)y0, NULL);
- ::LineTo(hDC, (long)x, (long)y);
- ::ReleaseDC(...);
+  HDC hDC = GetDC(...);
+  ::MoveToEx(hDC, (long)x0, (long)y0, NULL);
+  ::LineTo(hDC, (long)x, (long)y);
+  ::ReleaseDC(...);
 }
 </code>
 </pre>
