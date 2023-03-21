@@ -217,7 +217,6 @@ CVertex WorldTransform(CVertex vtxModel, CObject *pObject)
 </details>
 <br>
   
-  (x1, y1
 <details>
   <summary><span style="border-bottom:0.05em solid"><strong>④ 회전(Rotation) 변환</strong></span></summary>
 <br>
@@ -287,4 +286,277 @@ z-축에 해당한다(다음 그림 참조). 3차원 좌표계의 점 (x, y1, z1
 </details>
 <br>
   
+  <details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑤ 평행이동 변환과 회전 변환의 적용 순서</strong></span></summary>
+<br>
+ 회전 변환은 기본적으로 좌표계의 원점 또는 원점을 지나는 좌표축을 기준으로 하는 것
+으로 가정한다. 평행이동 변환과 회전 변환이 같이 적용될 때 변환을 하는 순서가 중요하
+다. 평행이동 변환을 먼저 하고 회전 변환을 나중에 하는 결과와 회전 변환을 먼저 하고 
+평행이동 변환을 나중에 하는 결과는 다르다. 
+<br>
+<br>
+다음 그림은 직육면체를 y-축 방향으로 2만큼 평행이동하는 변환과 z-축을 중심으로 
+45° 회전하는 변환을 같이 적용할 때 변환의 적용 순서에 따라 변환의 최종 결과가 다르다
+는 것을 보여준다. 왼쪽 그림은 직육면체를 y-축 방향으로 2만큼 평행이동을 먼저하고 그 
+결과를 z-축을 중심으로 45° 회전하는 것을 나타낸다. 오른쪽 그림은 직육면체를 먼저 z축을 중심으로 45° 회전하고 그 결과를 y-축 방향으로 2만큼 평행이동하는 것을 나타낸다. 즉, 평행이동 변환과 회전 변환이 같이 적용될 때 변환을 하는 순서가 중요함을 보이고 있
+다. 왼쪽 그림에서 직육면체를 z-축을 중심으로 45° 회전할 때 회전의 중심이 객체(메쉬)의 
+중심이 아니라 좌표계(월드 좌표계)의 원점을 지나는 z-축이다. 오른쪽 그림에서 직육면체
+를 z-축을 중심으로 45° 회전할 때 회전의 중심이 객체(메쉬)의 중심이 좌표계(월드 좌표
+계)의 원점을 지나는 z-축과 일치한다. 
+<br>
+<br>
+    왼쪽 그림에서와 같이 평행이동을 먼저하고 회전을 나중에 하면 회전은 좌표계의 원점을 
+기준으로 회전(공전)하게 된다. 오른쪽 그림에서와 같이 회전을 먼저하고 평행이동을 나중
+에 하면 회전은 객체(메쉬)의 원점을 기준으로 회전(자전)하게 된다.
+<br>
+ <img src="https://user-images.githubusercontent.com/36596037/226653543-d4697d1f-e8f3-499a-9cca-d0a84c50025a.png">
+<br>
+일반적으로 특별한 상황이 아니면 모든 객체의 회전은 자전(객체의 중심을 기준으로 회
+전)하는 것으로 가정한다.
+<br>
+ 태양계에서 태양, 지구, 달은 자전을 하면서 공전을 한다. 달이 자전을 하면서 지구 주위
+를 공전을 하고, 지구는 자전을 하면서 태양 주위를 공전을 한다. 태양, 지구, 달의 움직임
+을 회전과 평행이동으로 표현할 수 있는가? 
+<br>
+</details>
+<br>
   
+  <details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑥ 회전 변환과 평행이동이 있는 게임 객체의 표현</strong></span></summary>
+<br>
+ 일반적으로 게임 객체는 평행이동과 회전을 모두 할 수 있다. 평행이동을 하면 게임 객
+체의 위치가 변하고, 회전을 하면 게임 객체의 방향이 변한다. 게임 객체는 월드 좌표계에
+서의 위치와 방향을 표현할 수 있어야 한다. 회전 변환과 평행이동 변환을 모두 할 수 있
+는 게임 객체를 C++ 프로그래밍 언어로 다음과 같이 표현할 수 있다
+<br>
+  <pre>
+<code>
+class CObject
+{
+  public:
+    CMesh *pMesh; 
+    float xPosition;
+    float yPosition;
+    float zPosition;
+    float xRotation;
+    float yRotation;
+    float zRotation;
+};
+</code>
+</pre>
+<br>
+    <img src="https://user-images.githubusercontent.com/36596037/226654238-20c6a35c-52c4-4586-b31f-0b566749b3a7.png">
+<br>
+xRotation, yRotation, zRotation는 x-축, y-축, z-축을 중심으로 회전하는 양을 나타
+낸다. x-축, y-축, z-축을 중심으로 회전하는 양을 피치(Pitch), 요(Yaw), 롤(Roll)이라고 
+한다.
+<br>
+<pre>
+<code>
+CVertex WorldTransform(CVertex vtxModel, CObject *pObject)
+{ 
+  float fPitch = pObject->xRotation;
+  float fYaw = pObject->yRotation;
+  float fRoll = pObject->zRotation;
+  CVertex vtxWorld = vtxModel, vtxRotated;
+
+  if (fPitch) {
+    vtxRotated.y = vtxWorld.y * cos(fPitch) - vtxWorld.z * sin(fPitch);
+    vtxRotated.z = vtxWorld.y * sin(fPitch) + vtxWorld.z * cos(fPitch);
+    vtxWorld = vtxRotated;
+    }
+ if (fYaw) {
+    vtxRotated.x = vtxWorld.x * cos(fYaw) + vtxWorld.z * sin(fYaw);
+    vtxRotated.z = -vtxWorld.x * sin(fYaw) + vtxWorld.z * cos(fYaw);
+    vtxWorld = vtxRotated;
+    }
+ if (fRoll) {
+    vtxRotated.x = vtxWorld.x * cos(fRoll) - vtxWorld.y * sin(fRoll);
+    vtxRotated.y = vtxWorld.x * sin(fRoll) + vtxWorld.y * cos(fRoll);
+    vtxWorld = vtxRotated;
+    }
+  vtxWorld.x += pObject->xPosition;
+  vtxWorld.y += pObject->yPosition;
+  vtxWorld.z += pObject->zPosition; 
+  return(vtxWorld);
+}
+</code>
+</pre>
+<br>
+  
+</details>
+<br>
+
+  <details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑦ 카메라 변환(Camera Transformation, Viewing Transformation)</strong></span></summary>
+<br>
+ ■ 가상 카메라(Virtual Camera)
+<br>
+  게임 세계를 렌더링하기 위해서는 게임 세계를 보기 위한 가상의 카메라(객체)가 필
+요하다. 실세계에서 사람이 카메라 또는 눈을 통해 세상의 일부를 볼 수 있는 것처럼, 게임 플레이어는 이 가상 카메라를 통해 게임 세계의 일부를 볼 수 있다. 3차원 공간의 
+게임 객체들은 가상 카메라의 2차원 평면으로 투영되고 이 투영된 2차원 평면의 장면
+이 화면에 그려져야 한다. 그러므로 게임 플레이어가 현재 보고 있는 장면은 가상 카메
+라에 나타나는 장면이다. 일반적으로 이 가상 카메라는 플레이어 캐릭터에 부착되어 있
+다. 1인칭 게임의 경우 플레이어 캐릭터의 눈이 카메라에 해당한다. 카메라에 보이는 
+게임 객체들만 화면에 최종적으로 그려지게 된다(앞으로 가상 카메라를 카메라로 표기
+함). 
+<br>
+  카메라가 가져야 하는 일반적인 정보는 다음과 같다. 
+  <ul>
+    <li>카메라의 위치(Position) : 월드 좌표계에서 카메라가 어디에 있는 가를 표현</li>
+    <li>카메라의 방향(Viewing Direction) : 월드 좌표계에서 카메라가 바라보는 방향(카메라의 회전)을 표현</li>
+    <li>카메라의 화각(FOV(Field Of View)) : 카메라가 바라보는 시야 각도(범위)를 표현</li>
+  </ul>
+  
+<img src="(https://user-images.githubusercontent.com/36596037/226655969-5f3023fd-fb30-4c4c-a13c-10c033e536dc.png">
+<br>
+<br>
+ ■ 카메라 좌표계(View Space, Camera Space)
+ <br>
+3차원 게임에서 카메라가 이동을 하면 위치가 변하게 된다. 게임 세계에서 카메라가 
+현재 어느 위치에 있는 가는 월드 좌표계로 표현되어야 한다. 카메라가 회전을 하면 카
+메라가 바라보는 방향이 달라진다. 카메라가 바라보는 방향은 왼손 좌표계에서 z-축 방
+향이다. 일반적으로 카메라의 회전은 카메라의 중심을 기준으로 이루어져야 한다(자전). 
+카메라 좌표계는 카메라의 중심 위치(월드 좌표계)를 원점으로 하며 회전에 따라 달라
+진 방향을 좌표축으로 표현되는 좌표계이다. 게임 세계를 카메라를 중심으로 한 상대적
+인 좌표계로 표현하는 변환이 카메라 변환이다.
+<br>
+<img src="https://user-images.githubusercontent.com/36596037/226656793-368f9803-6164-4475-900f-94cb252d5def.png">
+<br>
+다음은 간단한 카메라를 표현하고 있다. (xPosition, yPosition, zPosition)는 월드 좌표
+계에서 가상 카메라의 위치, 즉, 가상 카메라가 게임 세계의 어디에 위치하는 가를 나타낸
+다. (xRotation, yRotation, zRotation)는 가상 카메라의 방향을 나타낸다.
+<br>
+<pre>
+<code>
+class CCamera
+{
+  public:
+    float xPosition; //카메라의 위치(월드 좌표계) float yPosition;
+    float zPosition;
+    float xRotation; //카메라의 방향(회전 각도)
+    float yRotation; 
+    float zRotation; 
+    float fovAngle; //카메라의 화각
+}
+</code>
+</pre>
+<br>
+<br>
+<br>
+  
+</details>
+<br>
+  
+<details>
+<summary><span style="border-bottom:0.05em solid"><strong>⑧ 카메라 변환(Camera Transformation)</strong></span></summary>
+<br>
+ ■ 가상 카메라(Virtual Camera)
+<br>
+  카메라를 이동하고 회전할 때 주의할 점은 카메라의 움직임과 화면상의 게임 객체의 움
+직임은 방향이 서로 반대라는 것이다. 예를 들어, 카메라를 앞으로 움직이면, 화면상에서 
+게임 세계가 전체적으로 카메라의 이동 방향과 반대로(카메라에 가까워지는 방향으로) 이동
+하는 것처럼 보이게 된다. 이것은 카메라를 움직이지 않고 게임 세계의 게임 객체들을 카
+메라 이동 방향과 반대 방향으로 이동하는 것과 화면상의 결과와 같다. 또한, 카메라를 왼
+쪽으로 이동하면 화면상에서 게임 세계는 오른쪽으로 이동하게 된다. 카메라를 회전하는 
+경우도 화면상에서 게임 세계는 반대 방향으로 회전을 한다
+<br>
+<br>
+  카메라 변환은 월드 좌표계로 표현된 점을 카메라 좌표계로 변환하는 것이다. 카메라를 
+회전하고 이동하기 전에, 카메라가 월드 좌표계의 원점에 위치하고, 카메라(객체) 지역 좌
+표계의 x-축, y-축, z-축의 방향이 월드 좌표계의 x-축, y-축, z-축과 각각 일치한다고 가
+정하자. 카메라를 y-축을 중심으로 시계 방향으로 90° 회전(자전)하였고, 평행이동에 의해 
+카메라의 위치가 (4, 0, 2)가 되었다. 그리고 (8, 0, 3)의 위치에 게임 객체(직육면체)가 있
+다. 다음 그림은 이 상황을 나타내고 있다. 이때 카메라는 직육면체의 오른쪽 부분을 보게
+된다.
+<br>
+   <img src="https://user-images.githubusercontent.com/36596037/226656800-9c342423-cc8b-4558-944d-9932a9cd5c1a.png">
+<br>
+ 위의 그림과 같은 위치와 방향을 가진 카메라에 대한 카메라 변환 과정을 생각해보자. 카메라 변환은 월드 좌표계로 표현된 점들의 좌표를 카메라의 중심과 방향을 사용하여 상
+대적으로 표현하는 과정이다. 다르게 말하면 게임 세계가 월드 좌표계의 기준(월드 좌표계
+의 원점과 축 방향)이 아니라 카메라를 기준으로 표현되어야 한다는 것이다(카메라가 게임 
+세계를 표현하는 중심이다 또는 카메라가 세상의 중심이다). 월드 좌표계의 점을 카메라의 
+위치와 방향에 따라 직접 변환하지 않고, 카메라가 원래 세상의 기준(월드 좌표계의 원점
+과 축 방향)이 되도록 변환하도록 하자. “게임 객체 또는 카메라가 이동하고 회전을 하더
+라도 월드 좌표계의 기준은 불변이다”라는 것에 주의하라. 
+<br>
+<br>
+다음 그림은 카메라를 월드 좌표계의 원점으로 이동하는 변환을 월드 좌표계로 표현된 
+정점에 대해서도 같게 적용한 것을 나타낸다. 카메라의 위치가 (4, 0, 2)이므로 카메라를 
+월드 좌표계의 원점으로 이동하려면 x-축으로 –4, z-축으로 –2 만큼 평행이동을 한다. 게
+임 객체(직육면체)의 위치 (8, 0, 3)에 같은 평행이동을 적용하면 위치가 (4, 0, 1)이 된다. (4, 0, 1)은 카메라의 위치를 기준으로 직육면체가 상대적으로 떨어져 있는 위치가 된다. 이제 카메라는 변하지 않는 월드 좌표계의 기준(원점)에 있게 되었다. 
+<br>
+<img src="https://user-images.githubusercontent.com/36596037/226656801-c87418bf-b235-4e85-8001-8bb7f9cf8d40.png">
+<br>
+카메라를 y-축을 중심으로 회전을 했기 때문에 위의 그림에서 카메라가 바라보는 방향
+(z-축)은 월드 좌표계의 x-축이다. 카메라의 방향(z-축)을 변하지 않는 월드 좌표계의 z-축
+과 일치시키도록 하자
+<br>
+<br>
+  다음 그림은 카메라를 y-축을 중심으로 반시계 방향으로 90° 회전하고, 이 회전 변환을 
+게임 객체(직육면체)의 위치 (4, 0, 1)에도 적용한 것을 나타내고 있다. 3차원 좌표계(왼손 
+좌표계)에서 점 (4, 0, 1)을 y-축을 중심으로 -90° 회전한 결과는 다음과 같이 표현할 수 
+있다(sin(-90) = -1, cos(-90) = 0)
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226656806-eced6f64-875b-44e5-bf83-d09edcb16570.png">
+<br>
+  이제 월드 좌표계의 원점과 카메라 좌표계의 원점이 일치하고 좌표축의 방향도 서로 같
+아졌다. 월드 좌표계에서 중심 좌표가 (8, 0, 3)인 게임 객체(직육면체)가 카메라 좌표계로 
+변환되었고 그 중심 좌표는 (-1, 0, 4)가 된다는 것을 보여주고 있다. 이때 카메라는 직육
+면체의 오른쪽 부분을 보게 되며, 카메라가 보는 이미지는 카메라 변환을 수행하기 전의 
+카메라 위치에서 보는 이미지와 완벽히 같게 된다. 그러나 월드 좌표계로 표현된 점이 카
+메라 좌표계로 표현되었다.
+<br>
+<br>
+  카메라 변환은 다음과 같이 정리할 수 있다.
+  <ol>
+    <li>카메라를 월드 좌표계의 원점으로 옮기는 평행이동 변환을 월드 좌표계로 표현된 점들
+에 적용한다. 카메라를 월드 좌표계의 원점으로 옮기는 평행이동 변환은 카메라를 카메
+라의 위치로 이동한 평행이동 변환의 반대 방향으로 이동하는 것이다(월드 좌표계의 점
+에서 카메라의 위치를 빼면 된다).</li>
+    <li>카메라 좌표계의 축이 월드 좌표계의 축과 일치하도록 카메라를 회전하는 변환을 월드 
+좌표계로 표현된 점들에 적용한다. 카메라 좌표계의 축이 월드 좌표계의 축과 일치하도
+록 회전하는 변환은 카메라를 회전한 방향과 반대 방향으로 회전하는 것이다(회전 방향
+이 반대인 회전은 회전 각도의 부호를 반대로 회전하는 것이다). </li>
+  </ol>
+<br>
+<br>
+다음은 카메라 변환을 하는 함수 CameraTransform()를 구현한 예이다.
+<br>
+<pre>
+<code>
+CVertex CameraTransform(CVertex vtxWorld)
+{ 
+  CVertex vtxCamera, vtxRotated;
+  vtxCamera.x = vtxWorld.x - gpCamera->xPosition;
+  vtxCamera.y = vtxWorld.y - gpCamera->yPosition;
+  vtxCamera.z = vtxWorld.z – gpCamera->zPosition; 
+ 
+  float fPitch = DegreeToRadian(-gpCamera->xRotation);
+  float fYaw = DegreeToRadian(-gpCamera->yRotation);
+  float fRoll = DegreeToRadian(-gpCamera->zRotation); 
+  if (fPitch) {
+    vtxRotated.y = vtxCamera.y * cos(fPitch) - vtxCamera.z * sin(fPitch);
+    vtxRotated.z = vtxCamera.y * sin(fPitch) + vtxCamera.z * cos(fPitch);
+    vtxCamera = vtxRotated;
+    }
+  if (fYaw) {
+    vtxRotated.x = vtxCamera.x * cos(fYaw) + vtxCamera.z * sin(fYaw);
+    vtxRotated.z = -vtxCamera.x * sin(fYaw) + vtxCamera.z * cos(fYaw);
+    vtxCamera = vtxRotated;
+    }
+   if (fRoll) {
+     vtxRotated.x = vtxCamera.x * cos(fRoll) - vtxCamera.y * sin(fRoll);
+    vtxRotated.y = vtxCamera.x * sin(fRoll) + vtxCamera.y * cos(fRoll);
+    vtxCamera = vtxRotated;
+    }
+  return(vtxCamera);
+}
+</code>
+</pre>
+<br>
+
+</details>
+<br>
+ 
+
