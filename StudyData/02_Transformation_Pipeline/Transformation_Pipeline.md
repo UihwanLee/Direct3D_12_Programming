@@ -559,4 +559,311 @@ CVertex CameraTransform(CVertex vtxWorld)
 </details>
 <br>
  
+<details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑨ 원근 투영 변환(Perspective Projection Transformation)</strong></span></summary>
+<br>
+     모델 좌표계의 정점(3차원)이 카메라 변환까지의 과정을 거치면 여전히 3차원 카메라 좌
+표가 된다. 이러한 3차원 점을 화면(2차원)에 그리려면 3차원 점(좌표)을 2차원 점(좌표)으
+로 변환해야 한다. 이러한 변환의 가장 쉬운 예는 그림자이다. 다음 그림에서 벽면은 2차
+원으로 가정할 수 있다. 3차원 물체(객체)들에 조명(빛)을 비추면 벽에 물체들의 그림자가 
+그려진다. 이 그림자들은 원래 3차원인 물체들이 2차원으로 변환된 것이다. 이렇게 3차원 
+점(좌표)을 2차원 점(좌표)으로 변환하는 과정을 투영(Projection)이라고 한다. 벽에 그려진 
+그림자들을 보면 물체의 형태와 크기를 잘 반영하고 있다. 또한 동일한 물체가 조명에 가
+까이 있을 때와 멀리 있을 때의 그림자 크기는 달라진다. 
+<br>
+<img src="https://user-images.githubusercontent.com/36596037/226663544-30a5f45a-4302-4586-bddd-7a107ab7c24f.png">
+<br>
+  카메라를 통하여 3차원 게임 객체들을 2차원 화면에 렌더링하는 것은 현실 세계에서 휴
+대폰 카메라로 사진을 찍는 것과 유사하다. 현실 세계에서 사진을 찍는 과정도 투영의 과
+정이 포함되어 있다. 실세계 물체들의 표면에서 반사된 빛이 카메라 렌즈를 통과하면 그 
+빛을 2차원 필름 또는 센서에 기록하는 것이 사진을 찍는 것이다. 게임 세계의 카메라도 
+현실 세계의 카메라와 유사하다. 게임 세계의 3차원 게임 객체들을 카메라의 화면에 투영
+하는 것은 그림자가 그려지는 것과 유사하지만 그림자를 컬러(색상)로 그려야 하고 3차원 
+세상을 느낄 수 있도록 그려야한다는 것이 다른 점이라 할 수 있다. 
+<br>
+<br>
+  결국 3차원 게임 객체들을 2차원 화면에 렌더링하였을 때, 화면에 그려진 그림(사진)을 
+보고 입체감 또는 거리감을 느낄 수 있도록 그려야 한다. 화가는 현실 세계를 보고 그림을 
+그릴 때 원근법을 사용하여 원근감(Perspective)을 표현한다. 원근감이란 카메라에서 멀리 
+떨어져 있는 객체는 작게 그려지고, 카메라에 가까운 객체는 크게 그려지는 것을 의미한
+다. 또한 아주 멀리 떨어져 있는 객체는 카메라 중심선 근처로 몰려서 위치하게 된다(소멸
+점: Vanishing point).
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226663686-ede1002e-480a-42fa-a1b4-ae036cef02eb.png">
+<br> 
+</details>
+<br>
+  
+<details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑩ 원근 투영 나누기(Perspective Projection Division)</strong></span></summary>
+<br>
+     모델 좌표계의 임의의 한 정점이 카메라 변환을 거쳐서 3차원 좌표계의 점 (x, y, z)가 
+되었다고 가정하자. 점 (x, y, z)는 카메라 좌표계로 표현된 것이다. 점 (x, y, z)의 z 값으
+로 x, y, z를 모두 나누어 보자. 그러면 점 (x, y, z)는 (x/z, y/z, 1)이 된다. 이렇게 카메
+라 좌표계로 표현된 점의 x, y, z 좌표를 z 값으로 나누는 것을 원근 투영 나누기라고 한
+다. 원근 투영 나누기를 하면 모든 점의 z 좌표가 1이 된다. 모든 점의 z 좌표가 1이 되면 
+좌표의 표현에서 1을 빼도 될 것이다. 그러면 3차원 좌표계의 점 (x, y, z)가 2차원 좌표계
+의 점 (x/z, y/z)으로 변환된다. 원근 투영 나누기를 하는 것은 3차원 좌표계의 점을 2차
+원 좌표계의 점으로 변환하는 것이다.
+<br>
+<br>
+   카메라 좌표계에서 임의의 점 (x, y, z)에 대하여 생각을 해보자. 이 점이 카메라에 가깝
+다면 z 좌표가 작고 카메라에서 멀다면 z 좌표가 클 것이다. 이 점에 대한 원근 투영의 결
+과 (x/z, y/z)에서 z값이 크다면 x/z 또는 y/z는 작아지고, z값이 작다면 x/z 또는 y/z는 
+커질 것이다. x 좌표와 y 좌표가 같은 두개의 점 (x0, y0, z0)와 (x0, y0, z1)에 대한 원근 
+투영의 결과는 (x0/z0, y0/z0)와 (x0/z1, y0/z1)이다. 점 (x0, y0, z0)가 (x0, y0, z1) 보다 카메
+라에 가까이 있다면 (z0 ≤ z1)이다. (z0 ≤ z1)이면 (x0/z0 ≥ x0/z1)이고 (y0/z0 ≥ y0/z1)이
+다. 이것은 카메라에서 멀리 있는 객체가 가까이 있는 객체보다 더 작게 투영이 된다는 것
+을 나타낸다. 3차원 좌표계의 점을 2차원 좌표계의 점으로 변환할 때 원근 투영 나누기를 
+하면 원근법을 적용하는 것이다. 
+<br>
+</details>
+<br>
+  
+<details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑪ 원근 투영 좌표계(Perspective Projection Space, Clip-Space)</strong></span></summary>
+<br>
+     카메라의 시야각(FOV)은 카메라 좌표계의 z-축을 기준으로 왼쪽(-x 축 방향), 오른쪽(+x 
+축 방향), 위쪽(+y 축 방향), 아래쪽(-y 축 방향)으로 볼 수 있는 각도이다. 카메라가 볼 수 
+있는 영역은 다음의 그림과 같이 사각뿔 형태이다. 게임 세계의 게임 객체들이 이 사각뿔 
+영역에 완전히 포함되거나 일부라도 포함되면 카메라에 보일 것이다. 카메라의 뒤쪽에 있
+는 게임 객체들은 당연히 카메라에 보이지 않는다. 이때 카메라 좌표계에서 이 게임 객체
+들의 z-좌표가 음수일 것이다
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664036-ad455815-4a60-4608-9f03-e0ee2b16ac54.png">
+<br>
+   카메라에 보이는 게임 세계의 게임 객체들은 카메라의 2차원 사각형 영역으로 원근 투영
+될 것이다(실세계의 사진기 또는 디지털 카메라를 생각해보라). 이 사각형의 중심은 카메라
+의 중심(카메라 좌표계의 원점)이 되고, 사각형의 오른쪽은 카메라 좌표계의 +(x-축)이 되
+고, 사각형의 위쪽은 카메라 좌표계의 +(y-축)이 된다. 이 사각형은 투영 사각형
+(Projection rectangle)이라고 한다. 
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664334-7350aa06-f940-4918-83e6-d285fec03023.png">
+<br>
+  다음 그림은 카메라의 투영 사각형으로 원근 투영되는 공간(사각뿔)의 오른쪽 삼각형에 
+있는 점들은 투영 사각형의 오른쪽 선분으로 투영됨을 보여준다. 사각뿔의 위쪽 삼각형에 
+있는 점들은 투영 사각형의 위쪽 선분으로 투영됨을 보여준다. 
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664096-f0727368-5d24-4e82-a46b-98ea867e7772.png">
+<br>
+  카메라의 시야각이 90°라고 가정해 보자. 시야각이 90°이면, 다음 왼쪽 그림과 같이 카메
+라 좌표계의 z-축을 기준으로 왼쪽으로 45°, 그리고 오른쪽으로 45°의 영역을 볼 수 있다.
+이 그림은 카메라가 볼 수 있는 영역을 +y 축에서 내려다보는 것을 나타낸다.
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664149-b6b014c6-b874-4779-980b-2cf395b6c049.png">
+<br>
+  시야각이 90°이면, 위의 오른쪽 그림과 같이 위쪽과 아래쪽으로 45°씩의 영역을 볼 수 
+있다. 이 그림은 카메라가 볼 수 있는 영역을 +x 축에서 보는 것을 나타낸다.
+<br>
+<br>
+  다음의 그림은 시야각이 90°일 때, +x 축에서 카메라가 볼 수 있는 영역의 일부를 나타
+낸 것이다. 카메라의 투영 사각형으로 투영되는 사각뿔의 위쪽 삼각형에 있는 점 (0, y, z)
+와 원점 (0, 0, 0)으로 구성되는 직각삼각형을 생각해 보자. 이 직각삼각형의 한 예각이 
+45°이므로 이 직각삼각형은 직각이등변삼각형이고, 빗변이 아닌 두 변의 길이가 같다. 점 
+(0, y, z)의 y와 z가 같다(y = z). 사각뿔의 위쪽 삼각형에 있는 점 (0, y, z)를 투영 사각
+형으로 투영하면(원근 투영 나누기를 하면) 2차원 좌표 (0, 1)이 된다. 사각뿔의 위쪽 삼각
+형에 있는 점 (x, y, z)를 투영 사각형으로 투영하면 2차원 좌표 (x/z, 1)이 된다. 즉, 사각
+뿔의 위쪽 삼각형에 있는 점을 투영 사각형으로 투영하면 2차원 좌표의 y 좌표는 +1이 된
+다. 사각뿔의 아래쪽 삼각형에 있는 점을 투영 사각형으로 투영하면 2차원 좌표의 y 좌표
+는 -1이 된다. 사각뿔의 오른쪽 삼각형에 있는 점을 투영 사각형으로 투영하면 2차원 좌표
+의 x 좌표는 +1이 되고, 사각뿔의 왼쪽 삼각형에 있는 점을 투영 사각형으로 투영하면 2차
+원 좌표의 x 좌표는 –1이 된다.
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664180-2d10c3dc-28b1-4e05-be15-aa92706e07b6.png">
+  <img src="https://user-images.githubusercontent.com/36596037/226664180-2d10c3dc-28b1-4e05-be15-aa92706e07b6.png">
+<br>
+  다음의 그림은 시야각이 90°인 카메라가 볼 수 있는 영역이 투영 사각형으로 투영될 때 
+투영 사각형의 좌표를 표현한 것이다. 시야각이 90°인 카메라에 보일 수 있는 모든 점 (x, 
+y, z)를 원근 투영을 하면 2차원 점 (x/z, y/z)이 되며 다음을 만족하며, 투영 사각형은 다
+음 그림과 같이 정사각형(정규화된 투영 사각형)이 된다. 
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664231-abf534b6-87f0-4faf-b570-80ee9f06e433.png">
+<br>
+<br>
+   카메라의 시야각이 90°일 때, 카메라에 보이는 3차원 점을 원근 투영을 하면 투영된 점
+의 x 좌표와 y 좌표는 모두 –1 보다 크거나 같고 +1 보다 작거나 같은 값을 갖는다. 투영
+된 점의 x 좌표와 y 좌표는 –1 보다 작거나 또는 +1 보다 크면, 이 점으로 투영된 3차원 
+점은 카메라에 보이지 않는 점이다. 다음 그림의 투영 사각형을 NDC(Normalized Device 
+Coordinates) 또는 클립 공간(Clip space)이라고 부르기도 한다
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664255-12922416-46f6-4ad2-acfd-aa7ec089794b.png">
+<br>
+<br>
+    다음의 그림은 시야각이 90°인 카메라에 대하여 세 점(P1, P2, P3)이 원근 투영되는 상
+황을 나타낸다. P1(-5, 0, 3), P2(0, -9, 7), P3(4, 5, 6)에 대하여 원근 투영 나누기를 하
+면 P1(-1.666, 0.0), P2(0.0, -1.285), P3(0.666, 0.833)가 된다. P3(0.666, 0.833)의 x 좌
+표와 y 좌표는 모두 –1 보다 크거나 같고 +1 보다 작거나 같은 값을 가지므로 카메라에 
+보이는 점이다. P1(-1.666, 0.0)과 P2(0.0, -1.285)는 그렇지 않으므로 카메라에 보이지 않
+는 점이다
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664277-6b93984d-3c93-4f38-8f9e-aea07fd07e35.png">
+<br>
+</details>
+  
+<br>
+  
+<details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑫ 투영 평면(Projection)</strong></span></summary>
+<br>
+     시야각이 90°인 카메라에서 점 (x, y, z)를 원근 투영 나누기를 하면 (x/z, y/z, 1)이 되
+므로 투영 사각형과 카메라 사이의 거리는 1이다. 게임 세계에 있는 모든 점들은 카메라에
+서 거리가 1인이고 z-축에 수직인 평면으로 투영된다. 이 평면을 투영 평면이라고 한다. 투영 사각형은 이 평면에 위치한다
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664384-f7d42f88-ed09-4174-b71c-c09053220577.png">
+<br>
+  위의 그림은 시야각이 90°인 카메라에서 y 좌표가 2이고 z 좌표가 1, 2, 3, 4, ...인 점
+들의 원근 투영의 결과를 보이고 있다. 투영 평면은 (z = 1)에 있다. z 좌표가 클수록 원근 
+투영의 결과는 z-축에 점점 접근함을 보이고 있다(Vanishing point). 
+<br>
+<br>
+  시야각이 90°인 카메라는 원근 투영의 결과로 투영 사각형이 다음과 같이 정규화가 되는 
+장점이 있다. 
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226668138-f0161849-1854-4934-8297-2fbe3e863f5f.png">
+<br>
+  이것은 원근 투영 나누기 연산을 한 후 정규화가 된 투영 사각형을 벗어나는 점은 카메라
+에 보이지 않는 점이므로 그리지 않아도 된다고 빠르게 판단을 할 수 있다. 
+<br>
+<br>
+  투영 평면과 카메라 사이의 거리를 d라고 하면, 시야각이 90°인 카메라에서 d는 1이다. 카메라의 시야각이 90°가 아닌 경우도 점 (x, y, z)를 원근 투영 나누기를 하면 (x/z, y/z, 
+1)이 되므로 투영 사각형(투영 평면)과 카메라 사이의 거리 d는 1이다. 그러나 원근 투영 
+나누기의 결과는 시야각이 90°인 카메라와 같이 정규화가 되지 않는다. 다음의 왼쪽 그림
+에서 보라색 점선은 시야각이 90°보다 작은 경우의 카메라 공간이며 이 카메라에 노란색 
+점은 보이지 않는다
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226660608-cdcfde67-27d5-4de0-826c-fd8c1788bd4a.png">
+<br>
+  시야각이 90°보다 작은 경우 위의 오른쪽 그림과 같이 투영 사각형이 정규화가 되도록 
+하려면 투영 사각형(투영 평면)을 z-축의 + 방향으로 이동하면 된다. 이때 투영 평면과 카
+메라 사이의 거리 d는 1 보다 크다. 시야각이 90°보다 큰 경우에는 투영 사각형이 정규화
+가 되도록 하려면 투영 사각형(투영 평면)을 z-축의 - 방향으로 이동하면 된다. 이때 투영 
+평면과 카메라 사이의 거리 d는 1 보다 작다. 실세계 카메라에서 렌즈를 교체하는 것이 가
+상 카메라에서 투영 사각형을 이동하는 하는 것과 유사하다. 가상 카메라는 렌즈를 교체할 
+수 없으므로(렌즈의 교체를 수학적으로 처리하기 어려우므로) 우리가 사용하는 가상 카메라
+의 시야각이 항상 90°라고 가정하자. 즉, 투영 평면과 카메라 사이의 거리 d는 항상 1이다. 시야각이 90°가 아닌 카메라를 시야각이 90°인 카메라라고 가정한다. 
+<br>
+   <img src="https://user-images.githubusercontent.com/36596037/226660608-cdcfde67-27d5-4de0-826c-fd8c1788bd4a.png">
+<br>
+  위의 그림에서 노란색 점은 시야각이 90°보다 작은 카메라에는 보이지 않지만 시야각이 
+90°인 카메라에는 보인다. 우리는 게임 세계를 시야각이 90°인 카메라를 사용하여 렌더링
+할 것이므로 이 노란색 점이 시야각이 90°인 카메라에 보이지 않도록 처리하면 된다. 노란
+색 점을 시야각이 90°인 카메라에서 보이지 않게 만들려면 이 점을 z-축의 - 방향으로 이
+동시키면 된다. 즉, z 좌표를 작게 하면 된다. 시야각이 90°보다 큰 카메라의 경우에는 z 
+좌표를 크게 하면 된다. 투영 평면과 카메라 사이의 거리 d는 시야각이 90°보다 크면 1보
+다 작고, 시야각이 90°보다 작으면 1보다 크다. 
+<br>
+<br>
+  시야각이 90°가 아닌 카메라를 시야각이 90°인 카메라처럼 동작하게 하려면 원근 투영 
+나누기를 하기 전에 z 좌표를 투영 평면과 카메라 사이의 거리 d로 나누면 된다. 즉, 카메
+라 좌표계의 점 (x, y, z)를 (x, y, z/d)로 변환하고 원근 투영 나누기를 한다.
+<br>
+<br>
+  카메라의 시야각의 절반이 θ라고 하면 투영 사각형이 세로의 길이가 2인 정사각형이므
+로 투영 사각형과 카메라 사이의 거리 d는 다음 그림에서 계산할 수 있다
+<br>
+  35<img src="https://user-images.githubusercontent.com/36596037/226660608-cdcfde67-27d5-4de0-826c-fd8c1788bd4a.png">
+<br>
+  위의 그림의 직각삼각형에서 tan(θ) = 1/d이므로 d = 1/tan(θ)이다.
+<br>
+  원근 투영 변환을 하는 함수 ProjectionTransform()은 다음과 같이 표현할 수 있다.
+<br>
+<pre>
+<code>
+CVertex ProjectionTransform(CVertex vtxCamera)
+{
+  CVertex vtxProject;
+  float d = 1 / tan(DegreeToRadian(gpCamera->fovAngle * 0.5f));
+  vtxProject.x = vtxCamera.x / (vtxCamera.z / d); 
+  vtxProject.y = vtxCamera.y / (vtxCamera.z / d); 
+  vtxProject.z = vtxCamera.z;
+  return(vtxProject);
+}
+</code>
+</pre>
+<br>
+</details>
+  
+<details>
+  <summary><span style="border-bottom:0.05em solid"><strong>⑬ 화면 좌표 변환(Screen Space Mapping)</strong></span></summary>
+<br>
+     시화면 좌표 변환은 투영 좌표 공간(투영 사각형)을 화면(스크린)으로 매핑하기 위한 변환
+이다. 화면 좌표 변환에서 주의할 점은 투영 좌표계의 y-축의 방향이 화면 좌표계의 y-축
+의 방향이 반대라는 것이다. 투영 사각형을 화면으로 매핑하기 위한 화면의 영역(사각형)을 
+뷰포트(Viewport)라고 한다. 뷰포트는 화면의 사각형 영역은 화면 좌표계(픽셀 좌표계)로 
+표현되며, 다음과 같이 사각형의 좌측 상단의 좌표와 사각형의 가로 길이와 세로 길이로 
+표현할 수 있다.
+<br>
+<pre>
+<code>
+struct Viewport
+{
+  float left;
+  float top;
+  float width;
+  float height;
+};
+</code>
+</pre>
+<br>
+  다음 그림은 투영 사각형을 화면 전체로 매핑하는 것을 보이고 있다. 화면의 크기(해상
+도)가 640×480 픽셀이라면 뷰포트의 좌측 상단은 (0, 0), 뷰포트의 가로 길이는 640, 세로 
+길이는 480으로 설정하면 된다.
+<br>
+  <img src="https://user-images.githubusercontent.com/36596037/226664429-46f03ce1-c93a-4dd0-b669-1024466733d0.png">
+<br>
+<br>
+  화면 좌표 변환을 하기 위하여 카메라의 투영 사각형이 매핑될 화면 영역을 표현하는 뷰
+포트를 카메라가 포함해야 한다. 앞에서 정의한 카메라 클래스에 뷰포트 구조체를 멤버 변
+수로 다음과 같이 추가한다. 
+<br>
+<pre>
+<code>
+class CCamera
+{
+  public:
+    float xPosition; //카메라의 위치(월드 좌표계) float yPosition;
+    float xPosition;
+    float xRotation; //카메라의 방향(회전 각도) float yRotation; 
+    float zRotation; 
+    float fovAngle;
+    Viewport viewport;
+};
+</code>
+</pre>
+<br>
+  다음 그림은 투영 사각형을 어떤 윈도우의 클라이언트 영역 전체(화면)로 매핑하는 예이
+다. 이렇게 매핑하기 위하여 윈도우 프로그램에서 윈도우 핸들이 hWnd일 때 다음과 같이 
+뷰포트를 설정할 수 있다.
+<br>
+  img src="https://user-images.githubusercontent.com/36596037/226664431-c611db9a-18ee-4297-8a62-99124322ca9b.png">
+<br>
+<pre>
+<code>
+RECT rc;
+::GetClientRect(hWnd, &rc);
+gpCamera->viewport.left = rc.left;
+gpCamera->viewport.top = rc.top;
+gpCamera->viewport.width = rc.right - rc.left;
+gpCamera->viewport.height = rc.bottom – rc.top;
+</code>
+</pre>
+<br>
+  화면 좌표 변환을 하기 위한 함수 ScreenTransform()은 다음과 같이 표현할 수 있다.
+<br>
+<pre>
+<code>
+CVertex ScreenTransform(CVertex vtxProject)
+{
+  CVertex vtxScreen;
+  float left = gpCamera.viewport.left;
+  float top = gpCamera.viewport.top;
+  float halfWidth = gpCamera.viewport.width * 0.5f;
+  float halfHeight = gpCamera.viewport.height * 0.5f;
+  vtxScreen.x = vtxProject.x * halfWidth + left + halfWidth;
+  vtxScreen.y = -vtxProject.y * halfHeight + top + halfHeight;
+}
+</code>
+</pre>
+<br>
+</details>
 
