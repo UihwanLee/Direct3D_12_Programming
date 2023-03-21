@@ -731,7 +731,7 @@ Coordinates) 또는 클립 공간(Clip space)이라고 부르기도 한다
 에서 보라색 점선은 시야각이 90°보다 작은 경우의 카메라 공간이며 이 카메라에 노란색 
 점은 보이지 않는다
 <br>
-  <img src="https://user-images.githubusercontent.com/36596037/226660608-cdcfde67-27d5-4de0-826c-fd8c1788bd4a.png">
+  <img src="https://user-images.githubusercontent.com/36596037/226670583-edcdc5db-3904-4331-969a-14a94f1b1194.png">
 <br>
   시야각이 90°보다 작은 경우 위의 오른쪽 그림과 같이 투영 사각형이 정규화가 되도록 
 하려면 투영 사각형(투영 평면)을 z-축의 + 방향으로 이동하면 된다. 이때 투영 평면과 카
@@ -742,7 +742,7 @@ Coordinates) 또는 클립 공간(Clip space)이라고 부르기도 한다
 수 없으므로(렌즈의 교체를 수학적으로 처리하기 어려우므로) 우리가 사용하는 가상 카메라
 의 시야각이 항상 90°라고 가정하자. 즉, 투영 평면과 카메라 사이의 거리 d는 항상 1이다. 시야각이 90°가 아닌 카메라를 시야각이 90°인 카메라라고 가정한다. 
 <br>
-   <img src="https://user-images.githubusercontent.com/36596037/226660608-cdcfde67-27d5-4de0-826c-fd8c1788bd4a.png">
+   <img src="https://user-images.githubusercontent.com/36596037/226670673-436e4d6d-f278-4e62-93f4-5d02043e3f78.png">
 <br>
   위의 그림에서 노란색 점은 시야각이 90°보다 작은 카메라에는 보이지 않지만 시야각이 
 90°인 카메라에는 보인다. 우리는 게임 세계를 시야각이 90°인 카메라를 사용하여 렌더링
@@ -761,7 +761,7 @@ Coordinates) 또는 클립 공간(Clip space)이라고 부르기도 한다
   카메라의 시야각의 절반이 θ라고 하면 투영 사각형이 세로의 길이가 2인 정사각형이므
 로 투영 사각형과 카메라 사이의 거리 d는 다음 그림에서 계산할 수 있다
 <br>
-  35<img src="https://user-images.githubusercontent.com/36596037/226660608-cdcfde67-27d5-4de0-826c-fd8c1788bd4a.png">
+  <img src="https://user-images.githubusercontent.com/36596037/226670760-04777457-7ff3-47e1-8d4d-46bdc2212de9.png">
 <br>
   위의 그림의 직각삼각형에서 tan(θ) = 1/d이므로 d = 1/tan(θ)이다.
 <br>
@@ -835,7 +835,7 @@ class CCamera
 다. 이렇게 매핑하기 위하여 윈도우 프로그램에서 윈도우 핸들이 hWnd일 때 다음과 같이 
 뷰포트를 설정할 수 있다.
 <br>
-  img src="https://user-images.githubusercontent.com/36596037/226664431-c611db9a-18ee-4297-8a62-99124322ca9b.png">
+  <img src="https://user-images.githubusercontent.com/36596037/226664431-c611db9a-18ee-4297-8a62-99124322ca9b.png">
 <br>
 <pre>
 <code>
