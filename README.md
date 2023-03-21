@@ -28,5 +28,7 @@
 
 > 👉 학습 내용
 
-- [1️⃣ **3D 그래픽 기초(3D Graphics Fundamentals)**](/StudyData/01_3D_Graphics_Fundamentals/3D_Graphics_Fundamentals.md)
-- [2️⃣ **변환 파이프라인(Transformation Pipeline)**](/StudyData/02_Transformation_Pipeline/Transformation_Pipeline.md)
+- [1️⃣ **3D 기초: 3D 기초 개념**](/StudyData/01_3D_Graphics_Fundamentals/3D_Graphics_Fundamentals.md)
+- [2️⃣ **3D 기초: 변환 파이프라인**](/StudyData/02_Transformation_Pipeline/Transformation_Pipeline.md)
+- [3️⃣ **3D 기초: 3D 기초(벡터)**](/StudyData/02_Transformation_Pipeline/Transformation_Pipeline.md)
+- [4️⃣ **3D 기초: 3D 기초(평면)**](/StudyData/02_Transformation_Pipeline/Transformation_Pipeline.md)
