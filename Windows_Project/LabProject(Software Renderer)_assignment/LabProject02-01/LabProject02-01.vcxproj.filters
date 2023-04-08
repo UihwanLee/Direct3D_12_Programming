@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{b520df76-a22d-4e44-a563-7b5652a54e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\01. Header">
+      <UniqueIdentifier>{2e853d79-7cac-4d86-ac57-0449b21452bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. GraphicsPipeline">
+      <UniqueIdentifier>{811b89d0-e567-4942-954b-7573f209bb4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Mesh">
+      <UniqueIdentifier>{960e718c-0487-4263-84a6-a1eaa0ecf753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. Player">
+      <UniqueIdentifier>{5a549516-8516-45e0-9c7d-2261bcb9ac6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Camera">
+      <UniqueIdentifier>{9b480f8e-ac7a-41f6-a4ec-2299b33d94ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Scene">
+      <UniqueIdentifier>{ed40a85f-705e-4a7f-8cbe-71894898ca4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Timer">
+      <UniqueIdentifier>{84bc5087-166a-4304-acdc-9d88d4a3d595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. GameObject">
+      <UniqueIdentifier>{298251df-bb48-47ac-9ac2-2c9bac343370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. GameFramework">
+      <UniqueIdentifier>{f29506a2-70d0-4862-8caf-0a485d6f07f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{27ee43ad-a58e-4f10-9426-33212a13812a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. Player\TankPlayer">
+      <UniqueIdentifier>{d8c34abd-4f92-4700-bd6d-e0fa8fab9e37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\07. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework.h">
+      <Filter>Engine\02. GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsPipeline.h">
+      <Filter>Engine\03. GraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Engine\04. Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Engine\05. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Engine\06. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Engine\08. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Engine\09. Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="LabProject02-01.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TankPlayer.h">
+      <Filter>Engine\06. Player\TankPlayer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Engine\01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\07. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework.cpp">
+      <Filter>Engine\02. GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsPipeline.cpp">
+      <Filter>Engine\03. GraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Engine\04. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Engine\05. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Engine\06. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine\08. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Engine\09. Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="LabProject02-01.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="TankPlayer.cpp">
+      <Filter>Engine\06. Player\TankPlayer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LabProject02-01.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="LabProject02-01.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
