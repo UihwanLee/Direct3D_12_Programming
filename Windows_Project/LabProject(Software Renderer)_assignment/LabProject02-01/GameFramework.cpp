@@ -72,11 +72,27 @@ void CGameFramework::BuildObjects()
 
 	pCamera->GenerateOrthographicProjectionMatrix(1.01f, 50.0f, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 
-	CAirplaneMesh* pAirplaneMesh = new CAirplaneMesh(6.0f, 6.0f, 1.0f);
+	//CAirplaneMesh* pAirplaneMesh = new CAirplaneMesh(6.0f, 6.0f, 1.0f);
 
-	m_pPlayer = new CAirplanePlayer();
+	// Gun
+	CCubeMesh* pTankGunMesh = new CCubeMesh(1.0f, 1.0f, 5.0f);
+	CGameObject* pTankGun = new CGameObject();
+	pTankGun->SetPosition(0.0f, 3.0f, 3.0f);
+	pTankGun->SetMesh(pTankGunMesh);
+	pTankGun->SetColor(RGB(0, 0, 255));
+
+	// Turret
+	CCubeMesh* pTankTurretMesh = new CCubeMesh(3.0f, 1.0f, 5.0f);
+	CGameObject* pTankTurret = new CGameObject();
+	pTankTurret->SetPosition(0.0f, 3.0f, 0.0f);
+	pTankTurret->SetMesh(pTankTurretMesh);
+	pTankTurret->SetColor(RGB(0, 0, 255));
+
+	CCubeMesh* pTankMesh = new CCubeMesh(5.0f, 8.0f, 3.0f); // Body
+
+	m_pPlayer = new CTankPlayer(pTankTurret, pTankGun);
 	m_pPlayer->SetPosition(0.0f, 0.0f, 0.0f);
-	m_pPlayer->SetMesh(pAirplaneMesh);
+	m_pPlayer->SetMesh(pTankMesh);
 	m_pPlayer->SetColor(RGB(0, 0, 255));
 	m_pPlayer->SetCamera(pCamera);
 	m_pPlayer->SetCameraOffset(XMFLOAT3(0.0f, 5.0f, -15.0f));
@@ -138,7 +154,7 @@ void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPA
 		case VK_RETURN:
 			break;
 		case VK_CONTROL:
-			((CAirplanePlayer*)m_pPlayer)->FireBullet(m_pLockedObject);
+			((CTankPlayer*)m_pPlayer)->FireBullet(m_pLockedObject);
 			m_pLockedObject = NULL;
 			break;
 		default:
@@ -193,7 +209,10 @@ void CGameFramework::ProcessInput()
 		if (pKeyBuffer[VK_PRIOR] & 0xF0) dwDirection |= DIR_UP;
 		if (pKeyBuffer[VK_NEXT] & 0xF0) dwDirection |= DIR_DOWN;
 
-		if (dwDirection) m_pPlayer->Move(dwDirection, 0.15f);
+		if (dwDirection)
+		{
+			((CTankPlayer*)m_pPlayer)->Move(dwDirection, 0.15f);
+		}
 	}
 
 	if (GetCapture() == m_hWnd)

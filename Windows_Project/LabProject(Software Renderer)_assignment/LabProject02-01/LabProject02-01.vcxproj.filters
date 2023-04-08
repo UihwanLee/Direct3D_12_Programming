@@ -38,9 +38,6 @@
     <Filter Include="Main">
       <UniqueIdentifier>{27ee43ad-a58e-4f10-9426-33212a13812a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\06. Player\TankPlayer">
-      <UniqueIdentifier>{d8c34abd-4f92-4700-bd6d-e0fa8fab9e37}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -79,9 +76,6 @@
     <ClInclude Include="LabProject02-01.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="TankPlayer.h">
-      <Filter>Engine\06. Player\TankPlayer</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -113,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="LabProject02-01.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="TankPlayer.cpp">
-      <Filter>Engine\06. Player\TankPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

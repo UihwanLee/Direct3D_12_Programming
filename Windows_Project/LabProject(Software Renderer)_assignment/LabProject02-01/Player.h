@@ -52,16 +52,24 @@ public:
 
 #define BULLETS					50
 
-class CAirplanePlayer : public CPlayer
+class CTankPlayer : public CPlayer
 {
 public:
-	CAirplanePlayer();
-	virtual ~CAirplanePlayer();
+	CTankPlayer(CGameObject* pTurret, CGameObject* pGun);
+	virtual ~CTankPlayer();
+
+	CGameObject*			m_pTurret = NULL;
+	CGameObject*			m_pGun = NULL;
 
 	float						m_fBulletEffectiveRange = 150.0f;
-	CBulletObject*				m_ppBullets[BULLETS];
+	CBulletObject* m_ppBullets[BULLETS];
 
+	virtual void SetBody(CGameObject* pTurret, CGameObject* pGun);
 	void FireBullet(CGameObject* pLockedObject);
+
+	virtual void Move(DWORD dwDirection, float fDistance);
+	virtual void Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity);
+	virtual void Move(float x, float y, float z);
 
 	virtual void OnUpdateTransform();
 	virtual void Animate(float fElapsedTime);

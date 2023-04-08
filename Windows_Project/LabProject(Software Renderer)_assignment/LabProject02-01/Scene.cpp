@@ -317,7 +317,7 @@ void CScene::CheckPlayerByWallCollision()
 
 void CScene::CheckObjectByBulletCollisions()
 {
-	CBulletObject** ppBullets = ((CAirplanePlayer*)m_pPlayer)->m_ppBullets;
+	CBulletObject** ppBullets = ((CTankPlayer*)m_pPlayer)->m_ppBullets;
 	for (int i = 0; i < m_nObjects; i++)
 	{
 		for (int j = 0; j < BULLETS; j++)

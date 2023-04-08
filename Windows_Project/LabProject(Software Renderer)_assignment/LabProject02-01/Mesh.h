@@ -78,10 +78,14 @@ public:
 	virtual ~CAirplaneMesh() { }
 };
 
+// Body
+// Turret
+// Gun
+
 class CTankMesh : public CMesh
 {
 public:
-	CTankMesh(float fWidth = 20.0f, float fHeight = 20.0f, float fDepth = 4.0f);
+	CTankMesh(float fWidth = 10.0f, float fHeight = 10.0f, float fDepth = 10.0f);
 	virtual ~CTankMesh() { }
 };
 

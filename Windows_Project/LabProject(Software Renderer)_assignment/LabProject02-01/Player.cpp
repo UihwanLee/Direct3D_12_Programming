@@ -134,8 +134,11 @@ void CPlayer::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 
-CAirplanePlayer::CAirplanePlayer()
+CTankPlayer::CTankPlayer(CGameObject* pTurret, CGameObject* pGun)
 {
+	m_pTurret = pTurret;
+	m_pGun = pGun;
+
 	CCubeMesh* pBulletMesh = new CCubeMesh(1.0f, 4.0f, 1.0f);
 	for (int i = 0; i < BULLETS; i++)
 	{
@@ -148,12 +151,12 @@ CAirplanePlayer::CAirplanePlayer()
 	}
 }
 
-CAirplanePlayer::~CAirplanePlayer()
+CTankPlayer::~CTankPlayer()
 {
 	for (int i = 0; i < BULLETS; i++) if (m_ppBullets[i]) delete m_ppBullets[i];
 }
 
-void CAirplanePlayer::Animate(float fElapsedTime)
+void CTankPlayer::Animate(float fElapsedTime)
 {
 	CPlayer::Animate(fElapsedTime);
 
@@ -163,29 +166,38 @@ void CAirplanePlayer::Animate(float fElapsedTime)
 	}
 }
 
-void CAirplanePlayer::OnUpdateTransform()
+void CTankPlayer::OnUpdateTransform()
 {
 	CPlayer::OnUpdateTransform();
 
 	m_xmf4x4World = Matrix4x4::Multiply(XMMatrixRotationRollPitchYaw(XMConvertToRadians(90.0f), 0.0f, 0.0f), m_xmf4x4World);
 }
 
-void CAirplanePlayer::Render(HDC hDCFrameBuffer, CCamera* pCamera)
+void CTankPlayer::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 {
 	CPlayer::Render(hDCFrameBuffer, pCamera);
+
+	if (m_pTurret) m_pTurret->Render(hDCFrameBuffer, pCamera);
+	if (m_pGun) m_pGun->Render(hDCFrameBuffer, pCamera);
 
 	for (int i = 0; i < BULLETS; i++) if (m_ppBullets[i]->m_bActive) m_ppBullets[i]->Render(hDCFrameBuffer, pCamera);
 }
 
-void CAirplanePlayer::FireBullet(CGameObject* pLockedObject)
+void CTankPlayer::SetBody(CGameObject* pTurret, CGameObject* pGun)
 {
-/*
-	if (pLockedObject) 
-	{
-		LookAt(pLockedObject->GetPosition(), XMFLOAT3(0.0f, 1.0f, 0.0f));
-		OnUpdateTransform();
-	}
-*/
+	m_pTurret = pTurret;
+	m_pGun = pGun;
+}
+
+void CTankPlayer::FireBullet(CGameObject* pLockedObject)
+{
+	/*
+		if (pLockedObject)
+		{
+			LookAt(pLockedObject->GetPosition(), XMFLOAT3(0.0f, 1.0f, 0.0f));
+			OnUpdateTransform();
+		}
+	*/
 
 	CBulletObject* pBulletObject = NULL;
 	for (int i = 0; i < BULLETS; i++)
@@ -216,4 +228,25 @@ void CAirplanePlayer::FireBullet(CGameObject* pLockedObject)
 			pBulletObject->SetColor(RGB(0, 0, 255));
 		}
 	}
+}
+
+void CTankPlayer::Move(DWORD dwDirection, float fDistance)
+{
+	CPlayer::Move(dwDirection, fDistance);
+
+	XMFLOAT3 m_xmf3PosTurret = XMFLOAT3(m_xmf3Position.x, m_xmf3Position.y + 3.0f, m_xmf3Position.z);
+	XMFLOAT3 m_xmf3PosGun = XMFLOAT3(m_xmf3Position.x, m_xmf3Position.y + 3.0f, m_xmf3Position.z + 3.0f);
+	if (m_pTurret) m_pTurret->SetPosition(m_xmf3PosTurret);
+	if (m_pGun) m_pGun->SetPosition(m_xmf3PosGun);
+}
+
+void CTankPlayer::Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity)
+{
+	CPlayer::Move(xmf3Shift, bUpdateVelocity);
+
+}
+
+void CTankPlayer::Move(float x, float y, float z)
+{
+	CPlayer::Move(x, y, z);
 }
