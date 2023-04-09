@@ -212,11 +212,13 @@ void CTankPlayer::FireBullet(CGameObject* pLockedObject)
 	if (pBulletObject)
 	{
 		XMFLOAT3 xmf3Position = GetPosition();
-		XMFLOAT3 xmf3Direction = GetUp();
-		XMFLOAT3 xmf3FirePosition = Vector3::Add(xmf3Position, Vector3::ScalarProduct(xmf3Direction, 6.0f, false));
+		XMFLOAT3 xmf3Direction = m_pGun->GetLook();
+		XMFLOAT3 xmf3PositionGun = XMFLOAT3(xmf3Position.x, xmf3Position.y + 3.0f, xmf3Position.z + 3.0f);
+		XMFLOAT3 xmf3FirePosition = Vector3::Add(xmf3PositionGun, Vector3::ScalarProduct(xmf3Direction, 3.0f, false));
 
 		pBulletObject->m_xmf4x4World = m_xmf4x4World;
 
+		// Tank 총구에서 발사할 수 있도록한다.
 		pBulletObject->SetFirePosition(xmf3FirePosition);
 		pBulletObject->SetMovingDirection(xmf3Direction);
 		pBulletObject->SetColor(RGB(255, 0, 0));
@@ -249,4 +251,16 @@ void CTankPlayer::Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity)
 void CTankPlayer::Move(float x, float y, float z)
 {
 	CPlayer::Move(x, y, z);
+}
+
+void CTankPlayer::Rotate(float fPitch, float fYaw, float fRoll)
+{
+	//CPlayer::Rotate(fPitch, fYaw, fRoll);
+
+	if (fYaw == 0.0f) m_pGun->Rotate(fPitch, fYaw, fRoll);
+	else if (fPitch == 0.0f)
+	{
+		m_pTurret->Rotate(fPitch, fYaw, fRoll);
+		m_pGun->Rotate(fPitch, fYaw, fRoll);
+	}
 }

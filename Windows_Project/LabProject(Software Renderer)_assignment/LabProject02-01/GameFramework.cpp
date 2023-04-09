@@ -226,9 +226,9 @@ void CGameFramework::ProcessInput()
 		if (cxMouseDelta || cyMouseDelta)
 		{
 			if (pKeyBuffer[VK_RBUTTON] & 0xF0)
-				m_pPlayer->Rotate(cyMouseDelta, 0.0f, -cxMouseDelta);
+				((CTankPlayer*)m_pPlayer)->Rotate(cyMouseDelta, 0.0f, -cxMouseDelta);
 			else
-				m_pPlayer->Rotate(cyMouseDelta, cxMouseDelta, 0.0f);
+				((CTankPlayer*)m_pPlayer)->Rotate(cyMouseDelta, cxMouseDelta, 0.0f);
 		}
 	}
 

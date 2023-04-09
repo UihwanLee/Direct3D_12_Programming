@@ -71,6 +71,8 @@ public:
 	virtual void Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity);
 	virtual void Move(float x, float y, float z);
 
+	virtual void Rotate(float fPitch = 0.0f, float fYaw = 0.0f, float fRoll = 0.0f);
+
 	virtual void OnUpdateTransform();
 	virtual void Animate(float fElapsedTime);
 	virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera);
