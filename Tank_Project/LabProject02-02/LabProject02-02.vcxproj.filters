@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{6af32dc4-b456-4a54-b2ec-fc950900c06f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\01. Header">
+      <UniqueIdentifier>{374b6bec-d9b5-4d5d-951f-fce84e6b5285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. GameFramework">
+      <UniqueIdentifier>{5afb5790-282e-42e4-84a3-9c44cf6657ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. GraphicsPipeline">
+      <UniqueIdentifier>{300cb58a-a00b-4eca-971d-61092c2b2b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Mesh">
+      <UniqueIdentifier>{19510746-e0ad-461d-941c-a7a550a8a68e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. GameObject">
+      <UniqueIdentifier>{4aa33a7a-64d2-4d9f-a373-2548c926ebd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. Player">
+      <UniqueIdentifier>{917f5692-10fc-4992-8591-a7db2b7cac54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{f5f5a43f-5ed9-4b7b-a026-8ca08015fbfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. AI">
+      <UniqueIdentifier>{c8c5049e-16a5-4e20-bd0c-ab1e1ce06c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Camera">
+      <UniqueIdentifier>{d147a7a2-84b6-4e8b-99a8-0df1652298f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Scene">
+      <UniqueIdentifier>{78d0e8b6-2922-4b41-b4a9-dd7222fa5e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\10. Timer">
+      <UniqueIdentifier>{d7d31c96-76ce-4871-a9f4-3e46101b16a8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LabProject02-02.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="LabProject02-02.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LabProject02-02.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Engine\01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Engine\05. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework.cpp">
+      <Filter>Engine\02. GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsPipeline.cpp">
+      <Filter>Engine\03. GraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Engine\04. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Engine\06. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Engine\10. Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine\09. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\08. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Engine\07. AI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LabProject02-02.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Engine\05. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework.h">
+      <Filter>Engine\02. GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsPipeline.h">
+      <Filter>Engine\03. GraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Engine\04. Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Engine\06. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Engine\10. Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Engine\09. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\08. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Engine\07. AI</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
