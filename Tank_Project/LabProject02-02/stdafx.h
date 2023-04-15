@@ -27,6 +27,8 @@
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
+#define PI 3.1415926535f
+
 #define FRAMEBUFFER_WIDTH		640
 #define FRAMEBUFFER_HEIGHT		480
 
@@ -135,6 +137,12 @@ namespace Vector3
 	inline float Angle(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2)
 	{
 		return(Angle(XMVector3Normalize(XMLoadFloat3(&xmf3Vector1)), XMVector3Normalize(XMLoadFloat3(&xmf3Vector2))));
+	}
+
+	inline float DotToDegree(float fradian)
+	{
+		float fDegreee = fradian * 180 / PI;
+		return fDegreee;
 	}
 
 	inline XMFLOAT3 TransformNormal(XMFLOAT3& xmf3Vector, XMMATRIX& xmxm4x4Transform)

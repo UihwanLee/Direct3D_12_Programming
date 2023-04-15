@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-class CAI : public CGameObject
+class CAI : public CExplosiveObject
 {
 public:
 	CAI();
@@ -21,15 +21,14 @@ public:
 	float           			m_fYaw = 0.0f;
 	float           			m_fRoll = 0.0f;
 
+	float						m_HP = 100;
+
 public:
 	void SetPosition(float x, float y, float z);
 	void SetRotation(float x, float y, float z);
 
 	void LookAt(XMFLOAT3& xmf3LookAt, XMFLOAT3& xmf3Up);
 
-	void Move(DWORD dwDirection, float fDistance);
-	void Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity);
-	void Move(float x, float y, float z);
 	void MoveForward(float distance);
 
 	void Rotate(float fPitch = 0.0f, float fYaw = 0.0f, float fRoll = 0.0f);
@@ -60,7 +59,9 @@ public:
 
 	void FireBullet();
 
-	virtual void Animate(float fElapsedTime);
+	void ChasePlayerMovement(CPlayer* player);
+
+	virtual void Animate(float fElapsedTime, CPlayer* pPlayer);
 	virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera);
 };
 

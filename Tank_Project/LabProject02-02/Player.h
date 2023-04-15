@@ -24,6 +24,8 @@ public:
 	float           			m_fYaw = 0.0f;
 	float           			m_fRoll = 0.0f;
 
+	float						m_HP = 100;
+
 	CCamera*					m_pCamera = NULL;
 
 public:

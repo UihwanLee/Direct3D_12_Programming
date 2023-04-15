@@ -74,7 +74,6 @@ void CGameFramework::BuildObjects()
 	m_pPlayer->SetPosition(0.0f, 1.0f, 0.0f);
 	m_pPlayer->SetCamera(pCamera);
 	m_pPlayer->SetCameraOffset(XMFLOAT3(0.0f, 5.0f, -15.0f));
-	//m_pPlayer->Rotate(0.0f, 90.0f, 0.0f);
 
 	m_nAITanks = 2;
 	m_ppAITanks = new CAI * [m_nAITanks];
@@ -138,6 +137,7 @@ void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPA
 	switch (nMessageID)
 	{
 	case WM_KEYDOWN:
+	{
 		switch (wParam)
 		{
 		case VK_ESCAPE:
@@ -146,15 +146,12 @@ void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPA
 		case VK_RETURN:
 			break;
 		case 'R':
-			((CTankPlayer*)m_pPlayer)->RotateTurret(+5.0f);
-			break;
-		case 'E':
-			((CTankPlayer*)m_pPlayer)->RotateTurret(-5.0f);
+			//((CTankPlayer*)m_pPlayer)->RotateTurret(+5.0f);
 			break;
 		case 'Q':
 			((CTankPlayer*)m_pPlayer)->RotateGun(+1.0f);
 			break;
-		case 'W':
+		case 'E':
 			((CTankPlayer*)m_pPlayer)->RotateGun(-1.0f);
 			break;
 		case VK_CONTROL:
@@ -167,6 +164,7 @@ void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPA
 			break;
 		}
 		break;
+	}
 	default:
 		break;
 	}
@@ -207,15 +205,17 @@ void CGameFramework::ProcessInput()
 	if (GetKeyboardState(pKeyBuffer))
 	{
 		DWORD dwDirection = 0;
-		if (pKeyBuffer[VK_UP] & 0xF0) dwDirection |= DIR_FORWARD;
-		if (pKeyBuffer[VK_DOWN] & 0xF0) dwDirection |= DIR_BACKWARD;
-		if (pKeyBuffer[VK_LEFT] & 0xF0) dwDirection |= DIR_LEFT;
-		if (pKeyBuffer[VK_RIGHT] & 0xF0) dwDirection |= DIR_RIGHT;
+		if (pKeyBuffer['W'] & 0xF0) dwDirection |= DIR_FORWARD;
+		if (pKeyBuffer['S'] & 0xF0) dwDirection |= DIR_BACKWARD;
+		if (pKeyBuffer['A'] & 0xF0) dwDirection |= DIR_LEFT;
+		if (pKeyBuffer['D'] & 0xF0) dwDirection |= DIR_RIGHT;
 		if (pKeyBuffer[VK_PRIOR] & 0xF0) dwDirection |= DIR_UP;
 		if (pKeyBuffer[VK_NEXT] & 0xF0) dwDirection |= DIR_DOWN;
 
 		if (dwDirection) m_pPlayer->Move(dwDirection, 0.15f);
 	}
+
+
 
 	if (GetCapture() == m_hWnd)
 	{

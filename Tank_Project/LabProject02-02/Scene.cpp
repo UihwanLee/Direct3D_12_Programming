@@ -155,18 +155,6 @@ void CScene::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wPar
 		case '7':
 		case '8':
 		case '9':
-		{
-			CExplosiveObject* pExplosiveObject = (CExplosiveObject*)m_ppObjects[int(wParam - '1')];
-			pExplosiveObject->m_bBlowingUp = true;
-			break;
-		}
-		case 'A':
-			for (int i = 0; i < m_nObjects; i++)
-			{
-				CExplosiveObject* pExplosiveObject = (CExplosiveObject*)m_ppObjects[i];
-				pExplosiveObject->m_bBlowingUp = true;
-			}
-			break;
 		default:
 			break;
 		}
@@ -216,6 +204,21 @@ void CScene::CheckObjectByObjectCollisions()
 			}
 		}
 	}
+
+
+	for (int i = 0; i < m_nAITanks; i++) m_ppAITanks[i]->m_pObjectCollided = NULL;
+	for (int i = 0; i < m_nAITanks; i++)
+	{
+		for (int j = (i + 1); j < m_nAITanks; j++)
+		{
+			if (m_ppAITanks[i]->m_xmOOBB.Intersects(m_ppAITanks[j]->m_xmOOBB))
+			{
+				m_ppAITanks[i]->m_pObjectCollided = m_ppAITanks[j];
+				m_ppAITanks[j]->m_pObjectCollided = m_ppAITanks[i];
+			}
+		}
+	}
+
 	for (int i = 0; i < m_nObjects; i++)
 	{
 		if (m_ppObjects[i]->m_pObjectCollided)
@@ -230,6 +233,22 @@ void CScene::CheckObjectByObjectCollisions()
 			m_ppObjects[i]->m_pObjectCollided = NULL;
 		}
 	}
+
+	for (int i = 0; i < m_nAITanks; i++)
+	{
+		if (m_ppAITanks[i]->m_pObjectCollided)
+		{
+			XMFLOAT3 xmf3MovingDirection = m_ppAITanks[i]->m_xmf3MovingDirection;
+			float fMovingSpeed = m_ppAITanks[i]->m_fMovingSpeed;
+			m_ppAITanks[i]->m_xmf3MovingDirection = m_ppAITanks[i]->m_pObjectCollided->m_xmf3MovingDirection;
+			m_ppAITanks[i]->m_fMovingSpeed = m_ppAITanks[i]->m_pObjectCollided->m_fMovingSpeed;
+			m_ppAITanks[i]->m_pObjectCollided->m_xmf3MovingDirection = xmf3MovingDirection;
+			m_ppAITanks[i]->m_pObjectCollided->m_fMovingSpeed = fMovingSpeed;
+			m_ppAITanks[i]->m_pObjectCollided->m_pObjectCollided = NULL;
+			m_ppAITanks[i]->m_pObjectCollided = NULL;
+		}
+	}
+
 }
 
 void CScene::CheckObjectByBulletCollisions()
@@ -247,6 +266,20 @@ void CScene::CheckObjectByBulletCollisions()
 			}
 		}
 	}
+
+	for (int i = 0; i < m_nAITanks; i++)
+	{
+
+		for (int j = 0; j < BULLETS; j++)
+		{
+			if (ppBullets[j]->m_bActive && m_ppAITanks[i]->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB))
+			{
+				CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
+				pExplosiveObject->m_bBlowingUp = true;
+				ppBullets[j]->Reset();
+			}
+		}
+	}
 }
 
 void CScene::MoveAITanks()
@@ -254,7 +287,7 @@ void CScene::MoveAITanks()
 	// AI Tank ¿òÁ÷ÀÓ 
 	for (int i = 0; i < m_nAITanks; i++)
 	{
-		m_ppAITanks[i]->MoveForward(0.15f);
+		((CTankAI*)m_ppAITanks[i])->ChasePlayerMovement(m_pPlayer);
 	}
 }
 
@@ -266,11 +299,14 @@ void CScene::Animate(float fElapsedTime)
 	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->Animate(fElapsedTime);
 	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->ComputeWorldTransform(NULL);
 
+	for (int i = 0; i < m_nAITanks; i++) ((CTankAI*)m_ppAITanks[i])->Animate(fElapsedTime, m_pPlayer);
+	for (int i = 0; i < m_nAITanks; i++) m_ppAITanks[i]->ComputeWorldTransform(NULL);
+
 	CheckObjectByObjectCollisions();
 
 	CheckObjectByBulletCollisions();
 
-	MoveAITanks();
+	//MoveAITanks();
 }
 
 void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)

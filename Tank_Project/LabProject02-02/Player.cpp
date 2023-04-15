@@ -137,17 +137,17 @@ CTankPlayer::CTankPlayer()
 	SetMesh(pBodyMesh);
 	SetColor(RGB(0, 0, 255));
 
-	m_pTurret = new CGameObject();
+	m_pTurret = new CExplosiveObject();
 	CCubeMesh* pTurretMesh = new CCubeMesh(4.0f, 1.5f, 4.0f);
 	m_pTurret->SetMesh(pTurretMesh);
-	m_pTurret->SetColor(RGB(255, 0, 0));
+	m_pTurret->SetColor(RGB(0, 0, 255));
 	m_pTurret->SetPosition(0.0f, 1.75f, 0.0f);
 	SetChild(m_pTurret);
 
-	m_pGun = new CGameObject();
+	m_pGun = new CExplosiveObject();
 	CCubeMesh* pGunMesh = new CCubeMesh(1.0f, 1.0f, 10.0f);
 	m_pGun->SetMesh(pGunMesh);
-	m_pGun->SetColor(RGB(255, 0, 255));
+	m_pGun->SetColor(RGB(0, 0, 255));
 	m_pGun->SetPosition(0.0f, 1.25f, 4.0f);
 	m_pTurret->SetChild(m_pGun);
 

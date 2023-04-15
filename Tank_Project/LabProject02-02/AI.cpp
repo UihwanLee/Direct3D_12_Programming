@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AI.h"
+#include "Player.h"
 
 CAI::CAI()
 {
@@ -16,39 +17,6 @@ void CAI::SetPosition(float x, float y, float z)
 	CGameObject::SetPosition(x, y, z);
 }
 
-void CAI::Move(DWORD dwDirection, float fDistance)
-{
-	if (dwDirection)
-	{
-		XMFLOAT3 xmf3Shift = XMFLOAT3(0, 0, 0);
-		if (dwDirection & DIR_FORWARD) xmf3Shift = Vector3::Add(xmf3Shift, m_xmf3Look, fDistance);
-		if (dwDirection & DIR_BACKWARD) xmf3Shift = Vector3::Add(xmf3Shift, m_xmf3Look, -fDistance);
-		if (dwDirection & DIR_RIGHT) xmf3Shift = Vector3::Add(xmf3Shift, m_xmf3Right, fDistance);
-		if (dwDirection & DIR_LEFT) xmf3Shift = Vector3::Add(xmf3Shift, m_xmf3Right, -fDistance);
-		if (dwDirection & DIR_UP) xmf3Shift = Vector3::Add(xmf3Shift, m_xmf3Up, fDistance);
-		if (dwDirection & DIR_DOWN) xmf3Shift = Vector3::Add(xmf3Shift, m_xmf3Up, -fDistance);
-
-		Move(xmf3Shift, true);
-	}
-}
-
-void CAI::Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity)
-{
-	if (bUpdateVelocity)
-	{
-		m_xmf3Velocity = Vector3::Add(m_xmf3Velocity, xmf3Shift);
-	}
-	else
-	{
-		m_xmf3Position = Vector3::Add(xmf3Shift, m_xmf3Position);
-	}
-}
-
-void CAI::Move(float x, float y, float z)
-{
-	Move(XMFLOAT3(x, y, z), false);
-}
-
 void CAI::MoveForward(float distance)
 {
 	CGameObject::MoveForward(distance);
@@ -56,8 +24,7 @@ void CAI::MoveForward(float distance)
 
 void CAI::Rotate(float fPitch, float fYaw, float fRoll)
 {
-	CGameObject::Rotate(fPitch, fYaw, fRoll);
-	/*if (fPitch != 0.0f)
+	if (fPitch != 0.0f)
 	{
 		XMMATRIX mtxRotate = XMMatrixRotationAxis(XMLoadFloat3(&m_xmf3Right), XMConvertToRadians(fPitch));
 		m_xmf3Look = Vector3::TransformNormal(m_xmf3Look, mtxRotate);
@@ -78,7 +45,7 @@ void CAI::Rotate(float fPitch, float fYaw, float fRoll)
 
 	m_xmf3Look = Vector3::Normalize(m_xmf3Look);
 	m_xmf3Right = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Up, m_xmf3Look));
-	m_xmf3Up = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Look, m_xmf3Right));*/
+	m_xmf3Up = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Look, m_xmf3Right));
 }
 
 void CAI::LookAt(XMFLOAT3& xmf3LookAt, XMFLOAT3& xmf3Up)
@@ -104,7 +71,7 @@ void CAI::Animate(float fElapsedTime)
 {
 	OnUpdateTransform();
 
-	CGameObject::Animate(fElapsedTime);
+	CExplosiveObject::Animate(fElapsedTime);
 }
 
 void CAI::OnUpdateTransform()
@@ -117,7 +84,7 @@ void CAI::OnUpdateTransform()
 
 void CAI::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 {
-	CGameObject::Render(hDCFrameBuffer, pCamera);
+	CExplosiveObject::Render(hDCFrameBuffer, pCamera);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,9 +126,12 @@ CTankAI::~CTankAI()
 	for (int i = 0; i < BULLETS; i++) if (m_ppBullets[i]) delete m_ppBullets[i];
 }
 
-void CTankAI::Animate(float fElapsedTime)
+void CTankAI::Animate(float fElapsedTime, CPlayer* pPlayer)
 {
 	CAI::Animate(fElapsedTime);
+
+	ChasePlayerMovement(pPlayer);
+
 	ComputeWorldTransform(NULL);
 
 	for (int i = 0; i < BULLETS; i++)
@@ -212,4 +182,31 @@ void CTankAI::FireBullet()
 		pBulletObject->SetColor(RGB(255, 0, 0));
 		pBulletObject->SetActive(true);
 	}
+}
+
+void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
+{
+	XMFLOAT3 xmf3Target = Vector3::Subtract(m_xmf3Position, pPlayer->m_xmf3Position);
+	float fDistance = Vector3::Length(xmf3Target);
+
+	if (fDistance > 4.0f)
+	{
+		XMFLOAT3 xmf3LookAt = m_xmf3Look;
+		XMFLOAT3 xmf3NormalizeTarget = Vector3::Normalize(xmf3Target);
+
+		XMFLOAT3 xmf3CrossProduct = Vector3::CrossProduct(xmf3LookAt, xmf3NormalizeTarget, true);
+		float fDotProduct = Vector3::DotProduct(xmf3LookAt, xmf3NormalizeTarget);
+		float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
+		fAngle *= (xmf3CrossProduct.y > 0.0f) ? 1.0f : -1.0f;
+
+		//XMFLOAT3 xmf3RoatationAxis = XMFLOAT3(m_fPitch, m_fYaw + fAngle, m_fRoll);
+		//Rotate(0.0f, m_fYaw + fAngle, 0.0f);
+		//CGameObject::MoveForward(0.15f);
+		//Move()
+	}
+	else
+	{
+		float fDistance = Vector3::Length(xmf3Target);
+	}
+
 }
