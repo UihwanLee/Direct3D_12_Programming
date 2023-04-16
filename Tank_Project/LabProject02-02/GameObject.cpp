@@ -397,8 +397,8 @@ void CBulletObject::Animate(float fElapsedTime)
 	if ((m_fMovingDistance > m_fBulletEffectiveRange) || (m_fElapsedTimeAfterFire > m_fLockingTime)) Reset();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAxisObject::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 {
 	CGraphicsPipeline::SetWorldTransform(&m_xmf4x4World);

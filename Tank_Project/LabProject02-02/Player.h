@@ -24,7 +24,7 @@ public:
 	float           			m_fYaw = 0.0f;
 	float           			m_fRoll = 0.0f;
 
-	float						m_HP = 100;
+	float						m_fHP = 100.0f;
 
 	CCamera*					m_pCamera = NULL;
 
@@ -59,17 +59,29 @@ class CTankPlayer : public CPlayer
 public:
 	CTankPlayer();
 	virtual ~CTankPlayer();
+	
+public:
 
 	CGameObject*				m_pTurret = NULL;
 	CGameObject*				m_pGun = NULL;
 
+	float						m_fMAXHPLength;
+	float						m_fHPLength;
+	CGameObject* m_pHP = NULL;
+
 	float						m_fBulletEffectiveRange = 150.0f;
 	CBulletObject*				m_ppBullets[BULLETS];
+
+public:
 
 	void RotateTurret(float fAngle) { m_pTurret->Rotate(0.0f, fAngle, 0.0f); }
 	void RotateGun(float fAngle) { m_pGun->Rotate(fAngle, 0.0f, 0.0f); }
 
 	void FireBullet(CGameObject* pLockedObject);
+
+	void ResetHP();
+	bool IncreaseHP(float fHeal);
+	bool DecreaseHP(float fDamage);
 
 	virtual void Animate(float fElapsedTime);
 	virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera);

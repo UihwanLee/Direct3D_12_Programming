@@ -1,3 +1,4 @@
-﻿  AI.cpp
-C:\Users\user\Documents\GitHub\Direct3D_12_Programming\Tank_Project\LabProject02-02\AI.cpp(199,66): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  Player.cpp
+  Scene.cpp
+  코드를 생성하고 있습니다...
   LabProject02-02.vcxproj -> C:\Users\user\Documents\GitHub\Direct3D_12_Programming\Tank_Project\LabProject02-02\x64\Debug\LabProject02-02.exe

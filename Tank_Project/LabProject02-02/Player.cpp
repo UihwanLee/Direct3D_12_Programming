@@ -151,6 +151,15 @@ CTankPlayer::CTankPlayer()
 	m_pGun->SetPosition(0.0f, 1.25f, 4.0f);
 	m_pTurret->SetChild(m_pGun);
 
+	m_pHP = new CGameObject();
+	m_fHPLength = 6.0f;
+	m_fMAXHPLength = 6.0f;
+	CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+	m_pHP->SetMesh(pHP);
+	m_pHP->SetColor(RGB(0, 0, 255));
+	m_pHP->SetPosition(0.0f, 5.0f, 0.0f);
+	SetChild(m_pHP);
+
 	CCubeMesh* pBulletMesh = new CCubeMesh(1.0f, 1.0f, 4.0f);
 	for (int i = 0; i < BULLETS; i++)
 	{
@@ -220,5 +229,56 @@ void CTankPlayer::FireBullet(CGameObject* pLockedObject)
 			pBulletObject->m_pLockedObject = pLockedObject;
 			pBulletObject->SetColor(RGB(0, 0, 255));
 		}
+	}
+}
+
+void CTankPlayer::ResetHP()
+{
+	m_fHP = 100.0f;
+	m_fHPLength = m_fMAXHPLength;
+	CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+	m_pHP->SetMesh(pHP);
+}
+
+bool CTankPlayer::IncreaseHP(float fHeal)
+{
+	if (m_fHPLength + (m_fHPLength / fHeal) <= m_fMAXHPLength)
+	{
+		m_fHPLength += (m_fHPLength / fHeal);
+		CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+		m_pHP->SetMesh(pHP);
+	}
+
+
+	if (m_fHP + fHeal < 100.0f)
+	{
+		m_fHP += fHeal;
+		return true;
+	}
+	else
+	{
+		m_fHP = 100.0f;
+		return false;
+	}
+}
+
+bool CTankPlayer::DecreaseHP(float fDamage)
+{
+	if (m_fHPLength - (m_fHPLength / fDamage) >= 0.0f)
+	{
+		m_fHPLength -= (m_fHPLength / fDamage);
+		CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+		m_pHP->SetMesh(pHP);
+	}
+
+	if (m_fHP - fDamage > 0.0f)
+	{
+		m_fHP -= fDamage;
+		return true;
+	}
+	else
+	{
+		m_fHP = 0;
+		return false;
 	}
 }

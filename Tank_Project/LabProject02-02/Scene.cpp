@@ -192,6 +192,9 @@ CGameObject* CScene::PickObjectPointedByCursor(int xClient, int yClient, CCamera
 
 void CScene::CheckObjectByObjectCollisions()
 {
+	//m_pPlayer->m_pObjectCollided = NULL;
+	//m_pPlayer->
+
 	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->m_pObjectCollided = NULL;
 	for (int i = 0; i < m_nObjects; i++)
 	{
@@ -274,20 +277,15 @@ void CScene::CheckObjectByBulletCollisions()
 		{
 			if (ppBullets[j]->m_bActive && m_ppAITanks[i]->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB))
 			{
-				CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
-				pExplosiveObject->m_bBlowingUp = true;
-				ppBullets[j]->Reset();
+				if (((CTankAI*)m_ppAITanks[i])->DecreaseHP(ppBullets[j]->m_fBulletDamage) == false)
+				{
+					((CTankAI*)m_ppAITanks[i])->ResetHP();
+					CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
+					pExplosiveObject->m_bBlowingUp = true;
+					ppBullets[j]->Reset();
+				}
 			}
 		}
-	}
-}
-
-void CScene::MoveAITanks()
-{
-	// AI Tank ¿òÁ÷ÀÓ 
-	for (int i = 0; i < m_nAITanks; i++)
-	{
-		((CTankAI*)m_ppAITanks[i])->ChasePlayerMovement(m_pPlayer);
 	}
 }
 
@@ -305,8 +303,6 @@ void CScene::Animate(float fElapsedTime)
 	CheckObjectByObjectCollisions();
 
 	CheckObjectByBulletCollisions();
-
-	//MoveAITanks();
 }
 
 void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)

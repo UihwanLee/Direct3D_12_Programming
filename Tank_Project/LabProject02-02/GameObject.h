@@ -143,6 +143,7 @@ public:
 public:
 	virtual void Animate(float fElapsedTime);
 
+	float						m_fBulletDamage = 10.0f;
 	float						m_fBulletEffectiveRange = 50.0f;
 	float						m_fMovingDistance = 0.0f;
 	float						m_fRotationAngle = 0.0f;
@@ -151,7 +152,7 @@ public:
 	float						m_fElapsedTimeAfterFire = 0.0f;
 	float						m_fLockingDelayTime = 0.3f;
 	float						m_fLockingTime = 4.0f;
-	CGameObject*				m_pLockedObject = NULL;
+	CGameObject* m_pLockedObject = NULL;
 
 	void SetFirePosition(XMFLOAT3 xmf3FirePosition);
 	void Reset();

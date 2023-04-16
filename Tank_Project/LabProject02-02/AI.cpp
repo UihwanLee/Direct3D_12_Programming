@@ -4,6 +4,7 @@
 
 CAI::CAI()
 {
+
 }
 
 CAI::~CAI()
@@ -108,6 +109,15 @@ CTankAI::CTankAI()
 	m_pGun->SetColor(RGB(255, 0, 0));
 	m_pGun->SetPosition(0.0f, 1.25f, 4.0f);
 	m_pTurret->SetChild(m_pGun);
+	
+	m_pHP = new CGameObject();
+	m_fHPLength = 6.0f;
+	m_fMAXHPLength = 6.0f;
+	CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+	m_pHP->SetMesh(pHP);
+	m_pHP->SetColor(RGB(255, 0, 0));
+	m_pHP->SetPosition(0.0f, 5.0f, 0.0f);
+	SetChild(m_pHP);
 
 	CCubeMesh* pBulletMesh = new CCubeMesh(1.0f, 1.0f, 4.0f);
 	for (int i = 0; i < BULLETS; i++)
@@ -130,7 +140,7 @@ void CTankAI::Animate(float fElapsedTime, CPlayer* pPlayer)
 {
 	CAI::Animate(fElapsedTime);
 
-	ChasePlayerMovement(pPlayer);
+	//ChasePlayerMovement(pPlayer);
 
 	ComputeWorldTransform(NULL);
 
@@ -209,4 +219,55 @@ void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 		float fDistance = Vector3::Length(xmf3Target);
 	}
 
+}
+
+void CTankAI::ResetHP()
+{
+	m_fHP = 100.0f;
+	m_fHPLength = m_fMAXHPLength;
+	CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+	m_pHP->SetMesh(pHP);
+}
+
+bool CTankAI::IncreaseHP(float fHeal)
+{
+	if (m_fHPLength + (m_fHPLength / fHeal) <= m_fMAXHPLength)
+	{
+		m_fHPLength += (m_fHPLength / fHeal);
+		CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+		m_pHP->SetMesh(pHP);
+	}
+
+
+	if (m_fHP + fHeal < 100.0f)
+	{
+		m_fHP += fHeal;
+		return true;
+	}
+	else
+	{
+		m_fHP = 100.0f;
+		return false;
+	}
+}
+
+bool CTankAI::DecreaseHP(float fDamage)
+{
+	if (m_fHPLength - (m_fHPLength / fDamage) >= 0.0f)
+	{
+		m_fHPLength -= (m_fHPLength / fDamage);
+		CCubeMesh* pHP = new CCubeMesh(m_fHPLength, 1.0f, 0.0f);
+		m_pHP->SetMesh(pHP);
+	}
+
+	if (m_fHP - fDamage > 0.0f)
+	{
+		m_fHP -= fDamage;
+		return true;
+	}
+	else
+	{
+		m_fHP = 0;
+		return false;
+	}
 }

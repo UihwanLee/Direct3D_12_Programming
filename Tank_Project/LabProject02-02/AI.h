@@ -21,7 +21,7 @@ public:
 	float           			m_fYaw = 0.0f;
 	float           			m_fRoll = 0.0f;
 
-	float						m_HP = 100;
+	float						m_fHP = 100.0f;
 
 public:
 	void SetPosition(float x, float y, float z);
@@ -51,6 +51,10 @@ public:
 	CGameObject* m_pTurret = NULL;
 	CGameObject* m_pGun = NULL;
 
+	float						m_fMAXHPLength;
+	float						m_fHPLength;
+	CGameObject* m_pHP = NULL;
+
 	float						m_fBulletEffectiveRange = 150.0f;
 	CBulletObject* m_ppBullets[BULLETS];
 
@@ -60,6 +64,10 @@ public:
 	void FireBullet();
 
 	void ChasePlayerMovement(CPlayer* player);
+
+	void ResetHP();
+	bool IncreaseHP(float fHeal);
+	bool DecreaseHP(float fDamage);
 
 	virtual void Animate(float fElapsedTime, CPlayer* pPlayer);
 	virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera);
