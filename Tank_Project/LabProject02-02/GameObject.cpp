@@ -254,7 +254,7 @@ CRotatingObject::~CRotatingObject()
 
 void CRotatingObject::Animate(float fElapsedTime)
 {
-	//if (m_fRotationSpeed != 0.0f) Rotate(m_xmf3RotationAxis, m_fRotationSpeed * fElapsedTime);
+	if (m_fRotationSpeed != 0.0f) Rotate(m_xmf3RotationAxis, m_fRotationSpeed * fElapsedTime);
 
 	CGameObject::Animate(fElapsedTime);
 }
@@ -316,11 +316,12 @@ void CExplosiveObject::Animate(float fElapsedTime)
 			m_bBlowingUp = false;
 			m_fElapsedTimes = 0.0f;
 			SetColor(m_dwDefaultColor);
+			m_bActive = false;
 		}
 	}
 	else
 	{
-		CRotatingObject::Animate(fElapsedTime);
+		CGameObject::Animate(fElapsedTime);
 	}
 }
 
@@ -408,6 +409,24 @@ void CAxisObject::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 
 CHealObject::CHealObject()
 {
+	CCubeMesh* pBodyMesh = new CCubeMesh(2.0f, 1.0f, 1.0f);
+	SetMesh(pBodyMesh);
+	SetColor(RGB(0, 255, 0));
+	SetPosition(0.0f, 3.0f, 0.0f);
+
+	m_pLeftCube = new CGameObject();
+	CCubeMesh* pLeftMesh = new CCubeMesh(1.0f, 4.0f, 1.0f);
+	m_pLeftCube->SetMesh(pLeftMesh);
+	m_pLeftCube->SetColor(RGB(0, 255, 0));
+	m_pLeftCube->SetPosition(-1.5f, 0.0f, 0.0f);
+	SetChild(m_pLeftCube);
+
+	m_pRightCube = new CGameObject();
+	CCubeMesh* pRightMesh = new CCubeMesh(1.0f, 4.0f, 1.0f);
+	m_pRightCube->SetMesh(pRightMesh);
+	m_pRightCube->SetColor(RGB(0, 255, 0));
+	m_pRightCube->SetPosition(1.5f, 0.0f, 0.0f);
+	SetChild(m_pRightCube);
 }
 
 

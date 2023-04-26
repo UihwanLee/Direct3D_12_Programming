@@ -156,6 +156,8 @@ void CTankAI::Animate(float fElapsedTime, CPlayer* pPlayer)
 
 void CTankAI::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 {
+	if (m_bActive == false) return;
+
 	CAI::Render(hDCFrameBuffer, pCamera);
 
 	for (int i = 0; i < BULLETS; i++)

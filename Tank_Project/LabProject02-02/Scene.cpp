@@ -28,90 +28,26 @@ void CScene::BuildObjects()
 	m_pFloorObject->SetColor(RGB(0, 0, 0));
 	m_pFloorObject->m_pxmf4FloorPlane = XMFLOAT4(0.0f, +1.0f, 0.0f, 0.0f);
 
-	CCubeMesh* pCubeMesh = new CCubeMesh(4.0f, 4.0f, 4.0f);
+	CCubeMesh* pHealMesh = new CCubeMesh(4.0f, 4.0f, 4.0f);
 
-	m_nObjects = 10;
+	m_nObjects = 1;
 	m_ppObjects = new CGameObject * [m_nObjects];
 
 	CExplosiveObject *pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(255, 0, 0));
+	pExplosiveObject->SetMesh(pHealMesh);
+	pExplosiveObject->SetColor(RGB(0, 255, 0));
 	pExplosiveObject->SetPosition(-43.5f, 0.0f, -44.0f);
 	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
 	pExplosiveObject->SetRotationSpeed(90.0f);
 	m_ppObjects[0] = pExplosiveObject;
 
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(0, 0, 255));
-	pExplosiveObject->SetPosition(+43.5f, 0.0f, -44.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(180.0f);
-	m_ppObjects[1] = pExplosiveObject;
+	m_nHealObject = 1;
+	m_ppHealObject = new CHealObject * [m_nHealObject];
 
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(0, 255, 0));
-	pExplosiveObject->SetPosition(-43.5f, 0.0f, +44.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(30.15f);
-	m_ppObjects[2] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(0, 255, 255));
-	pExplosiveObject->SetPosition(+43.5f, 0.0f, +44.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(40.6f);
-	m_ppObjects[3] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(128, 0, 255));
-	pExplosiveObject->SetPosition(0.0f, 0.0f, 40.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(50.06f);
-	m_ppObjects[4] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(255, 0, 255));
-	pExplosiveObject->SetPosition(-20.0f, 0.0f, -20.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(60.06f);
-	m_ppObjects[5] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(255, 0, 255));
-	pExplosiveObject->SetPosition(-20.0f, 0.0f, +20.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(60.06f);
-	m_ppObjects[6] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(255, 0, 128));
-	pExplosiveObject->SetPosition(+20.0f, 0.0f, -20.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(70.06f);
-	m_ppObjects[7] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(128, 0, 255));
-	pExplosiveObject->SetPosition(+20.0f, 0.0f, +20.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(1.0f, 0.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(90.06f);
-	m_ppObjects[8] = pExplosiveObject;
-
-	pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pCubeMesh);
-	pExplosiveObject->SetColor(RGB(255, 64, 64));
-	pExplosiveObject->SetPosition(+15.0f, 0.0f, 0.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(1.0f, 0.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(90.06f);
-	m_ppObjects[9] = pExplosiveObject;
+	CHealObject* pHealObject = new CHealObject();
+	pHealObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
+	pHealObject->SetRotationSpeed(90.0f);
+	m_ppHealObject[0] = pHealObject;
 
 
 #ifdef _WITH_DRAW_AXIS
@@ -127,6 +63,9 @@ void CScene::ReleaseObjects()
 
 	for (int i = 0; i < m_nObjects; i++) if (m_ppObjects[i]) delete m_ppObjects[i];
 	if (m_ppObjects) delete[] m_ppObjects;
+
+	for (int i = 0; i < m_nHealObject; i++) if (m_ppHealObject[i]) delete m_ppHealObject[i];
+	if (m_ppHealObject) delete[] m_ppHealObject;
 
 	if (m_pFloorObject) delete m_pFloorObject;
 
@@ -257,6 +196,9 @@ void CScene::CheckObjectByObjectCollisions()
 void CScene::CheckObjectByBulletCollisions()
 {
 	CBulletObject** ppBullets = ((CTankPlayer*)m_pPlayer)->m_ppBullets;
+	CBulletObject** ppBulletsEnemy = NULL;
+
+
 	/*for (int i = 0; i < m_nObjects; i++)
 	{
 		for (int j = 0; j < BULLETS; j++)
@@ -272,6 +214,7 @@ void CScene::CheckObjectByBulletCollisions()
 
 	for (int i = 0; i < m_nAITanks; i++)
 	{
+		ppBulletsEnemy = ((CTankAI*)m_ppAITanks[i])->m_ppBullets;
 
 		for (int j = 0; j < BULLETS; j++)
 		{
@@ -288,6 +231,22 @@ void CScene::CheckObjectByBulletCollisions()
 				}
 			}
 		}
+
+		for (int j = 0; j < BULLETS; j++)
+		{
+			if (ppBulletsEnemy[j]->m_bActive &&
+				(m_pPlayer->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB) || ((CTankPlayer*)m_pPlayer)->m_pTurret->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB))
+				|| ((CTankPlayer*)m_pPlayer)->m_pGun->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB))
+			{
+				if (((CTankPlayer*)m_pPlayer)->DecreaseHP(ppBulletsEnemy[j]->m_fBulletDamage) == false)
+				{
+					//((CTankPlayer*)m_pPlayer)->ResetHP();
+					//CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
+					//pExplosiveObject->m_bBlowingUp = true;
+					ppBulletsEnemy[j]->Reset();
+				}
+			}
+		}
 	}
 }
 
@@ -298,6 +257,9 @@ void CScene::Animate(float fElapsedTime)
 
 	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->Animate(fElapsedTime);
 	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->ComputeWorldTransform(NULL);
+
+	for (int i = 0; i < m_nHealObject; i++) ((CRotatingObject*)m_ppHealObject[i])->Animate(fElapsedTime);
+	for (int i = 0; i < m_nHealObject; i++) m_ppHealObject[i]->ComputeWorldTransform(NULL);
 
 	for (int i = 0; i < m_nAITanks; i++) ((CTankAI*)m_ppAITanks[i])->Animate(fElapsedTime, m_pPlayer);
 	for (int i = 0; i < m_nAITanks; i++) m_ppAITanks[i]->ComputeWorldTransform(NULL);
@@ -314,6 +276,8 @@ void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 
 	m_pFloorObject->Render(hDCFrameBuffer, pCamera);
 	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->Render(hDCFrameBuffer, pCamera);
+
+	for (int i = 0; i < m_nHealObject; i++) m_ppHealObject[i]->Render(hDCFrameBuffer, pCamera);
 
 	if (m_pPlayer) m_pPlayer->Render(hDCFrameBuffer, pCamera);
 

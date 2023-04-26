@@ -74,13 +74,6 @@ public:
 	virtual ~CFloorMesh() { }
 };
 
-class CAirplaneMesh : public CMesh
-{
-public:
-	CAirplaneMesh(float fWidth = 20.0f, float fHeight = 20.0f, float fDepth = 4.0f);
-	virtual ~CAirplaneMesh() { }
-};
-
 class CHealMesh : public CMesh
 {
 public:
@@ -91,7 +84,7 @@ public:
 class CAxisMesh : public CMesh
 {
 public:
-	CAxisMesh(float fWidth = 4.0f, float fHeight = 4.0f, float fDepth = 4.0f);
+	CAxisMesh(float fWidth = 4.0f, float fHeight = 4.0f, float fDepth = 2.0f);
 	virtual ~CAxisMesh() { }
 
 	virtual void Render(HDC hDCFrameBuffer);

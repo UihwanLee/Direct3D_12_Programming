@@ -156,6 +156,7 @@ void CGameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPA
 			break;
 		case VK_CONTROL:
 			((CTankPlayer*)m_pPlayer)->FireBullet(m_pLockedObject);
+			((CTankAI*)m_ppAITanks[0])->FireBullet();
 			m_pLockedObject = NULL;
 			break;
 		default:

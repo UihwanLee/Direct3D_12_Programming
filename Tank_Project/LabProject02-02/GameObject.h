@@ -158,11 +158,16 @@ public:
 	void Reset();
 };
 
-class CHealObject : public CGameObject
+class CHealObject : public CRotatingObject
 {
 public :
 	CHealObject();
 	virtual ~CHealObject();
+
+
+public :
+	CGameObject* m_pLeftCube = NULL;
+	CGameObject* m_pRightCube = NULL;
 };
 
 class CAxisObject : public CGameObject

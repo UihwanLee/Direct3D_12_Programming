@@ -15,6 +15,9 @@ private:
 	int							m_nObjects = 0;
 	CGameObject					**m_ppObjects = NULL;
 
+	int							m_nHealObject = 0;
+	CHealObject					**m_ppHealObject = NULL;
+
 	CFloorObject*				m_pFloorObject = NULL;
 
 	int							m_nAITanks = 0;
