@@ -406,3 +406,11 @@ void CAxisObject::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 	m_pMesh->Render(hDCFrameBuffer);
 }
 
+CHealObject::CHealObject()
+{
+}
+
+
+CHealObject::~CHealObject()
+{
+}

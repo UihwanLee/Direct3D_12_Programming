@@ -1,2 +1,3 @@
 C:\Users\user\Desktop\3학년 1학기\3D 프로그래밍\LabProject02-02\x64\Debug\LabProject02-02.exe
 C:\Users\user\Documents\GitHub\Direct3D_12_Programming\Tank_Project\LabProject02-02\x64\Debug\LabProject02-02.exe
+C:\Users\luh50\Documents\GitHub\Direct3D_12_Programming\Tank_Project\LabProject02-02\x64\Debug\LabProject02-02.exe

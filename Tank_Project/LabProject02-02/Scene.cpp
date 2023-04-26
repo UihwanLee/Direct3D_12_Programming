@@ -257,7 +257,7 @@ void CScene::CheckObjectByObjectCollisions()
 void CScene::CheckObjectByBulletCollisions()
 {
 	CBulletObject** ppBullets = ((CTankPlayer*)m_pPlayer)->m_ppBullets;
-	for (int i = 0; i < m_nObjects; i++)
+	/*for (int i = 0; i < m_nObjects; i++)
 	{
 		for (int j = 0; j < BULLETS; j++)
 		{
@@ -268,14 +268,16 @@ void CScene::CheckObjectByBulletCollisions()
 				ppBullets[j]->Reset();
 			}
 		}
-	}
+	}*/
 
 	for (int i = 0; i < m_nAITanks; i++)
 	{
 
 		for (int j = 0; j < BULLETS; j++)
 		{
-			if (ppBullets[j]->m_bActive && m_ppAITanks[i]->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB))
+			if (ppBullets[j]->m_bActive && 
+				(m_ppAITanks[i]->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB) || ((CTankAI*)m_ppAITanks[i])->m_pTurret->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB))
+				|| ((CTankAI*)m_ppAITanks[i])->m_pGun->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB))
 			{
 				if (((CTankAI*)m_ppAITanks[i])->DecreaseHP(ppBullets[j]->m_fBulletDamage) == false)
 				{

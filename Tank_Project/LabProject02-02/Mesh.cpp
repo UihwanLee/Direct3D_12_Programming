@@ -415,3 +415,67 @@ void CAxisMesh::Render(HDC hDCFrameBuffer)
 	::SelectObject(hDCFrameBuffer, hOldPen);
 	::DeleteObject(hPen);
 }
+
+CHealMesh::CHealMesh(float fWidth, float fHeight, float fDepth)
+{
+	float fHalfWidth = fWidth * 0.5f;
+	float fHalfHeight = fHeight * 0.5f;
+	float fHalfDepth = fDepth * 0.5f;
+
+	float fWidth2 = fWidth * 0.2f;
+	float fHeight2 = fHeight * 0.2f;
+	float fDepth2 = fDepth * 0.2f;
+	
+
+	// pMeshL
+	// pMeshR
+	// pMeshM
+
+	CPolygon* pFrontFaceL = new CPolygon(4);
+	pFrontFaceL->SetVertex(0, CVertex(-fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pFrontFaceL->SetVertex(1, CVertex(+fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pFrontFaceL->SetVertex(2, CVertex(+fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pFrontFaceL->SetVertex(3, CVertex(-fHalfWidth, -fHalfHeight, -fHalfDepth));
+	SetPolygon(0, pFrontFaceL);
+
+	CPolygon* pTopFaceL = new CPolygon(4);
+	pTopFaceL->SetVertex(0, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pTopFaceL->SetVertex(1, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pTopFaceL->SetVertex(2, CVertex(+fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pTopFaceL->SetVertex(3, CVertex(-fHalfWidth, +fHalfHeight, -fHalfDepth));
+	SetPolygon(1, pTopFaceL);
+
+	CPolygon* pBackFaceL = new CPolygon(4);
+	pBackFaceL->SetVertex(0, CVertex(-fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pBackFaceL->SetVertex(1, CVertex(+fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pBackFaceL->SetVertex(2, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pBackFaceL->SetVertex(3, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	SetPolygon(2, pBackFaceL);
+
+	CPolygon* pBottomFaceL = new CPolygon(4);
+	pBottomFaceL->SetVertex(0, CVertex(-fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pBottomFaceL->SetVertex(1, CVertex(+fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pBottomFaceL->SetVertex(2, CVertex(+fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pBottomFaceL->SetVertex(3, CVertex(-fHalfWidth, -fHalfHeight, +fHalfDepth));
+	SetPolygon(3, pBottomFaceL);
+
+	CPolygon* pLeftFaceL = new CPolygon(4);
+	pLeftFaceL->SetVertex(0, CVertex(-fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pLeftFaceL->SetVertex(1, CVertex(-fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pLeftFaceL->SetVertex(2, CVertex(-fHalfWidth, -fHalfHeight, -fHalfDepth));
+	pLeftFaceL->SetVertex(3, CVertex(-fHalfWidth, -fHalfHeight, +fHalfDepth));
+	SetPolygon(4, pLeftFaceL);
+
+	CPolygon* pRightFaceL = new CPolygon(4);
+	pRightFaceL->SetVertex(0, CVertex(+fHalfWidth, +fHalfHeight, -fHalfDepth));
+	pRightFaceL->SetVertex(1, CVertex(+fHalfWidth, +fHalfHeight, +fHalfDepth));
+	pRightFaceL->SetVertex(2, CVertex(+fHalfWidth, -fHalfHeight, +fHalfDepth));
+	pRightFaceL->SetVertex(3, CVertex(+fHalfWidth, -fHalfHeight, -fHalfDepth));
+	SetPolygon(5, pRightFaceL);
+
+	m_xmOOBB = BoundingOrientedBox(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(fHalfWidth, fHalfHeight, fHalfDepth), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+}
+
+CHealMesh::~CHealMesh()
+{
+}

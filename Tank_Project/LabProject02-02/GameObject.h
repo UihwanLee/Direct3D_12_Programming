@@ -158,6 +158,13 @@ public:
 	void Reset();
 };
 
+class CHealObject : public CGameObject
+{
+public :
+	CHealObject();
+	virtual ~CHealObject();
+};
+
 class CAxisObject : public CGameObject
 {
 public:
