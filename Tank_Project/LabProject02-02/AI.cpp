@@ -140,7 +140,7 @@ void CTankAI::Animate(float fElapsedTime, CPlayer* pPlayer)
 {
 	CAI::Animate(fElapsedTime);
 
-	//ChasePlayerMovement(pPlayer);
+	ChasePlayerMovement(pPlayer);
 
 	ComputeWorldTransform(NULL);
 
@@ -199,26 +199,33 @@ void CTankAI::FireBullet()
 void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 {
 	XMFLOAT3 xmf3Target = Vector3::Subtract(m_xmf3Position, pPlayer->m_xmf3Position);
-	float fDistance = Vector3::Length(xmf3Target);
+	float fDistance = (m_xmf3Position.z >= pPlayer->m_xmf3Position.z) ? m_xmf3Position.z - pPlayer->m_xmf3Position.z : pPlayer->m_xmf3Position.z - m_xmf3Position.z;
 
-	if (fDistance > 4.0f)
+	XMFLOAT3 xmf3LookAt = m_xmf3Look;
+	XMFLOAT3 xmf3NormalizeTarget = Vector3::Normalize(xmf3Target);
+
+	XMFLOAT3 xmf3CrossProduct = Vector3::CrossProduct(xmf3LookAt, pPlayer->m_xmf3Look, true);
+	float fDotProduct = Vector3::DotProduct(xmf3LookAt, pPlayer->m_xmf3Look);
+	//float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
+	//fAngle *= (xmf3CrossProduct.y > 0.0f) ? 1.0f : -1.0f;
+
+	float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
+	//m_pTurret->Rotate(m_pTurret->, fAngle, 0.0f);
+
+	if (fDistance > 10.0f)
 	{
-		XMFLOAT3 xmf3LookAt = m_xmf3Look;
-		XMFLOAT3 xmf3NormalizeTarget = Vector3::Normalize(xmf3Target);
+		if (fDotProduct != 0)
+		{
+			float fAngle = 0.5f;
+			fAngle *= (xmf3CrossProduct.y > 0.0f) ? -1.0f : 1.0f;
+			Rotate(m_fPitch, m_fYaw + fAngle, m_fRoll);
+		}
 
-		XMFLOAT3 xmf3CrossProduct = Vector3::CrossProduct(xmf3LookAt, xmf3NormalizeTarget, true);
-		float fDotProduct = Vector3::DotProduct(xmf3LookAt, xmf3NormalizeTarget);
-		float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
-		fAngle *= (xmf3CrossProduct.y > 0.0f) ? 1.0f : -1.0f;
-
-		//XMFLOAT3 xmf3RoatationAxis = XMFLOAT3(m_fPitch, m_fYaw + fAngle, m_fRoll);
-		//Rotate(0.0f, m_fYaw + fAngle, 0.0f);
-		//CGameObject::MoveForward(0.15f);
-		//Move()
+		CGameObject::MoveForward(0.1f);
 	}
 	else
 	{
-		float fDistance = Vector3::Length(xmf3Target);
+		fDistance = (m_xmf3Position.z >= pPlayer->m_xmf3Position.z) ? m_xmf3Position.z - pPlayer->m_xmf3Position.z : pPlayer->m_xmf3Position.z - m_xmf3Position.z;
 	}
 
 }
