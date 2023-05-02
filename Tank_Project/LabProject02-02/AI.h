@@ -61,7 +61,10 @@ public:
 	void RotateTurret(float fAngle) { m_pTurret->Rotate(0.0f, fAngle, 0.0f); }
 	void RotateGun(float fAngle) { m_pGun->Rotate(fAngle, 0.0f, 0.0f); }
 
+	float						m_fFireDuration = 2.0f;
+	float						m_fFireElapsedTimes = 0.0f;
 	void FireBullet();
+	void FireBulltetForSeconds(float fElapsedTime);
 
 	void ChasePlayerMovement(CPlayer* player);
 

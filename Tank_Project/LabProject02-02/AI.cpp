@@ -142,6 +142,8 @@ void CTankAI::Animate(float fElapsedTime, CPlayer* pPlayer)
 
 	ChasePlayerMovement(pPlayer);
 
+	FireBulltetForSeconds(fElapsedTime);
+
 	ComputeWorldTransform(NULL);
 
 	for (int i = 0; i < BULLETS; i++)
@@ -196,6 +198,23 @@ void CTankAI::FireBullet()
 	}
 }
 
+void CTankAI::FireBulltetForSeconds(float fElapsedTime)
+{
+	// 난수 생성
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(2, 4);
+
+	m_fFireDuration = dis(gen);
+
+	m_fFireElapsedTimes += fElapsedTime;
+	if (m_fFireElapsedTimes > m_fFireDuration)
+	{
+		FireBullet();
+		m_fFireElapsedTimes = 0.0f;
+	}
+}
+
 void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 {
 	XMFLOAT3 xmf3Target = Vector3::Subtract(m_xmf3Position, pPlayer->m_xmf3Position);
@@ -207,10 +226,6 @@ void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 	XMFLOAT3 xmf3CrossProduct = Vector3::CrossProduct(xmf3LookAt, pPlayer->m_xmf3Look, true);
 	float fDotProduct = Vector3::DotProduct(xmf3LookAt, pPlayer->m_xmf3Look);
 	//float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
-	//fAngle *= (xmf3CrossProduct.y > 0.0f) ? 1.0f : -1.0f;
-
-	float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
-	//m_pTurret->Rotate(m_pTurret->, fAngle, 0.0f);
 
 	if (fDistance > 10.0f)
 	{
@@ -229,6 +244,8 @@ void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 	}
 
 }
+
+
 
 void CTankAI::ResetHP()
 {
