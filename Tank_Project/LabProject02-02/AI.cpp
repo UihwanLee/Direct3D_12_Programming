@@ -240,6 +240,8 @@ void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 	}
 	else
 	{
+		Rotate(m_fPitch, m_fYaw, m_fRoll);
+		CGameObject::MoveForward(0.0f);
 		fDistance = (m_xmf3Position.z >= pPlayer->m_xmf3Position.z) ? m_xmf3Position.z - pPlayer->m_xmf3Position.z : pPlayer->m_xmf3Position.z - m_xmf3Position.z;
 	}
 

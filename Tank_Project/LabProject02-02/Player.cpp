@@ -249,7 +249,6 @@ bool CTankPlayer::IncreaseHP(float fHeal)
 		m_pHP->SetMesh(pHP);
 	}
 
-
 	if (m_fHP + fHeal < 100.0f)
 	{
 		m_fHP += fHeal;

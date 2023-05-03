@@ -164,10 +164,12 @@ public :
 	CHealObject();
 	virtual ~CHealObject();
 
-
 public :
 	CGameObject* m_pLeftCube = NULL;
 	CGameObject* m_pRightCube = NULL;
+
+	float						m_fHeal = 10.0f;
+	void SetHeal(float fHeal);
 };
 
 class CAxisObject : public CGameObject

@@ -79,7 +79,7 @@ void CGameFramework::BuildObjects()
 	m_ppAITanks = new CAI * [m_nAITanks];
 
 	CAI* pAITank = new CTankAI();
-	pAITank->SetPosition(0.0f, 0.0f, 25.0f);
+	pAITank->SetPosition(-10.0f, 0.0f, 30.0f);
 	pAITank->Rotate(0.0f, 180.0f, 0.0f);
 	m_ppAITanks[0] = pAITank;
 

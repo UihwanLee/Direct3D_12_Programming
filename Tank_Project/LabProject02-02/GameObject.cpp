@@ -206,6 +206,8 @@ void CGameObject::Render(HDC hDCFrameBuffer, XMFLOAT4X4* pxmf4x4World, CMesh* pM
 
 void CGameObject::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 {
+	if (!m_bActive) return;
+
 	if (pCamera->IsInFrustum(m_xmOOBB)) CGameObject::Render(hDCFrameBuffer, &m_xmf4x4World, m_pMesh);
 
 	if (m_pSibling) m_pSibling->Render(hDCFrameBuffer, pCamera);
@@ -432,4 +434,9 @@ CHealObject::CHealObject()
 
 CHealObject::~CHealObject()
 {
+}
+
+void CHealObject::SetHeal(float fHeal)
+{
+	m_fHeal = fHeal;
 }

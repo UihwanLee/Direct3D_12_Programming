@@ -131,18 +131,16 @@ CGameObject* CScene::PickObjectPointedByCursor(int xClient, int yClient, CCamera
 
 void CScene::CheckObjectByObjectCollisions()
 {
-	//m_pPlayer->m_pObjectCollided = NULL;
-	//m_pPlayer->
 
-	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->m_pObjectCollided = NULL;
-	for (int i = 0; i < m_nObjects; i++)
+	for (int i = 0; i < m_nHealObject; i++) m_ppHealObject[i]->m_pObjectCollided = NULL;
+	for (int i = 0; i < m_nHealObject; i++)
 	{
-		for (int j = (i + 1); j < m_nObjects; j++)
+		for (int j = (i + 1); j < m_nHealObject; j++)
 		{
-			if (m_ppObjects[i]->m_xmOOBB.Intersects(m_ppObjects[j]->m_xmOOBB))
+			if (m_ppHealObject[i]->m_xmOOBB.Intersects(m_ppHealObject[j]->m_xmOOBB))
 			{
-				m_ppObjects[i]->m_pObjectCollided = m_ppObjects[j];
-				m_ppObjects[j]->m_pObjectCollided = m_ppObjects[i];
+				m_ppHealObject[i]->m_pObjectCollided = m_ppHealObject[j];
+				m_ppHealObject[j]->m_pObjectCollided = m_ppHealObject[i];
 			}
 		}
 	}
@@ -161,18 +159,18 @@ void CScene::CheckObjectByObjectCollisions()
 		}
 	}
 
-	for (int i = 0; i < m_nObjects; i++)
+	for (int i = 0; i < m_nHealObject; i++)
 	{
-		if (m_ppObjects[i]->m_pObjectCollided)
+		if (m_ppHealObject[i]->m_pObjectCollided)
 		{
-			XMFLOAT3 xmf3MovingDirection = m_ppObjects[i]->m_xmf3MovingDirection;
-			float fMovingSpeed = m_ppObjects[i]->m_fMovingSpeed;
-			m_ppObjects[i]->m_xmf3MovingDirection = m_ppObjects[i]->m_pObjectCollided->m_xmf3MovingDirection;
-			m_ppObjects[i]->m_fMovingSpeed = m_ppObjects[i]->m_pObjectCollided->m_fMovingSpeed;
-			m_ppObjects[i]->m_pObjectCollided->m_xmf3MovingDirection = xmf3MovingDirection;
-			m_ppObjects[i]->m_pObjectCollided->m_fMovingSpeed = fMovingSpeed;
-			m_ppObjects[i]->m_pObjectCollided->m_pObjectCollided = NULL;
-			m_ppObjects[i]->m_pObjectCollided = NULL;
+			XMFLOAT3 xmf3MovingDirection = m_ppHealObject[i]->m_xmf3MovingDirection;
+			float fMovingSpeed = m_ppHealObject[i]->m_fMovingSpeed;
+			m_ppHealObject[i]->m_xmf3MovingDirection = m_ppHealObject[i]->m_pObjectCollided->m_xmf3MovingDirection;
+			m_ppHealObject[i]->m_fMovingSpeed = m_ppHealObject[i]->m_pObjectCollided->m_fMovingSpeed;
+			m_ppHealObject[i]->m_pObjectCollided->m_xmf3MovingDirection = xmf3MovingDirection;
+			m_ppHealObject[i]->m_pObjectCollided->m_fMovingSpeed = fMovingSpeed;
+			m_ppHealObject[i]->m_pObjectCollided->m_pObjectCollided = NULL;
+			m_ppHealObject[i]->m_pObjectCollided = NULL;
 		}
 	}
 
@@ -193,24 +191,26 @@ void CScene::CheckObjectByObjectCollisions()
 
 }
 
+void CScene::CheckPlayerByHealObjectCollisions()
+{
+	for (int i = 0; i < m_nHealObject; i++)
+	{
+		if (m_ppHealObject[i]->m_bActive && m_pPlayer->m_xmOOBB.Intersects(m_ppHealObject[i]->m_xmOOBB) || 
+			((CTankPlayer*)m_pPlayer)->m_pTurret->m_xmOOBB.Intersects(m_ppHealObject[i]->m_xmOOBB)||
+			((CTankPlayer*)m_pPlayer)->m_pGun->m_xmOOBB.Intersects(m_ppHealObject[i]->m_xmOOBB))
+		{
+			if (((CTankPlayer*)m_pPlayer)->IncreaseHP(m_ppHealObject[i]->m_fHeal) == true)
+			{
+				m_ppHealObject[i]->SetActive(false);
+			}
+		}
+	}
+}
+
 void CScene::CheckObjectByBulletCollisions()
 {
 	CBulletObject** ppBullets = ((CTankPlayer*)m_pPlayer)->m_ppBullets;
 	CBulletObject** ppBulletsEnemy = NULL;
-
-
-	/*for (int i = 0; i < m_nObjects; i++)
-	{
-		for (int j = 0; j < BULLETS; j++)
-		{
-			if (ppBullets[j]->m_bActive && m_ppObjects[i]->m_xmOOBB.Intersects(ppBullets[j]->m_xmOOBB))
-			{
-				CExplosiveObject* pExplosiveObject = (CExplosiveObject*)m_ppObjects[i];
-				pExplosiveObject->m_bBlowingUp = true;
-				ppBullets[j]->Reset();
-			}
-		}
-	}*/
 
 	for (int i = 0; i < m_nAITanks; i++)
 	{
@@ -234,16 +234,18 @@ void CScene::CheckObjectByBulletCollisions()
 
 		for (int j = 0; j < BULLETS; j++)
 		{
-			if (ppBulletsEnemy[j]->m_bActive &&
-				(m_pPlayer->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB) || ((CTankPlayer*)m_pPlayer)->m_pTurret->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB))
-				|| ((CTankPlayer*)m_pPlayer)->m_pGun->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB))
+			if (ppBulletsEnemy[j]->m_bActive)
 			{
-				if (((CTankPlayer*)m_pPlayer)->DecreaseHP(ppBulletsEnemy[j]->m_fBulletDamage) == false)
+				if ((m_pPlayer->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB) || ((CTankPlayer*)m_pPlayer)->m_pTurret->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB))
+					|| ((CTankPlayer*)m_pPlayer)->m_pGun->m_xmOOBB.Intersects(ppBulletsEnemy[j]->m_xmOOBB))
 				{
-					//((CTankPlayer*)m_pPlayer)->ResetHP();
-					//CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
-					//pExplosiveObject->m_bBlowingUp = true;
-					ppBulletsEnemy[j]->Reset();
+					if (((CTankPlayer*)m_pPlayer)->DecreaseHP(ppBulletsEnemy[j]->m_fBulletDamage) == false)
+					{
+						//((CTankPlayer*)m_pPlayer)->ResetHP();
+						//CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
+						//pExplosiveObject->m_bBlowingUp = true;
+						ppBulletsEnemy[j]->Reset();
+					}
 				}
 			}
 		}
@@ -265,6 +267,8 @@ void CScene::Animate(float fElapsedTime)
 	for (int i = 0; i < m_nAITanks; i++) m_ppAITanks[i]->ComputeWorldTransform(NULL);
 
 	CheckObjectByObjectCollisions();
+
+	CheckPlayerByHealObjectCollisions();
 
 	CheckObjectByBulletCollisions();
 }

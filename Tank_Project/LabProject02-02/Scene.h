@@ -34,9 +34,8 @@ public:
 	virtual void ReleaseObjects();
 
 	void CheckObjectByObjectCollisions();
+	void CheckPlayerByHealObjectCollisions();
 	void CheckObjectByBulletCollisions();
-
-	void MoveAITanks();
 
 	virtual void Animate(float fElapsedTime);
 	virtual void Render(HDC hDCFrameBuffer, CCamera* pCamera);
