@@ -73,9 +73,10 @@ void CGameFramework::BuildObjects()
 	m_pPlayer = new CTankPlayer();
 	m_pPlayer->SetPosition(0.0f, 1.0f, 0.0f);
 	m_pPlayer->SetCamera(pCamera);
-	m_pPlayer->SetCameraOffset(XMFLOAT3(0.0f, 5.0f, -15.0f));
+	XMFLOAT3 offset = XMFLOAT3(0.0f, 5.0f, -15.0f);
+	m_pPlayer->SetCameraOffset(offset);
 
-	m_nAITanks = 2;
+	m_nAITanks = 5;
 	m_ppAITanks = new CAI * [m_nAITanks];
 
 	CAI* pAITank = new CTankAI();
@@ -85,8 +86,22 @@ void CGameFramework::BuildObjects()
 
 	pAITank = new CTankAI();
 	pAITank->SetPosition(15.0f, 0.0f, 25.0f);
-	//pAITank->Rotate(0.0f, 260.0f, 0.0f);
 	m_ppAITanks[1] = pAITank;
+
+	pAITank = new CTankAI();
+	pAITank->SetPosition(-20.0f, 0.0f, 50.0f);
+	pAITank->Rotate(0.0f, 140.0f, 0.0f);
+	m_ppAITanks[2] = pAITank;
+
+	pAITank = new CTankAI();
+	pAITank->SetPosition(5.0f, 0.0f, 45.0f);
+	pAITank->Rotate(0.0f, 70.0f, 0.0f);
+	m_ppAITanks[3] = pAITank;
+
+	pAITank = new CTankAI();
+	pAITank->SetPosition(-12.0f, 0.0f, 35.0f);
+	pAITank->Rotate(0.0f, 260.0f, 0.0f);
+	m_ppAITanks[4] = pAITank;
 
 	m_pScene = new CScene(m_pPlayer, m_nAITanks, m_ppAITanks);
 	m_pScene->BuildObjects();
@@ -113,11 +128,6 @@ void CGameFramework::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM
 	case WM_LBUTTONDOWN:
 		::SetCapture(hWnd);
 		::GetCursorPos(&m_ptOldCursorPos);
-		if (nMessageID == WM_RBUTTONDOWN)
-		{
-			m_pLockedObject = m_pScene->PickObjectPointedByCursor(LOWORD(lParam), HIWORD(lParam), m_pPlayer->m_pCamera);
-			if (m_pLockedObject) m_pLockedObject->SetColor(RGB(0, 0, 0));
-		}
 		break;
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
@@ -227,14 +237,13 @@ void CGameFramework::ProcessInput()
 		if (cxMouseDelta || cyMouseDelta)
 		{
 			if (pKeyBuffer[VK_RBUTTON] & 0xF0)
-				m_pPlayer->Rotate(0.0f, 0.0f, -cxMouseDelta);
+				((CTankPlayer*)m_pPlayer)->m_pTurret->Rotate(0.0f, cxMouseDelta, 0.0f);
 			else
 				m_pPlayer->Rotate(0.0f, cxMouseDelta, 0.0f);
 		}
 	}
 
 	m_pPlayer->Update(m_GameTimer.GetTimeElapsed());
-	//for (int i = 0; i < m_nAITanks; i++) m_ppAITanks[i]->Update(m_GameTimer.GetTimeElapsed());
 }
 
 void CGameFramework::AnimateObjects()

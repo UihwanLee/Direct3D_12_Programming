@@ -15,7 +15,8 @@
 #include <memory.h>
 #include <tchar.h>
 #include <math.h>
-#include <random>
+#include <ctime>
+#include <cstdlib>
 
 #include <Mmsystem.h>
 #pragma comment(lib, "winmm.lib")
@@ -137,7 +138,11 @@ namespace Vector3
 
 	inline float Angle(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2)
 	{
-		return(Angle(XMVector3Normalize(XMLoadFloat3(&xmf3Vector1)), XMVector3Normalize(XMLoadFloat3(&xmf3Vector2))));
+		XMVECTOR vector1 = XMLoadFloat3(&xmf3Vector1);
+		XMVECTOR vector2 = XMLoadFloat3(&xmf3Vector2);
+		XMVECTOR vector1Normal = XMVector3Normalize(vector1);
+		XMVECTOR vector2Normal = XMVector3Normalize(vector2);
+		return(Angle(vector1Normal, vector2Normal));
 	}
 
 	inline float DotToDegree(float fradian)
@@ -155,7 +160,8 @@ namespace Vector3
 
 	inline XMFLOAT3 TransformNormal(XMFLOAT3& xmf3Vector, XMFLOAT4X4& xmmtx4x4Matrix)
 	{
-		return(TransformNormal(xmf3Vector, XMLoadFloat4x4(&xmmtx4x4Matrix)));
+		XMMATRIX xm = XMLoadFloat4x4(&xmmtx4x4Matrix);
+		return(TransformNormal(xmf3Vector, xm));
 	}
 
 	inline XMFLOAT3 TransformCoord(XMFLOAT3& xmf3Vector, XMMATRIX& xmxm4x4Transform)
@@ -167,7 +173,8 @@ namespace Vector3
 
 	inline XMFLOAT3 TransformCoord(XMFLOAT3& xmf3Vector, XMFLOAT4X4& xmmtx4x4Matrix)
 	{
-		return(TransformCoord(xmf3Vector, XMLoadFloat4x4(&xmmtx4x4Matrix)));
+		XMMATRIX xm = XMLoadFloat4x4(&xmmtx4x4Matrix);
+		return(TransformCoord(xmf3Vector, xm));
 	}
 }
 

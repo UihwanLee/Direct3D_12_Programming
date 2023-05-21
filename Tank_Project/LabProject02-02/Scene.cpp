@@ -28,26 +28,38 @@ void CScene::BuildObjects()
 	m_pFloorObject->SetColor(RGB(0, 0, 0));
 	m_pFloorObject->m_pxmf4FloorPlane = XMFLOAT4(0.0f, +1.0f, 0.0f, 0.0f);
 
-	CCubeMesh* pHealMesh = new CCubeMesh(4.0f, 4.0f, 4.0f);
-
-	m_nObjects = 1;
-	m_ppObjects = new CGameObject * [m_nObjects];
-
-	CExplosiveObject *pExplosiveObject = new CExplosiveObject();
-	pExplosiveObject->SetMesh(pHealMesh);
-	pExplosiveObject->SetColor(RGB(0, 255, 0));
-	pExplosiveObject->SetPosition(-43.5f, 0.0f, -44.0f);
-	pExplosiveObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
-	pExplosiveObject->SetRotationSpeed(90.0f);
-	m_ppObjects[0] = pExplosiveObject;
-
-	m_nHealObject = 1;
+	m_nHealObject = 5;
 	m_ppHealObject = new CHealObject * [m_nHealObject];
 
 	CHealObject* pHealObject = new CHealObject();
-	pHealObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
+	XMFLOAT3 rotationAxis = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	pHealObject->SetRotationAxis(rotationAxis);
 	pHealObject->SetRotationSpeed(90.0f);
 	m_ppHealObject[0] = pHealObject;
+
+	pHealObject = new CHealObject();
+	pHealObject->SetPosition(-5.0f, 2.0f, 24.0f);
+	pHealObject->SetRotationAxis(rotationAxis);
+	pHealObject->SetRotationSpeed(90.0f);
+	m_ppHealObject[1] = pHealObject;
+
+	pHealObject = new CHealObject();
+	pHealObject->SetPosition(10.0f, 2.0f, 35.0f);
+	pHealObject->SetRotationAxis(rotationAxis);
+	pHealObject->SetRotationSpeed(90.0f);
+	m_ppHealObject[2] = pHealObject;
+
+	pHealObject = new CHealObject();
+	pHealObject->SetPosition(-10.0f, 2.0f, -20.0f);
+	pHealObject->SetRotationAxis(rotationAxis);
+	pHealObject->SetRotationSpeed(90.0f);
+	m_ppHealObject[3] = pHealObject;
+
+	pHealObject = new CHealObject();
+	pHealObject->SetPosition(23.0f, 2.0f, -14.0f);
+	pHealObject->SetRotationAxis(rotationAxis);
+	pHealObject->SetRotationSpeed(90.0f);
+	m_ppHealObject[4] = pHealObject;
 
 
 #ifdef _WITH_DRAW_AXIS
@@ -60,9 +72,6 @@ void CScene::BuildObjects()
 void CScene::ReleaseObjects()
 {
 	if (CExplosiveObject::m_pExplosionMesh) CExplosiveObject::m_pExplosionMesh->Release();
-
-	for (int i = 0; i < m_nObjects; i++) if (m_ppObjects[i]) delete m_ppObjects[i];
-	if (m_ppObjects) delete[] m_ppObjects;
 
 	for (int i = 0; i < m_nHealObject; i++) if (m_ppHealObject[i]) delete m_ppHealObject[i];
 	if (m_ppHealObject) delete[] m_ppHealObject;
@@ -101,32 +110,6 @@ void CScene::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wPar
 	default:
 		break;
 	}
-}
-
-CGameObject* CScene::PickObjectPointedByCursor(int xClient, int yClient, CCamera* pCamera)
-{
-	XMFLOAT3 xmf3PickPosition;
-	xmf3PickPosition.x = (((2.0f * xClient) / (float)pCamera->m_Viewport.m_nWidth) - 1) / pCamera->m_xmf4x4PerspectiveProject._11;
-	xmf3PickPosition.y = -(((2.0f * yClient) / (float)pCamera->m_Viewport.m_nHeight) - 1) / pCamera->m_xmf4x4PerspectiveProject._22;
-	xmf3PickPosition.z = 1.0f;
-
-	XMVECTOR xmvPickPosition = XMLoadFloat3(&xmf3PickPosition);
-	XMMATRIX xmmtxView = XMLoadFloat4x4(&pCamera->m_xmf4x4View);
-
-	int nIntersected = 0;
-	float fNearestHitDistance = FLT_MAX;
-	CGameObject* pNearestObject = NULL;
-	for (int i = 0; i < m_nObjects; i++)
-	{
-		float fHitDistance = FLT_MAX;
-		nIntersected = m_ppObjects[i]->PickObjectByRayIntersection(xmvPickPosition, xmmtxView, &fHitDistance);
-		if ((nIntersected > 0) && (fHitDistance < fNearestHitDistance))
-		{
-			fNearestHitDistance = fHitDistance;
-			pNearestObject = m_ppObjects[i];
-		}
-	}
-	return(pNearestObject);
 }
 
 void CScene::CheckObjectByObjectCollisions()
@@ -241,9 +224,8 @@ void CScene::CheckObjectByBulletCollisions()
 				{
 					if (((CTankPlayer*)m_pPlayer)->DecreaseHP(ppBulletsEnemy[j]->m_fBulletDamage) == false)
 					{
-						//((CTankPlayer*)m_pPlayer)->ResetHP();
-						//CExplosiveObject* pExplosiveObject = m_ppAITanks[i];
-						//pExplosiveObject->m_bBlowingUp = true;
+						m_pPlayer->SetPosition(0.0f, 1.0f, 0.0f);
+						((CTankPlayer*)m_pPlayer)->ResetHP();
 						ppBulletsEnemy[j]->Reset();
 					}
 				}
@@ -256,9 +238,6 @@ void CScene::Animate(float fElapsedTime)
 {
 	m_pFloorObject->Animate(fElapsedTime);
 	m_pFloorObject->ComputeWorldTransform(NULL);
-
-	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->Animate(fElapsedTime);
-	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->ComputeWorldTransform(NULL);
 
 	for (int i = 0; i < m_nHealObject; i++) ((CRotatingObject*)m_ppHealObject[i])->Animate(fElapsedTime);
 	for (int i = 0; i < m_nHealObject; i++) m_ppHealObject[i]->ComputeWorldTransform(NULL);
@@ -279,7 +258,6 @@ void CScene::Render(HDC hDCFrameBuffer, CCamera* pCamera)
 	CGraphicsPipeline::SetViewPerspectiveProjectTransform(&pCamera->m_xmf4x4ViewPerspectiveProject);
 
 	m_pFloorObject->Render(hDCFrameBuffer, pCamera);
-	for (int i = 0; i < m_nObjects; i++) m_ppObjects[i]->Render(hDCFrameBuffer, pCamera);
 
 	for (int i = 0; i < m_nHealObject; i++) m_ppHealObject[i]->Render(hDCFrameBuffer, pCamera);
 

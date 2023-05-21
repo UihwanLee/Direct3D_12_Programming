@@ -22,7 +22,8 @@ void CPlayer::SetPosition(float x, float y, float z)
 void CPlayer::SetCameraOffset(XMFLOAT3& xmf3CameraOffset)
 {
 	m_xmf3CameraOffset = xmf3CameraOffset;
-	m_pCamera->SetLookAt(Vector3::Add(m_xmf3Position, m_xmf3CameraOffset), m_xmf3Position, m_xmf3Up);
+	XMFLOAT3 xmAdd = Vector3::Add(m_xmf3Position, m_xmf3CameraOffset);
+	m_pCamera->SetLookAt(xmAdd, m_xmf3Position, m_xmf3Up);
 	m_pCamera->GenerateViewMatrix();
 }
 
@@ -57,7 +58,8 @@ void CPlayer::Move(XMFLOAT3& xmf3Shift, bool bUpdateVelocity)
 
 void CPlayer::Move(float x, float y, float z)
 {
-	Move(XMFLOAT3(x, y, z), false);
+	XMFLOAT3 pos = XMFLOAT3(x, y, z);
+	Move(pos, false);
 }
 
 void CPlayer::Rotate(float fPitch, float fYaw, float fRoll)
@@ -82,17 +84,24 @@ void CPlayer::Rotate(float fPitch, float fYaw, float fRoll)
 		m_xmf3Right = Vector3::TransformNormal(m_xmf3Right, mtxRotate);
 	}
 
+	XMFLOAT3 crossProduct1 = Vector3::CrossProduct(m_xmf3Up, m_xmf3Look);
+	XMFLOAT3 crossProduct2 = Vector3::CrossProduct(m_xmf3Look, m_xmf3Right);
 	m_xmf3Look = Vector3::Normalize(m_xmf3Look);
-	m_xmf3Right = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Up, m_xmf3Look));
-	m_xmf3Up = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Look, m_xmf3Right));
+	m_xmf3Right = Vector3::Normalize(crossProduct1);
+	m_xmf3Up = Vector3::Normalize(crossProduct2);
 }
 
 void CPlayer::LookAt(XMFLOAT3& xmf3LookAt, XMFLOAT3& xmf3Up)
 {
+
 	XMFLOAT4X4 xmf4x4View = Matrix4x4::LookAtLH(m_xmf3Position, xmf3LookAt, xmf3Up);
-	m_xmf3Right = Vector3::Normalize(XMFLOAT3(xmf4x4View._11, xmf4x4View._21, xmf4x4View._31));
-	m_xmf3Up = Vector3::Normalize(XMFLOAT3(xmf4x4View._12, xmf4x4View._22, xmf4x4View._32));
-	m_xmf3Look = Vector3::Normalize(XMFLOAT3(xmf4x4View._13, xmf4x4View._23, xmf4x4View._33));
+
+	XMFLOAT3 xmRight = XMFLOAT3(xmf4x4View._11, xmf4x4View._21, xmf4x4View._31);
+	XMFLOAT3 xmUp = XMFLOAT3(xmf4x4View._12, xmf4x4View._22, xmf4x4View._32);
+	XMFLOAT3 xmLook = XMFLOAT3(xmf4x4View._13, xmf4x4View._23, xmf4x4View._33);
+	m_xmf3Right = Vector3::Normalize(xmRight);
+	m_xmf3Up = Vector3::Normalize(xmUp);
+	m_xmf3Look = Vector3::Normalize(xmLook);
 }
 
 void CPlayer::Update(float fTimeElapsed)
@@ -102,7 +111,8 @@ void CPlayer::Update(float fTimeElapsed)
 	m_pCamera->Update(this, m_xmf3Position, fTimeElapsed);
 	m_pCamera->GenerateViewMatrix();
 
-	XMFLOAT3 xmf3Deceleration = Vector3::Normalize(Vector3::ScalarProduct(m_xmf3Velocity, -1.0f));
+	XMFLOAT3 scalarProduct = Vector3::ScalarProduct(m_xmf3Velocity, -1.0f);
+	XMFLOAT3 xmf3Deceleration = Vector3::Normalize(scalarProduct);
 	float fLength = Vector3::Length(m_xmf3Velocity);
 	float fDeceleration = m_fFriction * fTimeElapsed;
 	if (fDeceleration > fLength) fDeceleration = fLength;
@@ -163,9 +173,10 @@ CTankPlayer::CTankPlayer()
 	CCubeMesh* pBulletMesh = new CCubeMesh(1.0f, 1.0f, 4.0f);
 	for (int i = 0; i < BULLETS; i++)
 	{
+		XMFLOAT3 rotationAxis = XMFLOAT3(0.0f, 0.0f, 1.0f);
 		m_ppBullets[i] = new CBulletObject(m_fBulletEffectiveRange);
 		m_ppBullets[i]->SetMesh(pBulletMesh);
-		m_ppBullets[i]->SetRotationAxis(XMFLOAT3(0.0f, 0.0f, 1.0f));
+		m_ppBullets[i]->SetRotationAxis(rotationAxis);
 		m_ppBullets[i]->SetRotationSpeed(360.0f);
 		m_ppBullets[i]->SetMovingSpeed(120.0f);
 		m_ppBullets[i]->SetActive(false);

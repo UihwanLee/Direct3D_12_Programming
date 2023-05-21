@@ -45,23 +45,29 @@ void CAI::Rotate(float fPitch, float fYaw, float fRoll)
 	}
 
 	m_xmf3Look = Vector3::Normalize(m_xmf3Look);
-	m_xmf3Right = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Up, m_xmf3Look));
-	m_xmf3Up = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Look, m_xmf3Right));
+	XMFLOAT3 crossProduct1 = Vector3::CrossProduct(m_xmf3Up, m_xmf3Look);
+	XMFLOAT3 crossProduct2 = Vector3::CrossProduct(m_xmf3Look, m_xmf3Right);
+	m_xmf3Right = Vector3::Normalize(crossProduct1);
+	m_xmf3Up = Vector3::Normalize(crossProduct2);
 }
 
 void CAI::LookAt(XMFLOAT3& xmf3LookAt, XMFLOAT3& xmf3Up)
 {
 	XMFLOAT4X4 xmf4x4View = Matrix4x4::LookAtLH(m_xmf3Position, xmf3LookAt, xmf3Up);
-	m_xmf3Right = Vector3::Normalize(XMFLOAT3(xmf4x4View._11, xmf4x4View._21, xmf4x4View._31));
-	m_xmf3Up = Vector3::Normalize(XMFLOAT3(xmf4x4View._12, xmf4x4View._22, xmf4x4View._32));
-	m_xmf3Look = Vector3::Normalize(XMFLOAT3(xmf4x4View._13, xmf4x4View._23, xmf4x4View._33));
+	XMFLOAT3 m_xmRight = XMFLOAT3(xmf4x4View._11, xmf4x4View._21, xmf4x4View._31);
+	XMFLOAT3 m_xmUp = XMFLOAT3(xmf4x4View._12, xmf4x4View._22, xmf4x4View._32);
+	XMFLOAT3 m_xmLook = XMFLOAT3(xmf4x4View._13, xmf4x4View._23, xmf4x4View._33);
+	m_xmf3Right = Vector3::Normalize(m_xmRight);
+	m_xmf3Up = Vector3::Normalize(m_xmUp);
+	m_xmf3Look = Vector3::Normalize(m_xmLook);
 }
 
 void CAI::Update(float fTimeElapsed)
 {
 	Move(m_xmf3Velocity, false);
 
-	XMFLOAT3 xmf3Deceleration = Vector3::Normalize(Vector3::ScalarProduct(m_xmf3Velocity, -1.0f));
+	XMFLOAT3 scalarProduct = Vector3::ScalarProduct(m_xmf3Velocity, -1.0f);
+	XMFLOAT3 xmf3Deceleration = Vector3::Normalize(scalarProduct);
 	float fLength = Vector3::Length(m_xmf3Velocity);
 	float fDeceleration = m_fFriction * fTimeElapsed;
 	if (fDeceleration > fLength) fDeceleration = fLength;
@@ -122,9 +128,10 @@ CTankAI::CTankAI()
 	CCubeMesh* pBulletMesh = new CCubeMesh(1.0f, 1.0f, 4.0f);
 	for (int i = 0; i < BULLETS; i++)
 	{
+		XMFLOAT3 rotationAxis = XMFLOAT3(0.0f, 0.0f, 1.0f);
 		m_ppBullets[i] = new CBulletObject(m_fBulletEffectiveRange);
 		m_ppBullets[i]->SetMesh(pBulletMesh);
-		m_ppBullets[i]->SetRotationAxis(XMFLOAT3(0.0f, 0.0f, 1.0f));
+		m_ppBullets[i]->SetRotationAxis(rotationAxis);
 		m_ppBullets[i]->SetRotationSpeed(360.0f);
 		m_ppBullets[i]->SetMovingSpeed(120.0f);
 		m_ppBullets[i]->SetActive(false);
@@ -200,13 +207,6 @@ void CTankAI::FireBullet()
 
 void CTankAI::FireBulltetForSeconds(float fElapsedTime)
 {
-	// 난수 생성
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(2, 4);
-
-	m_fFireDuration = dis(gen);
-
 	m_fFireElapsedTimes += fElapsedTime;
 	if (m_fFireElapsedTimes > m_fFireDuration)
 	{
@@ -225,7 +225,6 @@ void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 
 	XMFLOAT3 xmf3CrossProduct = Vector3::CrossProduct(xmf3LookAt, pPlayer->m_xmf3Look, true);
 	float fDotProduct = Vector3::DotProduct(xmf3LookAt, pPlayer->m_xmf3Look);
-	//float fAngle = (fDotProduct > 0.0f) ? Vector3::DotToDegree(acos(fDotProduct)) : 90.0f;
 
 	if (fDistance > 10.0f)
 	{
@@ -247,8 +246,6 @@ void CTankAI::ChasePlayerMovement(CPlayer* pPlayer)
 
 }
 
-
-
 void CTankAI::ResetHP()
 {
 	m_fHP = 100.0f;
@@ -266,17 +263,8 @@ bool CTankAI::IncreaseHP(float fHeal)
 		m_pHP->SetMesh(pHP);
 	}
 
-
-	if (m_fHP + fHeal < 100.0f)
-	{
-		m_fHP += fHeal;
-		return true;
-	}
-	else
-	{
-		m_fHP = 100.0f;
-		return false;
-	}
+	if (m_fHP + fHeal < 100.0f) { m_fHP += fHeal; return true; }
+	else { m_fHP = 100.0f; return false; }
 }
 
 bool CTankAI::DecreaseHP(float fDamage)
@@ -288,14 +276,6 @@ bool CTankAI::DecreaseHP(float fDamage)
 		m_pHP->SetMesh(pHP);
 	}
 
-	if (m_fHP - fDamage > 0.0f)
-	{
-		m_fHP -= fDamage;
-		return true;
-	}
-	else
-	{
-		m_fHP = 0;
-		return false;
-	}
+	if (m_fHP - fDamage > 0.0f) { m_fHP -= fDamage; return true; }
+	else { m_fHP = 0; return false; }
 }

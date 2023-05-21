@@ -74,13 +74,6 @@ public:
 	virtual ~CFloorMesh() { }
 };
 
-class CHealMesh : public CMesh
-{
-public:
-	CHealMesh(float fWidth, float fHeight, float fDepth);
-	virtual ~CHealMesh();
-};
-
 class CAxisMesh : public CMesh
 {
 public:

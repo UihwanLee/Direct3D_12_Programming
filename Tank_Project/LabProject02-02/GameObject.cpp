@@ -142,7 +142,8 @@ void CGameObject::Move(XMFLOAT3& vDirection, float fSpeed)
 
 void CGameObject::LookTo(XMFLOAT3& xmf3LookTo, XMFLOAT3& xmf3Up)
 {
-	XMFLOAT4X4 xmf4x4View = Matrix4x4::LookToLH(GetPosition(), xmf3LookTo, xmf3Up);
+	XMFLOAT3 pos = GetPosition();
+	XMFLOAT4X4 xmf4x4View = Matrix4x4::LookToLH(pos, xmf3LookTo, xmf3Up);
 	m_xmf4x4Transform._11 = xmf4x4View._11; m_xmf4x4Transform._12 = xmf4x4View._21; m_xmf4x4Transform._13 = xmf4x4View._31;
 	m_xmf4x4Transform._21 = xmf4x4View._12; m_xmf4x4Transform._22 = xmf4x4View._22; m_xmf4x4Transform._23 = xmf4x4View._32;
 	m_xmf4x4Transform._31 = xmf4x4View._13; m_xmf4x4Transform._32 = xmf4x4View._23; m_xmf4x4Transform._33 = xmf4x4View._33;
@@ -152,7 +153,8 @@ void CGameObject::LookTo(XMFLOAT3& xmf3LookTo, XMFLOAT3& xmf3Up)
 
 void CGameObject::LookAt(XMFLOAT3& xmf3LookAt, XMFLOAT3& xmf3Up)
 {
-	XMFLOAT4X4 xmf4x4View = Matrix4x4::LookAtLH(GetPosition(), xmf3LookAt, xmf3Up);
+	XMFLOAT3 pos = GetPosition();
+	XMFLOAT4X4 xmf4x4View = Matrix4x4::LookAtLH(pos, xmf3LookAt, xmf3Up);
 	m_xmf4x4Transform._11 = xmf4x4View._11; m_xmf4x4Transform._12 = xmf4x4View._21; m_xmf4x4Transform._13 = xmf4x4View._31;
 	m_xmf4x4Transform._21 = xmf4x4View._12; m_xmf4x4Transform._22 = xmf4x4View._22; m_xmf4x4Transform._23 = xmf4x4View._32;
 	m_xmf4x4Transform._31 = xmf4x4View._13; m_xmf4x4Transform._32 = xmf4x4View._23; m_xmf4x4Transform._33 = xmf4x4View._33;
@@ -310,7 +312,8 @@ void CExplosiveObject::Animate(float fElapsedTime)
 				m_pxmf4x4Transforms[i]._41 = xmf3Position.x + m_pxmf3SphereVectors[i].x * m_fExplosionSpeed * m_fElapsedTimes;
 				m_pxmf4x4Transforms[i]._42 = xmf3Position.y + m_pxmf3SphereVectors[i].y * m_fExplosionSpeed * m_fElapsedTimes;
 				m_pxmf4x4Transforms[i]._43 = xmf3Position.z + m_pxmf3SphereVectors[i].z * m_fExplosionSpeed * m_fElapsedTimes;
-				m_pxmf4x4Transforms[i] = Matrix4x4::Multiply(Matrix4x4::RotationAxis(m_pxmf3SphereVectors[i], m_fExplosionRotation * m_fElapsedTimes), m_pxmf4x4Transforms[i]);
+				XMFLOAT4X4 matrix = Matrix4x4::RotationAxis(m_pxmf3SphereVectors[i], m_fExplosionRotation * m_fElapsedTimes);
+				m_pxmf4x4Transforms[i] = Matrix4x4::Multiply(matrix, m_pxmf4x4Transforms[i]);
 			}
 		}
 		else

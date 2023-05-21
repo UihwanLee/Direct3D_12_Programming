@@ -12,8 +12,6 @@ public:
 	virtual ~CScene();
 
 private:
-	int							m_nObjects = 0;
-	CGameObject					**m_ppObjects = NULL;
 
 	int							m_nHealObject = 0;
 	CHealObject					**m_ppHealObject = NULL;
@@ -42,7 +40,5 @@ public:
 
 	virtual void OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	virtual void OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
-
-	CGameObject* PickObjectPointedByCursor(int xClient, int yClient, CCamera* pCamera);
 };
 

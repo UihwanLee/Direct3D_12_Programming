@@ -23,9 +23,12 @@ CCamera::~CCamera()
 
 void CCamera::GenerateViewMatrix()
 {
+	XMFLOAT3 crossProduct1 = Vector3::CrossProduct(m_xmf3Up, m_xmf3Look);
+	XMFLOAT3 crossProduct2 = Vector3::CrossProduct(m_xmf3Look, m_xmf3Right);
+
 	m_xmf3Look = Vector3::Normalize(m_xmf3Look);
-	m_xmf3Right = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Up, m_xmf3Look));
-	m_xmf3Up = Vector3::Normalize(Vector3::CrossProduct(m_xmf3Look, m_xmf3Right));
+	m_xmf3Right = Vector3::Normalize(crossProduct1);
+	m_xmf3Up = Vector3::Normalize(crossProduct2);
 	m_xmf4x4View._11 = m_xmf3Right.x; m_xmf4x4View._12 = m_xmf3Up.x; m_xmf4x4View._13 = m_xmf3Look.x;
 	m_xmf4x4View._21 = m_xmf3Right.y; m_xmf4x4View._22 = m_xmf3Up.y; m_xmf4x4View._23 = m_xmf3Look.y;
 	m_xmf4x4View._31 = m_xmf3Right.z; m_xmf4x4View._32 = m_xmf3Up.z; m_xmf4x4View._33 = m_xmf3Look.z;
@@ -48,9 +51,13 @@ void CCamera::SetLookAt(XMFLOAT3& xmf3Position, XMFLOAT3& xmf3LookAt, XMFLOAT3& 
 {
 	m_xmf3Position = xmf3Position;
 	m_xmf4x4View = Matrix4x4::LookAtLH(m_xmf3Position, xmf3LookAt, xmf3Up);
-	m_xmf3Right = Vector3::Normalize(XMFLOAT3(m_xmf4x4View._11, m_xmf4x4View._21, m_xmf4x4View._31));
-	m_xmf3Up = Vector3::Normalize(XMFLOAT3(m_xmf4x4View._12, m_xmf4x4View._22, m_xmf4x4View._32));
-	m_xmf3Look = Vector3::Normalize(XMFLOAT3(m_xmf4x4View._13, m_xmf4x4View._23, m_xmf4x4View._33));
+
+	XMFLOAT3 xmRight = XMFLOAT3(m_xmf4x4View._11, m_xmf4x4View._21, m_xmf4x4View._31);
+	XMFLOAT3 xmUp = XMFLOAT3(m_xmf4x4View._12, m_xmf4x4View._22, m_xmf4x4View._32);
+	XMFLOAT3 xmLook = XMFLOAT3(m_xmf4x4View._13, m_xmf4x4View._23, m_xmf4x4View._33);
+	m_xmf3Right = Vector3::Normalize(xmRight);
+	m_xmf3Up = Vector3::Normalize(xmUp);
+	m_xmf3Look = Vector3::Normalize(xmLook);
 }
 
 void CCamera::SetLookAt(XMFLOAT3& xmf3LookAt, XMFLOAT3& xmf3Up)
@@ -100,7 +107,8 @@ void CCamera::Move(XMFLOAT3& xmf3Shift)
 
 void CCamera::Move(float x, float y, float z)
 {
-	Move(XMFLOAT3(x, y, z));
+	XMFLOAT3 pos = XMFLOAT3(x, y, z);
+	Move(pos);
 }
 
 void CCamera::Rotate(float fPitch, float fYaw, float fRoll)
