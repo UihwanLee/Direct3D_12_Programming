@@ -1,0 +1,16 @@
+﻿  stdafx.cpp
+  AI.cpp
+  Camera.cpp
+  GameFramework.cpp
+  LabProject04-6.cpp
+  Mesh.cpp
+  Object.cpp
+  Player.cpp
+  Scene.cpp
+  Shader.cpp
+  Timer.cpp
+  코드를 생성하고 있습니다.
+  Previous IPDB not found, fall back to full compilation.
+  All 335 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  LabProject04-6.vcxproj -> C:\Users\user\Desktop\3학년 1학기\3D 게임프로그래밍\과제\과제2\LabProject04-6\x64\Release\LabProject04-6.exe
